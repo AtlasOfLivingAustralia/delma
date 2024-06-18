@@ -6,7 +6,7 @@
 \alias{as_tibble.md}
 \alias{as_tibble.eml}
 \alias{as_tibble.xml_document}
-\title{convert metadata to a \code{tibble}}
+\title{Convert metadata to a \code{tibble}}
 \usage{
 \method{as_tibble}{md}(x, ...)
 

@@ -35,7 +35,7 @@ library(elm)
 - Import markdown files to R
 - convert to `tibble`s, `eml` (list) format, or `xml`
 
-## Citing galaxias
+## Citing `elm`
 
 To generate a citation for the package version you are using, you can
 run:
