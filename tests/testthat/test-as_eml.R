@@ -11,6 +11,12 @@ test_that("`as_eml()` works for class `tbl_df`", {
   expect_lte(
     length(unlist(result)),
     nrow(x))
+  # conversion from tibble to eml doesn't retain attributes
 })
 
 # as_eml.xml_document
+test_that("`as_eml()` works for class `xml_document", {
+  x <- read_xml("testdata/bionet_metadata.xml") |>
+    as_eml()
+  expect_true(inherits(x, "eml"))
+})
