@@ -6,5 +6,5 @@
 #' @name as_xml
 #' @export
 as_xml <- function(x, ...){
-  useMethod("as_xml")
+  UseMethod("as_xml")
 }

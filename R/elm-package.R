@@ -17,14 +17,14 @@
 #' @section Functions:
 #' **Reading and writing**
 #' 
-#'   * [read_md()] to import from Markdown files
+#'   * [read_md()] to import from Markdown files 
 #'   * [read_xml()] to import from XML - reexported from `{xml2}`
 #'   
 #' **Type Conversion**   
 #'
-#'   * [as_md()] - markdown stored as strings
+#'   * [as_md()] - markdown stored as strings (also [md-methods()])
 #'   * [as_tibble()] - tibbles (from package `{tibble}`)
-#'   * [as_eml()] - listlike data
+#'   * [as_eml()] - list-like data
 #'   * [as_xml()] - xml data
 #'  
 #' @keywords internal

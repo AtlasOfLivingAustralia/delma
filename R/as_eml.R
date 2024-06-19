@@ -8,5 +8,5 @@
 #' @param ... other arguments, currently ignored
 #' @export
 as_eml <- function(x, ...){
-  useMethod("as_eml")
+  UseMethod("as_eml")
 }

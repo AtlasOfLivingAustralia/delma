@@ -67,6 +67,7 @@ get_header_label_html <- function(string, rows){
 }
 
 #' Internal function to parse each section as xml
+#' @importFrom glue glue
 #' @importFrom glue glue_collapse
 #' @importFrom stringr str_extract
 #' @importFrom stringr str_remove

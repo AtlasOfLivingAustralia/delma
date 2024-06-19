@@ -6,5 +6,5 @@
 #' @param ... other arguments, currently ignored
 #' @export
 as_md <- function(x, ...){
-  useMethod("as_md")
+  UseMethod("as_md")
 }

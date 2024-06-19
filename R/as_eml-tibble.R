@@ -2,7 +2,9 @@
 #' @order 3
 #' @exportS3Method elm::as_eml
 as_eml.tbl_df <- function(x, ...){
-  tibble_to_list_recurse(x, level = 1)
+  result <- tibble_to_list_recurse(x, level = 1)
+  class(result) <- c("eml", "list")
+  result
 }
 
 
