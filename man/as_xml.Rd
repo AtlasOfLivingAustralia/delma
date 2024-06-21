@@ -8,11 +8,11 @@
 \alias{as_xml}
 \title{Convert metadata to class \code{xml}}
 \usage{
-\method{as_xml}{md}(x)
+\method{as_xml}{md}(x, ...)
 
 \method{as_xml}{eml}(x, ...)
 
-\method{as_xml}{tbl_df}(x)
+\method{as_xml}{tbl_df}(x, ...)
 
 as_xml(x, ...)
 }

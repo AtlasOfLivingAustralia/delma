@@ -4,7 +4,7 @@
 #' @importFrom dplyr select
 #' @importFrom rlang .data
 #' @importFrom snakecase to_lower_camel_case
-#' @name as_tibble
+#' @name as_tibble-eml
 #' @order 1
 #' @exportS3Method tibble::as_tibble
 as_tibble.md <- function(x, ...){
@@ -106,6 +106,7 @@ extract_header_html <- function(i, rows, string){
 #' TODO: Support internal paragraph breaks
 #' @importFrom glue glue_collapse
 #' @importFrom purrr map
+#' @importFrom rlang .data
 #' @importFrom stringr str_replace
 #' @importFrom tibble tibble
 #' @noRd
@@ -115,7 +116,7 @@ get_md_text <- function(df, string){
   text_df <- tibble(
     start = df$end_row + 1,
     end = c(df$start_row[-1] - 1, length(string))) |>
-    mutate(row_length = end - start)
+    mutate(row_length = .data$end - .data$start)
   
   text <- map(  
     .x = split(text_df, seq_len(nrow(text_df))),

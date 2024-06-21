@@ -1,7 +1,7 @@
 Package: elm
 Type: Package
 Title: Convert markdown to ecological meta language (EML) and back
-Version: 0.1.0.9999
+Version: 0.1.0
 Authors@R:
     c(person(given = "Martin",
              family = "Westgate",
@@ -17,7 +17,7 @@ Authors@R:
              role = c("aut")))
 Description: Simple tools for converting metadata between R formats.
 Depends: 
-  R (>= 4.1.0)
+  R (>= 4.3.0)
 Imports:
   cli,
   dplyr,
@@ -30,7 +30,7 @@ Imports:
   xml2
 Suggests:
   testthat (>= 3.0.0)
-License: GNU
+License: GPL-3
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)

@@ -1,12 +1,24 @@
+#' Convert metadata to a `tibble`
+#' 
+#' Placeholder for help files. Actually exported from package `tibble`.
 #' @importFrom dplyr bind_rows
 #' @importFrom dplyr select
 #' @importFrom purrr list_flatten
 #' @importFrom purrr pluck_depth
-#' @rdname as_tibble
+#' @param x An object to convert
+#' @param ... Arguments passed to other methods. Currently ignored.
+#' @param .rows Currently ignored
+#' @param .name_repair Currently ignored
+#' @param rownames Currently ignored
+#' @name as_tibble-eml
 #' @order 2
 #' @exportS3Method tibble::as_tibble
-as_tibble.eml <- function(x){
-  result <- list_to_tibble_recurse(x)
+as_tibble.eml <- function(x, 
+                          ...,
+                          .rows,
+                          .name_repair,
+                          rownames){
+  result <- eml_to_tibble_recurse(x)
   for(i in seq_len(pluck_depth(result))){
     result <- list_flatten(result)
   }
@@ -29,7 +41,7 @@ eml_to_tibble_recurse <- function(x,
   x_names <- names(x)
   map(.x = seq_along(x),
       .f = \(a){
-        result <- extract_list_to_tibble(a, x_names, x, level)
+        result <- extract_eml_to_tibble(a, x_names, x, level)
         if(!is.null(result)){
           if(nrow(result) > 0){
             outcome <- bind_rows(outcome, result)
@@ -37,7 +49,7 @@ eml_to_tibble_recurse <- function(x,
         }
         if(is.list(x[[a]])){
           # if(length(x[[a]]) > 0){
-          list_to_tibble_recurse(x[[a]], level = level + 1, outcome = outcome) 
+          eml_to_tibble_recurse(x[[a]], level = level + 1, outcome = outcome) 
           # }else{
           #   format_xml_tibble(outcome)
           # }
@@ -52,7 +64,7 @@ eml_to_tibble_recurse <- function(x,
 #' @importFrom snakecase to_title_case
 #' @noRd
 #' @keywords Internal
-extract_list_to_tibble <- function(index, list_names, list_data, level){
+extract_eml_to_tibble <- function(index, list_names, list_data, level){
   # if(length(list_names) < 1){browser()}
   if(list_names[index] != ""){
     current_contents <- list_data[[index]]

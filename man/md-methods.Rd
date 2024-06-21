@@ -8,12 +8,16 @@
 \usage{
 \method{print}{md}(x, n = 10, ...)
 
-\method{summary}{md}(x, ...)
+\method{summary}{md}(object, ...)
 }
 \arguments{
 \item{x}{An object of class \code{md}}
 
 \item{n}{(integer) The number of rows of content to print. Defaults to 10.}
+
+\item{...}{Arguments passed to other methods. Currently ignored.}
+
+\item{object}{An \code{.md} object to summarize}
 }
 \description{
 These are pretty basic, but should be useful.

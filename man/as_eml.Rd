@@ -8,7 +8,7 @@
 \alias{as_eml}
 \title{Convert metadata to class \code{eml}}
 \usage{
-\method{as_eml}{md}(x)
+\method{as_eml}{md}(x, ...)
 
 \method{as_eml}{tbl_df}(x, ...)
 
