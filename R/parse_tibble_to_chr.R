@@ -1,7 +1,12 @@
-#' @rdname as_md
-#' @order 2
-#' @exportS3Method elm::as_md
-as_md.tibble <- function(x, ...){
+#' @rdname parse_
+#' @order 6
+#' @export
+parse_tibble_to_chr <- function(x){
+  # type check
+  if(!inherits(x, c("md_tibble", "tbl_df"))){
+    abort("`parse_chr_to_tibble()` only works on objects of class `md_tibble` or `tbl_df`")
+  }
+  
   rows <- nrow(x)
   y <- split(x, seq_len(rows))
   result <- map(.x = y,
@@ -11,6 +16,7 @@ as_md.tibble <- function(x, ...){
                 }) |>
     unlist()
   names(result) <- NULL
+  class(result) <- c("md_chr", "character")
   result
 }
 

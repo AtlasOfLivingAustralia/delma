@@ -1,13 +1,23 @@
+#' Parse objects from one class to another
+#'
+#' These low-level functions are primarily built to be called by various `as_`
+#' functions, but are exported for greater transparency and bug-fixing.
+#' @name parse_
+#' @order 1
+#' @param x an R object of the requisite type. No type checking is done.
 #' @importFrom dplyr arrange
 #' @importFrom dplyr bind_rows
 #' @importFrom dplyr mutate
 #' @importFrom dplyr select
 #' @importFrom rlang .data
 #' @importFrom snakecase to_lower_camel_case
-#' @name as_tibble-eml
-#' @order 1
-#' @exportS3Method tibble::as_tibble
-as_tibble.md <- function(x, ...){
+#' @export
+parse_chr_to_tibble <- function(x){
+  
+  # type check
+  if(!inherits(x, c("md_chr", "character"))){
+    abort("`parse_chr_to_tibble()` only works on objects of class `md_chr` or `character`")
+  }
   
   # find titles, in either `<h1>` or `#` format
   title_check <- grepl("^\\s*(#|<h[[:digit:]])", x)

@@ -26,7 +26,7 @@ Ecological Meta Language, the format that this package creates.
 \itemize{
 \item \code{\link[=as_md]{as_md()}} - markdown stored as strings (also \code{\link[=md-methods]{md-methods()}})
 \item \code{\link[=as_tibble]{as_tibble()}} - tibbles (from package \code{{tibble}})
-\item \code{\link[=as_eml]{as_eml()}} - list-like data
+\item \code{\link[=as_mdlist]{as_mdlist()}} - list-like data
 \item \code{\link[=as_xml]{as_xml()}} - xml data
 }
 }

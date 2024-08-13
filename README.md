@@ -28,12 +28,16 @@ Load the package:
 library(elm)
 ```
 
-## Features
+## Basic usage
 
-`elm` contains tools to:
+The basic use case for `elm` is to convert markdown to eml in as few
+steps as possible:
 
-- Import markdown files to R
-- convert to `tibble`s, `eml` (list) format, or `xml`
+``` r
+x <- read_md_chr("testfile.md")
+x # intermediate object is a tibble
+write_md_xml(x, "testout.xml")
+```
 
 ## Citing `elm`
 

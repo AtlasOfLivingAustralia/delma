@@ -24,7 +24,7 @@
 #'
 #'   * [as_md()] - markdown stored as strings (also [md-methods()])
 #'   * [as_tibble()] - tibbles (from package `{tibble}`)
-#'   * [as_eml()] - list-like data
+#'   * [as_mdlist()] - list-like data
 #'   * [as_xml()] - xml data
 #'  
 #' @keywords internal
