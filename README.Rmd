@@ -55,9 +55,9 @@ Here it can be examined and modified as required, then exported to xml:
 write_md_xml(x, "metadata.xml")
 ```
 
-The inverse operation - converting an .xml file with EML content into .md - is 
-also possible. This can work from an xml file in your working directory, or
-from a URL to a valid EML document:
+The inverse operation - converting an `.xml` file with EML content into `.md` - 
+is also possible. This can work from an xml file in your working directory, or
+from a UR:
 
 ```{r}
 y <- read_md_xml("https://collections.ala.org.au/ws/eml/dr368")

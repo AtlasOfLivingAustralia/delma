@@ -9,5 +9,94 @@ vignette: >
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
-Content here please. Start with deep architecture then expand out to user-called
-functions
+
+The `elm` package seeks to solve the problem of how to convert between
+markdown and xml. This is critical for sharing metadata in several contexts,
+particularly in the life sciences, where EML is widely used to provide metadata
+in machine-readable format. EML is a standard that uses xml structures,
+but it's own bespoke naming conventions; but is considerably more difficult to 
+read and edit than text-based formats such as markdown.
+
+## Methodological approach
+
+To convert between markdown and EML, `elm` relies on the assumption that header
+levels in markdown reflect the nestedness structure of the resulting xml. For
+example, the markdown file might contain this text:
+
+```
+# EML
+## Dataset
+### Title
+My title
+```
+
+Which would parse to this in xml:
+```
+<EML>
+  <dataset>
+    <title>My title</title>
+  </dataset>
+<EML>
+```
+
+To accomplish this conversion, we have built a set of parsers that convert
+data in this sequence:
+
+```
+.md file -> character -> tibble -> list -> xml -> .xml file
+```
+We have also built the inverse parsers to convert back from `.xml` to `.md`. All
+parsers are named in the form `parse_{class1}_to_{class2}`; so to convert a 
+tibble to a list, for example, we use `parse_tibble_to_list()`.
+
+
+## Object classes
+
+While these low-level parsers are critical, they are fairly verbose. They also
+only handle one 'link' in the chain each, meaning that to complete the whole
+'chain', we would need to string them together:
+
+```{r, eval = FALSE}
+x <- c("# Heading 1", "## Heading 2")
+class(x) <- c("md_chr", "character")
+
+result <- x |>
+  parse_chr_to_tibble() |>
+  parse_tibble_to_list() |>
+  parse_list_to_xml()
+```
+
+Clearly this isn't ideal; we would prefer to use object-oriented programming
+to specify our preferred output format (using `as()` or related functions). In 
+practice, however, this was challenging because `list` is so fundamental in R 
+that making use-case-specific adjustments to e.g. `as.list()` isn't feasible.
+
+To get around this, we created a set of classes with the `md_` prefix to store 
+and transmit data within `elm.` So storing metadata as a character vector uses
+class `md_character`, the default `tibble` has class `md_tibble`, and so on.
+Their corresponding conversion functions use an `as_md_` prefix, meaning for
+example that we can now convert directly from character to xml using 
+`as_md_xml(x)`. Therefore, we can now accomplish the problem in the previous 
+code block using only one function:
+
+```{r, eval = FALSE}
+x <- c("# Heading 1", "## Heading 2")
+class(x) <- c("md_chr", "character")
+
+result <- as_md_xml(x)
+```
+
+Every permutation of `as_md_` functions is provided in `elm`, meaning you can 
+simply choose the outcome you are looking for, and let `elm` handle the 
+parsing chain needed to return the object class you require.
+
+## Reading and writing
+
+As is standard for ALA R packages, `read_` functions in `elm` return a `tibble`.
+Because we want to be able to convert backwards and forwards between `.xml` and
+`.md`, there are two such functions; `read_md_chr()` for `.md`, and 
+`read_md_xml()` for `.xml` files. The corresponding write functions are 
+`write_md_chr()` and `write_md_xml()`, although note that these accept objects
+from any `elm` class (i.e. `md_chr`, `md_tibble`, `md_list` and `md_xml`).
+
+(this final section needs some code blocks to illustrate what you are saying)
