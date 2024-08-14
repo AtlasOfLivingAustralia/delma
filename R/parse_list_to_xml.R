@@ -12,7 +12,7 @@ parse_list_to_xml <- function(x){
     eml_to_xml_recurse() |>
     append_attributes(full = x) |>
     as_xml_document()
-  class(result) <- c("md_xml", "xml_document")
+  class(result) <- c("md_xml", "xml_document", "xml_node")
   result
 }
 

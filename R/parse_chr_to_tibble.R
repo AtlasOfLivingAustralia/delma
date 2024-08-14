@@ -5,6 +5,7 @@
 #' @name parse_
 #' @order 1
 #' @param x an R object of the requisite type. No type checking is done.
+#' @importFrom dplyr any_of
 #' @importFrom dplyr arrange
 #' @importFrom dplyr bind_rows
 #' @importFrom dplyr mutate
@@ -33,11 +34,15 @@ parse_chr_to_tibble <- function(x){
   tibble2 <- get_header_label_md(x, which(markdown_check))
   
   # join and order
-  bind_rows(tibble1, tibble2) |>
+  result <- bind_rows(tibble1, tibble2) |>
     arrange(.data$start_row) |>
     mutate(label = to_lower_camel_case(.data$label)) |>
     get_md_text(x) |>
-    select("level", "label", "attributes", "text")
+    select(any_of(c("level", "label", "text", "attributes")))
+  
+  prev_class <- class(result)
+  class(result) <- c("md_tibble", prev_class)
+  result
 }
 
 #' get header attributes when formatted as ##Header

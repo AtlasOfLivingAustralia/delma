@@ -19,7 +19,6 @@ append_attributes <- function(empty, full){
   empty
 }
 
-
 #' clean up the output from `index_recurse()`
 #' @importFrom purrr list_flatten
 #' @importFrom purrr map

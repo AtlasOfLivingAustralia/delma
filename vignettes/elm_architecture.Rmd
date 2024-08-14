@@ -1,0 +1,13 @@
+---
+title: "elm architecture"
+author: "Martin Westgate"
+date: "2024-08-14"
+output:
+  rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{elm architecture}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+Content here please. Start with deep architecture then expand out to user-called
+functions

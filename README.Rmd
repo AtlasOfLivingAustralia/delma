@@ -32,21 +32,44 @@ remotes::install_github("atlasoflivingaustralia/elm")
 
 Load the package:
 
-```{r, eval = FALSE}
+```{r}
 library(elm)
 ```
 
 
 ## Basic usage
 
-The basic use case for `elm` is to convert markdown to eml in as few steps 
-as possible:
+The basic use case for `elm` is to import markdown to a tibble:
+
+```{r}
+file <- system.file("example_data", "README_md_example.md", 
+                    package = "elm")
+
+x <- read_md_chr(file)
+x 
+```
+
+Here it can be examined and modified as required, then exported to xml:
 
 ```{r, eval=FALSE}
-x <- read_md_chr("testfile.md")
-x # intermediate object is a tibble
-write_md_xml(x, "testout.xml")
+write_md_xml(x, "metadata.xml")
 ```
+
+The inverse operation - converting an .xml file with EML content into .md - is 
+also possible. This can work from an xml file in your working directory, or
+from a URL to a valid EML document:
+
+```{r}
+y <- read_md_xml("https://collections.ala.org.au/ws/eml/dr368")
+y
+```
+
+```{r, eval=FALSE}
+write_md_chr(y, "metadata.md")
+```
+
+For a more detailed description of elm's capabilities and methods, see the 
+'elm architecture' vignette.
 
 ## Citing `elm`
 To generate a citation for the package version you are using, you can run:

@@ -15,7 +15,7 @@ as_md_tibble <- function(x, ...){
 #' @order 2
 #' @exportS3Method elm::as_md_tibble
 as_md_tibble.md_chr <- function(x, ...){
-  parse_character_to_tibble(x)
+  parse_chr_to_tibble(x)
 }
 
 #' @rdname as_md_tibble

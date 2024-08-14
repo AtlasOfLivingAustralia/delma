@@ -6,15 +6,20 @@
 parse_xml_to_list <- function(x)
 {
   # type check
-  if(!inherits(x, c("md_xml", "xml_document"))){
+  if(!inherits(x, c("md_xml", "xml_document", "xml_node"))){
     abort("`parse_chr_to_tibble()` only works on objects of class `md_xml` or `xml_document`")
   }
+  class(x) <- c("xml_document", "xml_node")
   
-  x_list <- as_list(x)
-  result <- x_list |>
-    xml_to_list_recurse() |>
-    append_attributes(full = x_list) 
-  class(result) <- c("md_list", "list")
+  x_list <- xml2::as_list(x)
+  if(length(x_list) < 1){ # error catcher for when no data are present in `x`
+    result <- x_list
+  }else{
+    result <- x_list |>
+      xml_to_list_recurse() |>
+      append_attributes(full = x_list) 
+    class(result) <- c("md_list", "list")    
+  }
   result
 }
 

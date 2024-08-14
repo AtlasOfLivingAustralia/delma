@@ -1,5 +1,6 @@
 #' @rdname parse_
 #' @order 5
+#' @importFrom dplyr any_of
 #' @importFrom dplyr bind_rows
 #' @importFrom dplyr select
 #' @importFrom purrr list_flatten
@@ -12,15 +13,17 @@ parse_list_to_tibble <- function(x){
     abort("`parse_list_to_tibble()` only works on objects of class `md_list` or `list`")
   }
   
-  result <- eml_to_tibble_recurse(x)
+  result <- list_to_tibble_recurse(x)
   for(i in seq_len(pluck_depth(result))){
     result <- list_flatten(result)
   }
   result <- bind_rows(result)
   result <- result[!duplicated(result), ] # duplicated in any column
-  result <- select(result, "level", "label", "attributes", "text")
+  result <- select(result, 
+                   any_of(c("level", "label", "text", "attributes")))
   prev_class <- class(result)
   class(result) <- c("md_tibble", prev_class)
+  result
 }
 
 #' Internal recursive function

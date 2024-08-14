@@ -13,14 +13,8 @@ read_md_xml <- function(file){
   if(missing(file)){
     abort("`file` is missing, with no default.")
   }
-  if(!file.exists(file)){
-    abort("Specified `file` does not exist.")
-  }
-  if(!grepl(".xml$", file)){
-    abort("`read_md_xml()` only reads files with an `.xml` suffix.")
-  }
   x <- read_xml(file)
-  class(x) <- c("md_xml", "xml_document")
+  class(x) <- c("md_xml", "xml_document", "xml_node")
   as_md_tibble(x)
 }
 
