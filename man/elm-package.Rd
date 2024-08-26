@@ -18,16 +18,29 @@ Ecological Meta Language, the format that this package creates.
 
 \strong{Reading and writing}
 \itemize{
-\item \code{\link[=read_md]{read_md()}} to import from Markdown files
-\item \code{\link[=read_xml]{read_xml()}} to import from XML - reexported from \code{{xml2}}
+\item \code{\link[=read_md_chr]{read_md_chr()}} import markdown as tibble
+\item \code{\link[=read_md_xml]{read_md_xml()}} import xml as tibble
+\item \code{\link[=write_md_chr]{write_md_chr()}} write \code{elm} objects to markdown files
+\item \code{\link[=write_md_xml]{write_md_xml()}} write \code{elm} objects to xml files
 }
 
 \strong{Type Conversion}
 \itemize{
-\item \code{\link[=as_md]{as_md()}} - markdown stored as strings (also \code{\link[=md-methods]{md-methods()}})
-\item \code{\link[=as_tibble]{as_tibble()}} - tibbles (from package \code{{tibble}})
-\item \code{\link[=as_mdlist]{as_mdlist()}} - list-like data
-\item \code{\link[=as_xml]{as_xml()}} - xml data
+\item \code{\link[=as_md_chr]{as_md_chr()}} - convert to class \code{md_chr}
+\item \code{\link[=as_md_tibble]{as_md_tibble()}} - convert to class \code{md_tibble}
+\item \code{\link[=as_md_list]{as_md_list()}} - convert to class \code{md_list}
+\item \code{\link[=as_md_xml]{as_md_xml()}} - convert to class \code{md_xml}
+\item \code{\link[=add_eml_row]{add_eml_row()}} - add an 'EML' row to an object of class \code{md_tibble}
+}
+
+\strong{Parsers}
+\itemize{
+\item \code{\link[=parse_chr_to_tibble]{parse_chr_to_tibble()}}
+\item \code{\link[=parse_tibble_to_list]{parse_tibble_to_list()}}
+\item \code{\link[=parse_list_to_xml]{parse_list_to_xml()}}
+\item \code{\link[=parse_xml_to_list]{parse_xml_to_list()}}
+\item \code{\link[=parse_list_to_tibble]{parse_list_to_tibble()}}
+\item \code{\link[=parse_tibble_to_chr]{parse_tibble_to_chr()}}
 }
 }
 

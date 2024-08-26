@@ -1,6 +1,4 @@
-# ALA Dataset Metadata
-
-## Data Resource
+## Dataset
 
 ### Title
 An awesome dataset

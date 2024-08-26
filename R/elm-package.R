@@ -17,15 +17,26 @@
 #' @section Functions:
 #' **Reading and writing**
 #' 
-#'   * [read_md()] to import from Markdown files 
-#'   * [read_xml()] to import from XML - reexported from `{xml2}`
+#'   * [read_md_chr()] import markdown as tibble
+#'   * [read_md_xml()] import xml as tibble
+#'   * [write_md_chr()] write `elm` objects to markdown files
+#'   * [write_md_xml()] write `elm` objects to xml files
 #'   
 #' **Type Conversion**   
 #'
-#'   * [as_md()] - markdown stored as strings (also [md-methods()])
-#'   * [as_tibble()] - tibbles (from package `{tibble}`)
-#'   * [as_mdlist()] - list-like data
-#'   * [as_xml()] - xml data
+#'   * [as_md_chr()] - convert to class `md_chr`
+#'   * [as_md_tibble()] - convert to class `md_tibble`
+#'   * [as_md_list()] - convert to class `md_list`
+#'   * [as_md_xml()] - convert to class `md_xml`
+#'   * [add_eml_row()] - add an 'EML' row to an object of class `md_tibble`
+#'   
+#' **Parsers**
+#'   * [parse_chr_to_tibble()]
+#'   * [parse_tibble_to_list()]
+#'   * [parse_list_to_xml()]
+#'   * [parse_xml_to_list()]
+#'   * [parse_list_to_tibble()]
+#'   * [parse_tibble_to_chr()]
 #'  
 #' @keywords internal
 "_PACKAGE"
