@@ -17,26 +17,24 @@ read_md_chr <- function(file){
   if(!grepl(".md$", file)){
     abort("`read_md_chr()` only reads files with a `.md` suffix.")
   }
-  x <- readLines(file)
-  class(x) <- "md_chr"
-  as_md_tibble(x)
+  readLines(file) |> as_md_tibble()
 }
 
 #' @rdname read_md_chr
 #' @importFrom rlang abort
-#' @param x Object of any class defined by `elm`; i.e. `md_chr`, `md_tibble`,
-#' `md_list` or `md_xml`.
+#' @param x Object of any class handled by `elm`; i.e. `character`, `tbl_df`,
+#' `list` or `xml_document`.
 #' @export
 write_md_chr <- function(x, file){
   
   # check for correct format
-  if(inherits(x, c("md_tibble", "md_list", "md_xml"))){
+  if(inherits(x, c("tbl_df", "list", "xml_document"))){
     x <- as_md_chr(x)
   }
   
   # stop if not converted
-  if(!inherits(x, "md_chr")){
-    abort(c("`write_md()` only accepts objects of class `md_chr`.",
+  if(!inherits(x, "character")){
+    abort(c("`write_md()` only accepts objects of class `character`.",
             i = "Use `as_md_chr()` to convert it."))
   }
   

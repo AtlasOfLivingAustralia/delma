@@ -9,8 +9,8 @@
 #' @importFrom tibble add_row
 #' @export
 add_eml_row <- function(x){
-  if(!inherits(x, "md_tibble")){
-    abort("add_eml() requires an object of class `md_tibble`")
+  if(!inherits(x, "tbl_df")){
+    abort("add_eml() requires an object of class `tbl_df`")
   }
   
   # if `attributes` list-column is missing, add it (with NA for each entry)

@@ -2,24 +2,31 @@
 % Please edit documentation in R/as_md_xml.R
 \name{as_md_xml}
 \alias{as_md_xml}
-\alias{as_md_xml.md_chr}
-\alias{as_md_xml.md_tibble}
-\alias{as_md_xml.md_list}
-\title{Convert metadata to class \code{md_xml}}
+\alias{as_md_xml.character}
+\alias{as_md_xml.tbl_df}
+\alias{as_md_xml.list}
+\alias{as_md_xml.xml_document}
+\title{Convert metadata to an \code{xml_document}}
 \usage{
 as_md_xml(x, ...)
 
-\method{as_md_xml}{md_chr}(x, ...)
+\method{as_md_xml}{character}(x, ...)
 
-\method{as_md_xml}{md_tibble}(x, ...)
+\method{as_md_xml}{tbl_df}(x, ...)
 
-\method{as_md_xml}{md_list}(x, ...)
+\method{as_md_xml}{list}(x, ...)
+
+\method{as_md_xml}{xml_document}(x, ...)
 }
 \arguments{
 \item{x}{Object to be converted}
 
 \item{...}{Other arguments, currently ignored}
 }
+\value{
+An \code{xml_document} with the specified nodes and attributes.
+}
 \description{
-largely powered by \code{xml2}
+Takes a \code{character} vector, tibble, or \code{list} and converts it to an
+\code{xml_document}, as defined by the \code{xml2} package.
 }

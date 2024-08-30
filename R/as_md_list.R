@@ -1,12 +1,13 @@
-#' Convert metadata to class `md_list`
+#' Convert metadata to a `list`
 #' 
-#' `md_list` is metadata stored as a list. It is a hack so that we don't have to 
-#' overwrite `xml2::as_list` or `rlang::as_list`. In theory `eml` format should
-#' be consistent with the `EML` package, but I haven't checked this.
+#' Takes an object of class `character`, `xml_document` or a tibble, and 
+#' converts it to a `list`.
 #' @name as_md_list
 #' @order 1
 #' @param x Object to be converted
 #' @param ... Other arguments, currently ignored
+#' @returns A list, where both the nested structure of the XML/md and the 
+#' attributes of XML nodes, are preserved.
 #' @export
 as_md_list <- function(x, ...){
   UseMethod("as_md_list")
@@ -15,7 +16,7 @@ as_md_list <- function(x, ...){
 #' @rdname as_md_list
 #' @order 2
 #' @exportS3Method elm::as_md_list
-as_md_list.md_chr <- function(x, ...){
+as_md_list.character <- function(x, ...){
   x |>
     parse_chr_to_tibble() |>
     parse_tibble_to_list()
@@ -24,13 +25,20 @@ as_md_list.md_chr <- function(x, ...){
 #' @rdname as_md_list
 #' @order 3
 #' @exportS3Method elm::as_md_list
-as_md_list.md_tibble <- function(x, ...){
+as_md_list.tbl_df <- function(x, ...){
   parse_tibble_to_list(x)
 }
 
 #' @rdname as_md_list
 #' @order 4
 #' @exportS3Method elm::as_md_list
-as_md_list.md_xml <- function(x, ...){
+as_md_list.list <- function(x, ...){
+  x
+}
+
+#' @rdname as_md_list
+#' @order 5
+#' @exportS3Method elm::as_md_list
+as_md_list.xml_document <- function(x, ...){
   parse_xml_to_list(x)   
 }

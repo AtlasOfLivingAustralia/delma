@@ -15,6 +15,6 @@ test_that("`read_md_chr()` only accepts files that end in `.md`", {
 
 test_that("read_md_chr() works on a valid markdown file", {
   x <- read_md_chr("testdata/bionet_metadata.md")
-  expect_true(inherits(x, c("md_tibble", "tbl_df")))
+  expect_s3_class(x, c("tbl_df", "tbl", "data.frame"))
   expect_gte(nrow(x), 10)
 })

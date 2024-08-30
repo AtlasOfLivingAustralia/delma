@@ -20,17 +20,17 @@ Ecological Meta Language, the format that this package creates.
 \itemize{
 \item \code{\link[=read_md_chr]{read_md_chr()}} import markdown as tibble
 \item \code{\link[=read_md_xml]{read_md_xml()}} import xml as tibble
-\item \code{\link[=write_md_chr]{write_md_chr()}} write \code{elm} objects to markdown files
-\item \code{\link[=write_md_xml]{write_md_xml()}} write \code{elm} objects to xml files
+\item \code{\link[=write_md_chr]{write_md_chr()}} write an \code{elm} object to markdown
+\item \code{\link[=write_md_xml]{write_md_xml()}} write an \code{elm} objects to xml
 }
 
 \strong{Type Conversion}
 \itemize{
-\item \code{\link[=as_md_chr]{as_md_chr()}} - convert to class \code{md_chr}
-\item \code{\link[=as_md_tibble]{as_md_tibble()}} - convert to class \code{md_tibble}
-\item \code{\link[=as_md_list]{as_md_list()}} - convert to class \code{md_list}
-\item \code{\link[=as_md_xml]{as_md_xml()}} - convert to class \code{md_xml}
-\item \code{\link[=add_eml_row]{add_eml_row()}} - add an 'EML' row to an object of class \code{md_tibble}
+\item \code{\link[=as_md_chr]{as_md_chr()}} - convert to class \code{character}
+\item \code{\link[=as_md_tibble]{as_md_tibble()}} - convert to class \code{tbl_df} (i.e. a tibble)
+\item \code{\link[=as_md_list]{as_md_list()}} - convert to class \code{list}
+\item \code{\link[=as_md_xml]{as_md_xml()}} - convert to class \code{xml_document}
+\item \code{\link[=add_eml_row]{add_eml_row()}} - add an 'EML' row to an object of class \code{tibble}
 }
 
 \strong{Parsers}

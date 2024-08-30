@@ -3,21 +3,18 @@
 #' @export
 parse_tibble_to_chr <- function(x){
   # type check
-  if(!inherits(x, c("md_tibble", "tbl_df"))){
-    abort("`parse_chr_to_tibble()` only works on objects of class `md_tibble` or `tbl_df`")
+  if(!inherits(x, "tbl_df")){
+    abort("`parse_chr_to_tibble()` only works on objects of class `tbl_df`")
   }
   
   rows <- nrow(x)
   y <- split(x, seq_len(rows))
-  result <- map(.x = y,
-                .f = \(a){
-                  c(format_md_header(a), 
-                    format_md_text(a$text))
-                }) |>
+  map(.x = y,
+      .f = \(a){
+        c(format_md_header(a), 
+          format_md_text(a$text))
+      }) |>
     unlist()
-  names(result) <- NULL
-  class(result) <- c("md_chr", "character")
-  result
 }
 
 #' Internal function called only by `parse_tibble_to_md()`

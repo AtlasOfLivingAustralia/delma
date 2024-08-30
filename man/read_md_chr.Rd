@@ -12,8 +12,8 @@ write_md_chr(x, file)
 \arguments{
 \item{file}{filename}
 
-\item{x}{Object of any class defined by \code{elm}; i.e. \code{md_chr}, \code{md_tibble},
-\code{md_list} or \code{md_xml}.}
+\item{x}{Object of any class handled by \code{elm}; i.e. \code{character}, \code{tbl_df},
+\code{list} or \code{xml_document}.}
 }
 \value{
 An object of class \code{md_tibble}.

@@ -2,24 +2,32 @@
 % Please edit documentation in R/as_md_chr.R
 \name{as_md_chr}
 \alias{as_md_chr}
-\alias{as_md_chr.md_tibble}
-\alias{as_md_chr.md_list}
-\alias{as_md_chr.md_xml}
-\title{Convert metadata to class \code{md}}
+\alias{as_md_chr.character}
+\alias{as_md_chr.tbl_df}
+\alias{as_md_chr.list}
+\alias{as_md_chr.xml_document}
+\title{Convert metadata to a \code{character} vector}
 \usage{
 as_md_chr(x, ...)
 
-\method{as_md_chr}{md_tibble}(x, ...)
+\method{as_md_chr}{character}(x, ...)
 
-\method{as_md_chr}{md_list}(x, ...)
+\method{as_md_chr}{tbl_df}(x, ...)
 
-\method{as_md_chr}{md_xml}(x, ...)
+\method{as_md_chr}{list}(x, ...)
+
+\method{as_md_chr}{xml_document}(x, ...)
 }
 \arguments{
 \item{x}{Object to be converted}
 
 \item{...}{Other arguments, currently ignored}
 }
+\value{
+A \code{character} vector formatted as markdown.
+}
 \description{
-This is basically a vector
+These functions take objects of class \code{tbl_df} (i.e. tibbles), \code{list} or
+\code{xml_document} (from the \code{xml2} package), and convert them to a vector of
+strings that is human- and machine- readable markdown.
 }

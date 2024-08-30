@@ -28,6 +28,6 @@ parse_tibble_to_chr(x)
 \item{x}{an R object of the requisite type. No type checking is done.}
 }
 \description{
-These low-level functions are primarily built to be called by various \code{as_}
-functions, but are exported for greater transparency and bug-fixing.
+These low-level functions are primarily built to be called by the various
+\code{as_md} functions, but are exported for greater transparency and bug-fixing.
 }

@@ -2,26 +2,32 @@
 % Please edit documentation in R/as_md_list.R
 \name{as_md_list}
 \alias{as_md_list}
-\alias{as_md_list.md_chr}
-\alias{as_md_list.md_tibble}
-\alias{as_md_list.md_xml}
-\title{Convert metadata to class \code{md_list}}
+\alias{as_md_list.character}
+\alias{as_md_list.tbl_df}
+\alias{as_md_list.list}
+\alias{as_md_list.xml_document}
+\title{Convert metadata to a \code{list}}
 \usage{
 as_md_list(x, ...)
 
-\method{as_md_list}{md_chr}(x, ...)
+\method{as_md_list}{character}(x, ...)
 
-\method{as_md_list}{md_tibble}(x, ...)
+\method{as_md_list}{tbl_df}(x, ...)
 
-\method{as_md_list}{md_xml}(x, ...)
+\method{as_md_list}{list}(x, ...)
+
+\method{as_md_list}{xml_document}(x, ...)
 }
 \arguments{
 \item{x}{Object to be converted}
 
 \item{...}{Other arguments, currently ignored}
 }
+\value{
+A list, where both the nested structure of the XML/md and the
+attributes of XML nodes, are preserved.
+}
 \description{
-\code{md_list} is metadata stored as a list. It is a hack so that we don't have to
-overwrite \code{xml2::as_list} or \code{rlang::as_list}. In theory \code{eml} format should
-be consistent with the \code{EML} package, but I haven't checked this.
+Takes an object of class \code{character}, \code{xml_document} or a tibble, and
+converts it to a \code{list}.
 }

@@ -9,8 +9,8 @@
 parse_list_to_tibble <- function(x){
   
   # type check
-  if(!inherits(x, c("md_list", "list"))){
-    abort("`parse_list_to_tibble()` only works on objects of class `md_list` or `list`")
+  if(!inherits(x, "list")){
+    abort("`parse_list_to_tibble()` only works on objects of class `list`")
   }
   
   result <- list_to_tibble_recurse(x)
@@ -19,11 +19,8 @@ parse_list_to_tibble <- function(x){
   }
   result <- bind_rows(result)
   result <- result[!duplicated(result), ] # duplicated in any column
-  result <- select(result, 
-                   any_of(c("level", "label", "text", "attributes")))
-  prev_class <- class(result)
-  class(result) <- c("md_tibble", prev_class)
-  result
+  select(result, 
+         any_of(c("level", "label", "text", "attributes")))
 }
 
 #' Internal recursive function

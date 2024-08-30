@@ -1,7 +1,7 @@
 #' Parse objects from one class to another
 #'
-#' These low-level functions are primarily built to be called by various `as_`
-#' functions, but are exported for greater transparency and bug-fixing.
+#' These low-level functions are primarily built to be called by the various 
+#' `as_md` functions, but are exported for greater transparency and bug-fixing.
 #' @name parse_
 #' @order 1
 #' @param x an R object of the requisite type. No type checking is done.
@@ -16,8 +16,8 @@
 parse_chr_to_tibble <- function(x){
   
   # type check
-  if(!inherits(x, c("md_chr", "character"))){
-    abort("`parse_chr_to_tibble()` only works on objects of class `md_chr` or `character`")
+  if(!inherits(x, "character")){
+    abort("`parse_chr_to_tibble()` only works on objects of class `character`")
   }
   
   # find titles, in either `<h1>` or `#` format
@@ -34,15 +34,11 @@ parse_chr_to_tibble <- function(x){
   tibble2 <- get_header_label_md(x, which(markdown_check))
   
   # join and order
-  result <- bind_rows(tibble1, tibble2) |>
+  bind_rows(tibble1, tibble2) |>
     arrange(.data$start_row) |>
     mutate(label = to_lower_camel_case(.data$label)) |>
     get_md_text(x) |>
     select(any_of(c("level", "label", "text", "attributes")))
-  
-  prev_class <- class(result)
-  class(result) <- c("md_tibble", prev_class)
-  result
 }
 
 #' get header attributes when formatted as ##Header

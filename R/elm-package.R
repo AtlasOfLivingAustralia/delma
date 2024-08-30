@@ -19,16 +19,16 @@
 #' 
 #'   * [read_md_chr()] import markdown as tibble
 #'   * [read_md_xml()] import xml as tibble
-#'   * [write_md_chr()] write `elm` objects to markdown files
-#'   * [write_md_xml()] write `elm` objects to xml files
+#'   * [write_md_chr()] write an `elm` object to markdown
+#'   * [write_md_xml()] write an `elm` objects to xml
 #'   
 #' **Type Conversion**   
 #'
-#'   * [as_md_chr()] - convert to class `md_chr`
-#'   * [as_md_tibble()] - convert to class `md_tibble`
-#'   * [as_md_list()] - convert to class `md_list`
-#'   * [as_md_xml()] - convert to class `md_xml`
-#'   * [add_eml_row()] - add an 'EML' row to an object of class `md_tibble`
+#'   * [as_md_chr()] - convert to class `character`
+#'   * [as_md_tibble()] - convert to class `tbl_df` (i.e. a tibble)
+#'   * [as_md_list()] - convert to class `list`
+#'   * [as_md_xml()] - convert to class `xml_document`
+#'   * [add_eml_row()] - add an 'EML' row to an object of class `tibble`
 #'   
 #' **Parsers**
 #'   * [parse_chr_to_tibble()]

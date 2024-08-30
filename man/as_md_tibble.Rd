@@ -2,25 +2,40 @@
 % Please edit documentation in R/as_md_tibble.R
 \name{as_md_tibble}
 \alias{as_md_tibble}
-\alias{as_md_tibble.md_chr}
-\alias{as_md_tibble.md_list}
-\alias{as_md_tibble.md_xml}
-\title{Convert metadata to class \code{md_tibble}}
+\alias{as_md_tibble.character}
+\alias{as_md_tibble.tbl_df}
+\alias{as_md_tibble.list}
+\alias{as_md_tibble.xml_document}
+\title{Convert metadata to a tibble}
 \usage{
 as_md_tibble(x, ...)
 
-\method{as_md_tibble}{md_chr}(x, ...)
+\method{as_md_tibble}{character}(x, ...)
 
-\method{as_md_tibble}{md_list}(x, ...)
+\method{as_md_tibble}{tbl_df}(x, ...)
 
-\method{as_md_tibble}{md_xml}(x, ...)
+\method{as_md_tibble}{list}(x, ...)
+
+\method{as_md_tibble}{xml_document}(x, ...)
 }
 \arguments{
 \item{x}{Object to be converted}
 
 \item{...}{Other arguments, currently ignored}
 }
+\value{
+An object of class \code{tbl_df}, \code{tbl} and \code{data.frame}, containing
+the following fields:
+\itemize{
+\item \code{level} (int) gives the nestedness level of the node/heading in question
+\item \code{label} (chr) the \code{xml} tag
+\item \code{text} (chr) Any text stored within that tag
+\item \code{attributes} (list) Any attributes for that tag
+}
+}
 \description{
-This isn't any different from a tibble, but allows us more control over
-OOP.
+Takes objects of class \code{character}, \code{list} or \code{xml_document} and converts
+them to a tibble with a particular structure, designed for storing nested
+data. Tibbles are required because attributes are stored as list-columns,
+which are not supported by class \code{data.frame}.
 }

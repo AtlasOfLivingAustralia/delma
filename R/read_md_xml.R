@@ -11,29 +11,31 @@
 #' @export
 read_md_xml <- function(file){
   if(missing(file)){
-    abort("`file` is missing, with no default.")
+    abort("Argument `file` is missing, with no default.")
   }
-  x <- read_xml(file)
-  class(x) <- c("md_xml", "xml_document", "xml_node")
-  as_md_tibble(x)
+  if(!file.exists(file)){
+    abort("Specified `file` cannot be found.")
+  }
+  read_xml(file) |>
+    as_md_tibble()
 }
 
 #' @rdname read_md_xml
 #' @importFrom rlang abort
 #' @importFrom xml2 write_xml
-#' @param x Object of any class defined by `elm`; i.e. `md_chr`, `md_tibble`,
-#' `md_list` or `md_xml`.
+#' @param x Object of any class handled by `elm`; i.e. `character`, `tbl_df`,
+#' `list` or `xml_document`.
 #' @export
 write_md_xml <- function(x, file){
   
   # check for correct format
-  if(inherits(x, c("md_chr", "md_tibble", "md_list"))){
+  if(inherits(x, c("character", "tbl_df", "list"))){
     x <- as_md_xml(x)
   }
   
   # stop if not converted
-  if(!inherits(x, "md_xml")){
-    abort(c("`write_md()` only accepts objects of class `md_xml`.",
+  if(!inherits(x, "xml_document")){
+    abort(c("`write_md()` only accepts objects of class `xml_document`.",
             i = "Use `as_md_xml()` to convert it."))
   }else{
     class(x) <- "xml_document"
