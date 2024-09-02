@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# elm
+# elm <img src="man/figures/logo.png" align="right" style="margin: 0px 10px 0px 10px;" alt="" width="120"/><br>
 
 ## Overview
 
@@ -38,20 +38,20 @@ file <- system.file("example_data", "README_md_example.md",
 
 x <- read_md_chr(file)
 x 
-#> # A tibble: 22 × 3
+#> # A tibble: 21 × 3
 #>    level label                  text                                       
 #>    <int> <chr>                  <chr>                                      
-#>  1     1 alaDatasetMetadata     ""                                         
-#>  2     2 dataResource           ""                                         
-#>  3     3 title                  "An awesome dataset"                       
-#>  4     2 description            "This data is the best. You should use it!"
-#>  5     3 publicShortDescription ""                                         
-#>  6     3 publicDescription      ""                                         
-#>  7     3 technicalDescription   ""                                         
-#>  8     3 dataQualityDescription ""                                         
-#>  9     3 methodsDescription     ""                                         
-#> 10     3 purpose                ""                                         
-#> # ℹ 12 more rows
+#>  1     2 dataset                ""                                         
+#>  2     3 title                  "An awesome dataset"                       
+#>  3     2 description            "This data is the best. You should use it!"
+#>  4     3 publicShortDescription ""                                         
+#>  5     3 publicDescription      ""                                         
+#>  6     3 technicalDescription   ""                                         
+#>  7     3 dataQualityDescription ""                                         
+#>  8     3 methodsDescription     ""                                         
+#>  9     3 purpose                ""                                         
+#> 10     3 dataGeneralisation     ""                                         
+#> # ℹ 11 more rows
 ```
 
 Here it can be examined and modified as required, then exported to xml:

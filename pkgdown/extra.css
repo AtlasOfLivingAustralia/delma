@@ -4,16 +4,16 @@
 h1, h2, h3, h4, .h1, .h2, .h3, .main-title, .main-subtitle {
   font-family: Lato;
   font-weight: normal;
-  color: #38613D;
+  color: #1B5D81;
 }
 
 a {
-    color: #C44D34;
+    color: #5B397D;
     text-decoration: none;
 }
 
 a:hover {
-  color: #F26649;
+  color: #9b74c2;
 }
 
 body { font-family: Roboto; }
@@ -27,7 +27,7 @@ body { font-family: Roboto; }
 }
 
 .navbar.bg-primary {
-  background-image: linear-gradient(to bottom, #e6f7cb, #B7CD96);
+  background-image: linear-gradient(to bottom, #edfeff, #d6f1ff);
   /*background-image: linear-gradient(#93d6d6, #78CCCC 60%, #6cb7b7);*/
 }
 
@@ -52,8 +52,8 @@ body { font-family: Roboto; }
 }
 
 .navbar-dark .navbar-nav .active>.nav-link {
-  background-color: #e6f7cb;
-  color: #38613D;
+  background-color: #C3EDEF;
+  color: #003A70;
 }
 
 .nav-item:selection {
