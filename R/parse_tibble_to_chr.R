@@ -14,7 +14,8 @@ parse_tibble_to_chr <- function(x){
         c(format_md_header(a), 
           format_md_text(a$text))
       }) |>
-    unlist()
+    unlist() |>
+    unname()
 }
 
 #' Internal function called only by `parse_tibble_to_md()`

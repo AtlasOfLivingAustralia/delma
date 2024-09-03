@@ -20,6 +20,6 @@ An object of class \code{md_tibble}.
 as defined in \code{xml2}.
 }
 \description{
-Import metadata to or from \code{xml}.  Note that imports to a \code{tibble},
+Import metadata to or from \code{xml}. Note that imports to a \code{tibble},
 but can export from all \code{elm} formats.
 }

@@ -1,6 +1,6 @@
 #' Read or write metadata as `xml`
 #' 
-#' Import metadata to or from `xml`.  Note that imports to a `tibble`,
+#' Import metadata to or from `xml`. Note that imports to a `tibble`,
 #' but can export from all `elm` formats.
 #' @name read_md_xml
 #' @param file filename
@@ -10,6 +10,12 @@
 #' @importFrom xml2 read_xml
 #' @export
 read_md_xml <- function(file){
+  # check that a `file` argument is supplied
+  if(missing(file)){
+    abort("Argument `file` is missing, with no default.")
+  }
+  # NOTE: do not check for presence of said file; it could be a url
+  # import & convert
   read_xml(file) |>
     as_md_tibble()
 }
