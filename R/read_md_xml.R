@@ -10,12 +10,6 @@
 #' @importFrom xml2 read_xml
 #' @export
 read_md_xml <- function(file){
-  if(missing(file)){
-    abort("Argument `file` is missing, with no default.")
-  }
-  if(!file.exists(file)){
-    abort("Specified `file` cannot be found.")
-  }
   read_xml(file) |>
     as_md_tibble()
 }
