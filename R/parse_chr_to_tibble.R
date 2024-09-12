@@ -4,7 +4,7 @@
 #' `as_md` functions, but are exported for greater transparency and bug-fixing.
 #' @name parse_
 #' @order 1
-#' @param x an R object of the requisite type. No type checking is done.
+#' @param x An R object of the requisite type.
 #' @importFrom dplyr any_of
 #' @importFrom dplyr arrange
 #' @importFrom dplyr bind_rows
@@ -14,11 +14,12 @@
 #' @importFrom snakecase to_lower_camel_case
 #' @export
 parse_chr_to_tibble <- function(x){
-  
   # type check
   if(!inherits(x, "character")){
     abort("`parse_chr_to_tibble()` only works on objects of class `character`")
   }
+  
+  x <- clean_empty_rows(x)
   
   # find titles, in either `<h1>` or `#` format
   title_check <- grepl("^\\s*(#|<h[[:digit:]])", x)
@@ -38,7 +39,18 @@ parse_chr_to_tibble <- function(x){
     arrange(.data$start_row) |>
     mutate(label = to_lower_camel_case(.data$label)) |>
     get_md_text(x) |>
-    select(any_of(c("level", "label", "text", "attributes")))
+    select(any_of(c("level", "label", "text", "attributes"))) |>
+    split_text_rows()
+    
+}
+
+#' Internal function to remove empty rows from data
+#' Note that this is very crude right now; it will hide paragraph breaks for
+#' example
+#' @noRd
+#' @keywords Internal
+clean_empty_rows <- function(x){
+  x[x != ""]
 }
 
 #' get header attributes when formatted as ##Header
@@ -84,8 +96,6 @@ get_header_label_html <- function(string, rows){
 #' @importFrom stringr str_remove
 #' @importFrom tibble as_tibble
 #' @importFrom tibble tibble
-#' @importFrom xml2 read_xml
-#' @importFrom xml2 xml_attrs
 #' @importFrom xml2 xml_text
 #' @noRd
 #' @keywords Internal
@@ -98,19 +108,52 @@ extract_header_html <- function(i, rows, string){
   which_close <- grepl(glue("</{level}>"), string) |>
     which()
   # get vector of rows to collapse together
-  row_close <- min(which_close[which_close > xx])
-  lookup <- seq(
-    from = xx,
-    to = row_close)
+  row_close <- min(which_close[which_close >= xx])
+  lookup <- seq(from = xx, to = row_close)
   temp_string <- glue_collapse(string[lookup])
   # use xml to parse string
-  result_xml <- read_xml(temp_string)
+  result_xml <- get_xml(temp_string)
   tibble(
     start_row = xx,
     end_row = row_close,
     level = as.integer(str_extract(level, "[:digit:]")),
     label = xml_text(result_xml),
-    attributes = as.list(xml_attrs(result_xml)))
+    attributes = get_xml_attrs(result_xml))
+}
+
+#' Internal function to parse xml correctly
+#' @importFrom xml2 read_html
+#' @importFrom xml2 xml_child
+#' @noRd
+#' @keywords Internal
+get_xml <- function(x){
+  read_html(x) |> # use in place of read_xml() to avoid parser failure
+    xml_child() |>
+    xml_child()
+}
+
+#' Internal function to parse xml attributes correctly
+#' @importFrom purrr map
+#' @importFrom xml2 xml_attrs
+#' @noRd
+#' @keywords Internal
+get_xml_attrs <- function(x){
+  result <- x |>
+    xml_attrs() |>
+    as.list()
+  if(length(result) < 1){
+    list() # empty list for no attributes: Q should this be NA?
+  }else{
+    map(result, 
+        \(y){
+          if(y == "\\"){
+            "\\\""
+          }else{
+            y
+          }
+        }) |>
+      list() 
+  }
 }
 
 #' Internal function to find text rows and assign them correctly
@@ -143,7 +186,35 @@ get_md_text <- function(df, string){
     unlist() |>
     trimws() |>
     str_replace("\\s{2,}", "\\s")
-  
   df$text <- text
   df
+}
+
+#' Internal function to put text on new rows, for consistency with
+#' xml code
+#' @noRd
+#' @keywords Internal
+split_text_rows <- function(x){
+  text_rows_initial <- !is.na(x$text)
+  if(any(text_rows_initial)){
+    row_index <- text_rows_initial |>
+                 which() |>
+                 seq_along()
+    for(a in row_index){
+      # regenerate each loop to prevent index errors as rows are added
+      b <- which(!is.na(x$text))[a] 
+      # create new row
+      new_row <- tibble(level = x$level[b] + 1,
+                        label = NA,
+                        text = x$text[b],
+                        attributes = NA)
+      x <- x |>
+        add_row(new_row, .after = b)
+      # remove old text
+      x$text[b] <- NA      
+    }
+    x
+  }else{
+    x
+  }
 }

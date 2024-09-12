@@ -4,8 +4,12 @@
 
 # as_md_chr.xml_document
 test_that("as_md_chr() converts xml correctly", {
-  x <- read_md_xml("https://collections.ala.org.au/ws/eml/dr368")
-  y <- as_md_chr(x)
+
+  x <- read_md_xml("testdata/meta_example.xml")
+  y <- as_md_tibble(x) # works
+  
+  parse_tibble_to_chr(y)
+  
   expect_null(names(y))
   expect_equal(class(y), "character")
   expect_true(grepl("^<h1 schemaLocation", y[1]))

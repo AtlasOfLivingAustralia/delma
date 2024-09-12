@@ -22,7 +22,7 @@ add_eml_row <- function(x){
   # If first entry says "eml", overwrite with correct info
   if(grepl("eml|EML", x$label[[1]])){
     x$level <- 1
-    x$label[[1]] <- "`eml:eml`"
+    x$label[[1]] <- "eml:eml"
     x$attributes[[1]] <- eml_attributes()
   # otherwise, add a new row with eml info
   }else{
@@ -31,7 +31,7 @@ add_eml_row <- function(x){
     }
     x <- x |>
       add_row(level = 1, 
-              label = "`eml:eml`", 
+              label = "eml:eml", 
               text = "",
               attributes = eml_attributes(),
               .before = 1)

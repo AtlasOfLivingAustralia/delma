@@ -19,6 +19,8 @@ parse_list_to_tibble <- function(x){
   }
   result <- bind_rows(result)
   result <- result[!duplicated(result), ] # duplicated in any column
+  # NOTE: it is unclear exactly why the above line is present
+  # would we expect duplicated content? Under which circumstances?
   select(result, 
          any_of(c("level", "label", "text", "attributes")))
 }
@@ -44,11 +46,11 @@ list_to_tibble_recurse <- function(x,
           }
         }
         if(is.list(x[[a]])){
-          # if(length(x[[a]]) > 0){
-          list_to_tibble_recurse(x[[a]], level = level + 1, outcome = outcome) 
-          # }else{
-          #   format_xml_tibble(outcome)
-          # }
+          if(length(x[[a]]) > 0){
+            list_to_tibble_recurse(x[[a]], level = level + 1, outcome = outcome) 
+          }else{
+            format_xml_tibble(outcome)
+          }
         }else{
           format_xml_tibble(outcome)
         }
@@ -61,8 +63,10 @@ list_to_tibble_recurse <- function(x,
 #' @noRd
 #' @keywords Internal
 extract_list_to_tibble <- function(index, list_names, list_data, level){
-  # if(length(list_names) < 1){browser()}
-  if(list_names[index] != ""){
+  if(is.null(list_names[index])){
+    xml_tibble(level = level, 
+               text = list_data[[1]])
+  }else if(list_names[index] != ""){
     current_contents <- list_data[[index]]
     current_attr <- attributes(current_contents)
     current_title <- to_title_case(list_names[index])

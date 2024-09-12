@@ -1,65 +1,65 @@
-
-#' Internal function to add attributes back to a list where they have been
-#' removed by lapply or map
-#' @importFrom purrr pluck
+#' Internal function to take xml attributes and parse them properly onto a list
 #' @noRd
 #' @keywords Internal
-append_attributes <- function(empty, full){
-  # try using numeric indexes to set attributes
-  # NOTE: using addresses (i.e. `names(x_list)`) doesn't work, because names can be duplicated
-  index_list <- get_index(empty)
+add_tibble_attributes_to_list <- function(empty, full){
+  # get a list giving the structure of the supplied tibble
+  index_list <- get_list_addresses(full$level)
   
   # walk along the list and assign attributes back to `clean_result`
   for(a in seq_along(index_list)){ # using purrr::walk here fails
     b <- index_list[[a]]
-    z <- pluck(full, !!!b)
-    attributes(`[[`(empty, b)) <- attributes(z) # do not replace with `pluck()<-`
+    # first get names
+    names_vector <- names(`[[`(empty, b))
+    if(length(names_vector) > 0){
+      names_list <- list(names = names_vector)
+    }else{
+      names_list <- NULL
+    }
+    # then remaining attributes
+    attributes_list <- full$attributes[[a]]
+    if(length(attributes_list) < 1){
+      attributes_list <- NULL
+    } else if(length(attributes_list) == 1){
+      if(is.na(attributes_list)){
+        attributes_list <- NULL
+      }
+    }
+    # append together and assign
+    attributes_all <- append(names_list, attributes_list)
+    attributes(`[[`(empty, b)) <- attributes_all
   }
-  # return
   empty
 }
 
-#' clean up the output from `index_recurse()`
-#' @importFrom purrr list_flatten
-#' @importFrom purrr map
-#' @importFrom purrr pluck_depth
+#' Internal function to represent `level` as list address
 #' @noRd
 #' @keywords Internal
-get_index <- function(x){
-  address_list <- index_recurse(x)
-  # flatten lists
-  n <- pluck_depth(address_list) - 1
-  for(i in seq_len(n)){
-    address_list <- list_flatten(address_list)
-  }
-  # get all unique addresses
-  address_lengths <- lengths(address_list)
-  n_max <- max(address_lengths)
-  map(.x = seq_len(n_max), 
-      .f = \(a){
-        address_tmp <- address_list[address_lengths >= a]
-        result <- map(address_tmp, .f = \(b){b[seq_len(a)]})
-        result[!duplicated(result)]
-      }) |>
-    list_flatten()
-}
+get_list_addresses <- function(level){
 
-#' drill into a list to get the 'index'; i.e. a numeric map of the list
-#' @importFrom purrr map
-#' @noRd
-#' @keywords Internal
-index_recurse <- function(x, 
-                          level = 1,
-                          index_accumulate = list()){
-  if(is.list(x)){
-    map(.x = seq_len(length(x)),
-        .f = \(a){
-          index_recurse(x[[a]], 
-                        level = level + 1,
-                        index_accumulate = unlist(c(index_accumulate, a))
-          )})    
-  }else{
-    index_accumulate
+  # set up basic info
+  n_levels <- max(level)
+  level_index <- rep(1, n_levels)
+  address_list <- vector(mode = "list", 
+                         length = length(level))
+  
+  # run a loop to build the addresses
+  for(i in seq_along(address_list)){
+    current_level <- level[i]
+    if(i > 1){
+      prev_level <- level[(i - 1)]
+      # if you are remaining at the same level, iterate by 1
+      if(current_level == prev_level){
+        level_index[current_level] <- level_index[current_level] + 1
+      } else if(current_level < prev_level){
+        # reset higher levels
+        wipe_levels <- seq_len(n_levels)[-seq_len(current_level)]
+        level_index[wipe_levels] <- 1
+        # add one to current level
+        level_index[current_level] <- level_index[current_level] + 1
+      }
+    }
+    address_list[[i]] <- level_index[seq_len(current_level)]
   }
+
+  address_list
 }
-# note this isn't perfect yet. Some terminal nodes still parse to `list()`

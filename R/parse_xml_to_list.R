@@ -10,35 +10,5 @@ parse_xml_to_list <- function(x)
     abort("`parse_chr_to_tibble()` only works on objects of class `xml_document`")
   }
   
-  x_list <- xml2::as_list(x)
-  if(length(x_list) < 1){ # error catcher for when no data are present in `x`
-    x_list
-  }else{
-    x_list |>
-      xml_to_list_recurse() |>
-      append_attributes(full = x_list) 
-  }
-}
-
-#' Drill into list constructed from xml to ensure terminal nodes are correct
-#' @importFrom purrr map
-#' @noRd
-#' @keywords Internal
-xml_to_list_recurse <- function(x){
-  map(.x = x,
-      .f = \(a){
-        if(is.list(a)){
-          if(length(a) == 1){
-            if(inherits(a[[1]], "character")){
-              a[[1]]
-            }else{
-              xml_to_list_recurse(a)
-            }
-          }else{
-            xml_to_list_recurse(a)
-          }
-        }else{
-          a[[1]]
-        }
-      })
+  xml2::as_list(x)
 }

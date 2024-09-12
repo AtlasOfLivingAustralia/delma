@@ -13,8 +13,15 @@ test_that("`read_md_xml()` only accepts files that end in `.xml`", {
     expect_error(regexp = "only reads files with a")
 })
 
-test_that("read_md_xml() works on a valid xml file", {
+test_that("read_md_xml() works on a local xml file", {
   x <- read_md_xml("testdata/bionet_metadata.xml")
+  expect_s3_class(x, c("tbl_df", "tbl", "data.frame"))
+  expect_gte(nrow(x), 10)
+})
+
+test_that("read_md_xml() works on a url", {
+  skip_if_offline()
+  x <- read_md_xml("https://collections.ala.org.au/ws/eml/dr368")
   expect_s3_class(x, c("tbl_df", "tbl", "data.frame"))
   expect_gte(nrow(x), 10)
 })
