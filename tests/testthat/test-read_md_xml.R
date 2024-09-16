@@ -10,7 +10,7 @@ test_that("`read_md_xml()` fails with missing files", {
 
 test_that("`read_md_xml()` only accepts files that end in `.xml`", {
   read_md_xml("testdata/bionet_metadata.md") |>
-    expect_error(regexp = "only reads files with a")
+    expect_error(regexp = "Argument `file` must either be a url")
 })
 
 test_that("read_md_xml() works on a local xml file", {

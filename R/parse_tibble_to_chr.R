@@ -31,17 +31,23 @@ format_md_header <- function(a){
     glue("{hashes} {a$label}")
   }else{
     z <- a$attributes[[1]]
-    attributes <- map(seq_along(z),
-        .f = \(b){
-          contents <- z[[b]]
-          if(contents == "\""){
-            contents <- "\\\""
-          }
-          glue("{names(z)[b]}=\"{contents}\"")
-        }) |>
-      unlist() |>
-      glue_collapse(sep = " ")
-    glue("<h{a$level} {attributes}>{a$label}</h{a$level}>")
+    if(length(z) < 1){
+      hashes <- strrep("#", a$level)
+      glue("{hashes} {a$label}")
+    }else{
+      z <- a$attributes[[1]]
+      attributes <- map(seq_along(z),
+                        .f = \(b){
+                          contents <- z[[b]]
+                          if(contents == "\""){
+                            contents <- "\\\""
+                          }
+                          glue("{names(z)[b]}=\"{contents}\"")
+                        }) |>
+        unlist() |>
+        glue_collapse(sep = " ")
+      glue("<h{a$level} {attributes}>{a$label}</h{a$level}>")
+    }
   }
 }
 

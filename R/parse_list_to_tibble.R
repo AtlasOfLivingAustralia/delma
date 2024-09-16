@@ -37,6 +37,8 @@ list_to_tibble_recurse <- function(x,
                                   level = 1,
                                   outcome = xml_tibble()){
   x_names <- names(x)
+  # if(level == 3) { browser() }
+  # if(any(x_names == "id")){browser()}
   map(.x = seq_along(x),
       .f = \(a){
         result <- extract_list_to_tibble(a, x_names, x, level)
@@ -72,8 +74,12 @@ extract_list_to_tibble <- function(index, list_names, list_data, level){
     current_title <- to_title_case(list_names[index])
     result <- xml_tibble(level = level,
                          label = current_title)
-    if(length(current_attr) > 1){
-      result$attributes[1] <- list(current_attr[names(current_attr) != "names"])
+    if(length(current_attr) >= 1){
+      non_name_attributes <- current_attr[names(current_attr) != "names"] |>
+        replace_xml_quotes()
+      result$attributes[1] <- list(non_name_attributes)
+    }else{
+      result$attributes <- list(NA)
     }
     if(inherits(current_contents, "character")){
       result$text <- current_contents
@@ -82,6 +88,21 @@ extract_list_to_tibble <- function(index, list_names, list_data, level){
   }else{
     NULL
   }
+}
+
+#' Internal function to replace "\"" with "&quot;"
+#' Former is created by xml2 somewhere, even when source says lattter.
+#' @noRd
+#' @keywords Internal
+replace_xml_quotes <- function(x){
+  map(x,
+    \(a){
+      if(a == "\""){
+        "&quot;"
+      }else{
+        a
+      }
+    })
 }
 
 #' empty tibble content

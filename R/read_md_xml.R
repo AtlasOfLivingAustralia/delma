@@ -14,7 +14,18 @@ read_md_xml <- function(file){
   if(missing(file)){
     abort("Argument `file` is missing, with no default.")
   }
-  # NOTE: do not check for presence of said file; it could be a url
+  
+  # check multiple files aren't given
+  if(length(file) > 1){
+    abort("Argument `file` must have length = 1")
+  }
+  
+  # check is either a url or ends in .xml
+  if(!grepl("(https?|ftp)://[^ /$.?#].[^\\s]*", file) &
+     !grepl(".xml$", file)){
+    abort("Argument `file` must either be a url, or a file name ending in `.xml`")
+  }
+  
   # import & convert
   read_xml(file) |>
     as_md_tibble()

@@ -98,6 +98,7 @@ get_header_label_html <- function(string, rows){
 #' @importFrom tibble as_tibble
 #' @importFrom tibble tibble
 #' @importFrom xml2 xml_text
+#' @importFrom xml2 read_xml
 #' @noRd
 #' @keywords Internal
 extract_header_html <- function(i, rows, string){
@@ -113,24 +114,13 @@ extract_header_html <- function(i, rows, string){
   lookup <- seq(from = xx, to = row_close)
   temp_string <- glue_collapse(string[lookup])
   # use xml to parse string
-  result_xml <- get_xml(temp_string)
+  result_xml <- read_xml(temp_string)
   tibble(
     start_row = xx,
     end_row = row_close,
     level = as.integer(str_extract(level, "[:digit:]")),
     label = xml_text(result_xml),
     attributes = get_xml_attrs(result_xml))
-}
-
-#' Internal function to parse xml correctly
-#' @importFrom xml2 read_html
-#' @importFrom xml2 xml_child
-#' @noRd
-#' @keywords Internal
-get_xml <- function(x){
-  read_html(x) |> # use in place of read_xml() to avoid parser failure
-    xml_child() |>
-    xml_child()
 }
 
 #' Internal function to parse xml attributes correctly
