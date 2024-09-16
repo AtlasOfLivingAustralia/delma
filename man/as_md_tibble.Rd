@@ -6,7 +6,7 @@
 \alias{as_md_tibble.tbl_df}
 \alias{as_md_tibble.list}
 \alias{as_md_tibble.xml_document}
-\title{Convert metadata to a tibble}
+\title{Convert metadata to a \code{tibble}}
 \usage{
 as_md_tibble(x, ...)
 

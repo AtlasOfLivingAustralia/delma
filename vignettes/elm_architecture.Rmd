@@ -10,10 +10,10 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-The `elm` package seeks to solve the problem of how to convert between
-markdown and xml. This is critical for sharing metadata in several contexts,
-particularly in the life sciences, where EML is widely used to provide metadata
-in machine-readable format. EML is a standard that uses xml structures,
+The `elm` package converts markdown files to ecological meta-language (EML). 
+Transformations of this type are valuable for sharing metadata in several 
+contexts, particularly in the life sciences, where EML is widely used to provide 
+metadata in machine-readable format. EML is a standard that uses xml structures,
 but it's own bespoke naming conventions; but is considerably more difficult to 
 read and edit than text-based formats such as markdown.
 
@@ -47,43 +47,57 @@ data in this sequence:
 ```
 We have also built the inverse parsers to convert back from `.xml` to `.md`. All
 parsers are named in the form `parse_{class1}_to_{class2}`; so to convert a 
-tibble to a list, for example, we use `parse_tibble_to_list()`.
+character to a tibble, for example, we use `parse_chr_to_tibble()`:
 
+```{r}
+library(elm)
 
-## Object classes
+c("# Heading 1", 
+  "## Heading 2",
+  "text content") |>
+  parse_chr_to_tibble()
+```
+
+While this parser is new, parsing between xml and lists is handled entirely by 
+the `xml2` package. All new parsers in `elm` are built to plug into the formats 
+defined by `xml2`.
+
+## Generic transformers
 
 While these low-level parsers are critical, they are fairly verbose. They also
 only handle one 'link' in the chain each, meaning that to complete the whole
 'chain', we would need to string them together:
 
-```{r, eval = FALSE}
-x <- c("# Heading 1", "## Heading 2")
-class(x) <- c("md_chr", "character")
+```{r}
+# library(elm)
+devtools::load_all()
 
-result <- x |>
+c("# Heading 1", 
+  "## Heading 2",
+  "text content") |>
   parse_chr_to_tibble() |>
   parse_tibble_to_list() |>
   parse_list_to_xml()
 ```
 
 Clearly this isn't ideal; we would prefer to use object-oriented programming
-to specify our preferred output format (using `as()` or related functions). In 
-practice, however, this was challenging because `list` is so fundamental in R 
-that making use-case-specific adjustments to e.g. `as.list()` isn't feasible.
+to specify our preferred output format. In practice, however, this is tricky,
+because we are using such common formats that overwritting e.g. `as.list()`
+isn't feasible. Conversely, creating new, bespoke S3 formats is also not ideal,
+as it would be nice to parse _any_ character, tibble, list or xml_document,
+not just those that are created using `elm`. 
 
-To get around this, we created a set of classes with the `md_` prefix to store 
-and transmit data within `elm.` So storing metadata as a character vector uses
-class `md_character`, the default `tibble` has class `md_tibble`, and so on.
-Their corresponding conversion functions use an `as_md_` prefix, meaning for
-example that we can now convert directly from character to xml using 
-`as_md_xml(x)`. Therefore, we can now accomplish the problem in the previous 
-code block using only one function:
+To avoid these problems, `elm` uses the `as_md_` prefix for all transformations,
+rather than the more generic `as`. This adds a degree of flexibility without 
+have to define a large number of new object classes. To give a concrete example, 
+the problem in the previous code block can now be solved using only one 
+function:
 
-```{r, eval = FALSE}
-x <- c("# Heading 1", "## Heading 2")
-class(x) <- c("md_chr", "character")
-
-result <- as_md_xml(x)
+```{r}
+c("# Heading 1", 
+  "## Heading 2",
+  "text content") |>
+  as_md_xml()
 ```
 
 Every permutation of `as_md_` functions is provided in `elm`, meaning you can 
@@ -93,10 +107,43 @@ parsing chain needed to return the object class you require.
 ## Reading and writing
 
 As is standard for ALA R packages, `read_` functions in `elm` return a `tibble`.
-Because we want to be able to convert backwards and forwards between `.xml` and
-`.md`, there are two such functions; `read_md_chr()` for `.md`, and 
-`read_md_xml()` for `.xml` files. The corresponding write functions are 
-`write_md_chr()` and `write_md_xml()`, although note that these accept objects
-from any `elm` class (i.e. `md_chr`, `md_tibble`, `md_list` and `md_xml`).
+When importing from markdown, we use `read_md_chr()`:
 
-(this final section needs some code blocks to illustrate what you are saying)
+```{r}
+file <- system.file("example_data", 
+                    "README_md_example.md", 
+                    package = "elm")
+read_md_chr(file)
+```
+
+Conversely, when reading `.xml` files, we use `read_md_xml()`. Note that this
+function can also accept an online address, as well as a file:
+
+```{r}
+read_md_xml("https://collections.ala.org.au/ws/eml/dr368")
+```
+
+The corresponding write functions are `write_md_chr()` and `write_md_xml()`. 
+Both accept objects of all classes supported by `elm`, so it is possible to 
+chain read and write functions together without any intermediate stages:
+
+```{r, eval=FALSE}
+system.file("example_data", 
+            "README_md_example.md", 
+            package = "elm") |>
+  read_md_chr() |>
+  write_md_xml("output.xml")
+```
+
+It is worth noting, though, that these are quite simple wrapper functions to 
+existing import and transformation functions. For example, the code block above
+can be rewritten using only one `elm` function, as follows:
+
+```{r, eval=FALSE}
+system.file("example_data", 
+            "README_md_example.md", 
+            package = "elm") |>
+  base::scan() |>
+  elm::as_md_xml() |>
+  xml2::write_xml("output.xml")
+```

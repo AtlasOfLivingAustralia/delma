@@ -1,4 +1,4 @@
-#' Convert metadata to a tibble
+#' Convert metadata to a `tibble`
 #' 
 #' Takes objects of class `character`, `list` or `xml_document` and converts 
 #' them to a tibble with a particular structure, designed for storing nested

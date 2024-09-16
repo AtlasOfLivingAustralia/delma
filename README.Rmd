@@ -81,4 +81,4 @@ citation(package = "elm")
 The current recommended citation is:
 
 > Westgate MJ, Balasubramaniam S & Kellie D (2024) elm: Convert markdown files
-to EML. R Package version 0.1.0.9999.
+to EML. R Package version 0.1.0.

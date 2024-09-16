@@ -69,7 +69,8 @@ get_header_label_md <- function(string, rows){
       end_row = rows, 
       level = {regexpr("^#{1,}", string[rows]) |>
           attr("match.length")},
-      label = str_remove(string[rows], "^#+\\s*")
+      label = str_remove(string[rows], "^#+\\s*"),
+      attributes = list(NA)
     )    
   }
 }
