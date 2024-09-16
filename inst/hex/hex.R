@@ -20,27 +20,8 @@ create_hexagon <- function(scale = 1){
 
 external_hexagon <- create_hexagon(scale = 1.00)
 internal_hexagon <- create_hexagon(scale = 0.935)
+border <- st_sym_difference(external_hexagon, internal_hexagon)
 
-## UNUSED: code to draw sky as parallel lines
-# x_diff <- sqrt(3)/2
-# n_lines <- 100
-# internal_sky <- tibble(x = rep(c(-x_diff, x_diff), n_lines),
-#                        y = c(-0.5, 0.5) + rep(seq(-1, 1, length.out = n_lines), each = 2),
-#                        group = rep(seq_len(n_lines), each = 2))
-# background_lines <- split(internal_sky, internal_sky$group) |>
-#   map(.f = \(x){
-#     x |>
-#       st_as_sf(coords = c("x", "y")) |>
-#       summarise(geometry = st_combine(geometry)) |>
-#       st_cast("LINESTRING")
-#   }) |>
-#   bind_rows()
-# background_lines$index <- seq_len(n_lines)
-# background_lines <- st_intersection(background_lines, internal_hexagon)
-## NOTE: This section was changed so that sunlight was drawn as polygons,
-## not as lines, for > consistency with sunburst effect in other hexes
-
-## REPLACEMENT
 # draw sunburst offset outside hex area
 # first set parameters
 k <- 3
@@ -92,42 +73,47 @@ simple_palette <- c(# "#003A70",
   rev()
 
 p <- ggplot() +
-  geom_sf(data = external_hexagon, fill = edge_color, color = NA) +
   geom_sf(data = internal_hexagon,
           fill = "#d6f1ff",
-          color = edge_color,
-          linewidth = 0.1) +
+          color = NA,
+          linewidth = 0) +
   geom_sf(data = background_polygons,
           fill = "#abcdde",
           color = NA) +
   geom_sf(data = snowy_box,
           fill = "#ffffff",
           color = NA,
-          linewidth = 0.1) +
+          linewidth = 0) +
+  geom_sf(data = border, 
+          fill = edge_color, 
+          color = NA) +
   annotate(geom = "text",
-           x = -0.65,
-           y = -0.415,
+           x = 0.35,
+           y = -0.63,
            label = "ala.org.au",
            family = "lato",
-           size = 2.5,
+           size = 2,
+           angle = 30,
            hjust = 0,
            color = edge_color) +
   annotate(geom = "text",
-           x = 0.65,
-           y = -0.37,
+           x = 0.05,
+           y = -0.74,
            label = "elm",
            family = "lato",
-           size = 6.5,
+           size = 8,
+           angle = -30,
            hjust = 1,
            color = edge_color) +
   scale_colour_gradientn(colors = simple_palette) +
   theme_void() +
   theme(legend.position = "none")
 
-ggsave("man/figures/logo_r.png",
+ggsave("man/figures/logo_r.pdf",
        p,
        width = 43.9,
        height = 50.8,
        units = "mm",
        bg = "transparent",
+       device = cairo_pdf,
        dpi = 600)
