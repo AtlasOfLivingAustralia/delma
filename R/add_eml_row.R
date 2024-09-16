@@ -6,6 +6,7 @@
 #' users may not wish their files to be interpretable as EML.
 #' @param x Object of class `md_tibble`
 #' @importFrom dplyr mutate
+#' @importFrom rlang .data
 #' @importFrom tibble add_row
 #' @export
 add_eml_row <- function(x){
@@ -27,7 +28,7 @@ add_eml_row <- function(x){
   # otherwise, add a new row with eml info
   }else{
     if(min(x$level) == 1){
-      x <- mutate(level = level + 1)
+      x <- mutate(level = .data$level + 1)
     }
     x <- x |>
       add_row(level = 1, 

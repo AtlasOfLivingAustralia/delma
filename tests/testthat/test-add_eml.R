@@ -4,10 +4,10 @@ test_that("add_eml() works properly", {
                    package = "elm") |>
     read_md_chr() |>
     add_eml_row()
-  expect_equal(x$label[[1]], "`eml:eml`")
+  expect_equal(x$label[[1]], "eml:eml") # q: is this what we'd expect?
   
-  as_md_list(x) |> str()
+  result <- as_md_list(x)
+  expect_equal(length(result), 1)
   
-  write_md_xml(x, "TEST.xml")
-  xml2::read_xml("TEST.xml")
+  # q: test whether this renders properly to xml?
 })

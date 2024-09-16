@@ -69,8 +69,7 @@ only handle one 'link' in the chain each, meaning that to complete the whole
 'chain', we would need to string them together:
 
 ```{r}
-# library(elm)
-devtools::load_all()
+library(elm)
 
 c("# Heading 1", 
   "## Heading 2",
@@ -140,10 +139,12 @@ existing import and transformation functions. For example, the code block above
 can be rewritten using only one `elm` function, as follows:
 
 ```{r, eval=FALSE}
+library(xml2)
+
 system.file("example_data", 
             "README_md_example.md", 
             package = "elm") |>
-  base::scan() |>
-  elm::as_md_xml() |>
-  xml2::write_xml("output.xml")
+  readLines() |> # from `base`
+  as_md_xml() |> # from `elm`
+  write_xml("output.xml") # from `xml2`
 ```
