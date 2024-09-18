@@ -106,32 +106,32 @@ parsing chain needed to return the object class you require.
 ## Reading and writing
 
 As is standard for ALA R packages, `read_` functions in `elm` return a `tibble`.
-When importing from markdown, we use `read_elm_chr()`:
+By default, `read_elm()` will detect file type based on suffix:
 
 ```{r}
 file <- system.file("example_data", 
                     "README_md_example.md", 
                     package = "elm")
-read_elm_chr(file)
+read_elm(file)
 ```
 
-Conversely, when reading `.xml` files, we use `read_elm_xml()`. Note that this
-function can also accept an online address, as well as a file:
+However, you can specify the suffix using either the `format` argument, or using 
+a more specific microfunction:
 
 ```{r}
-read_elm_xml("https://collections.ala.org.au/ws/eml/dr368")
+read_elm_xml("https://collections.ala.org.au/ws/eml/dr368") # same as read_elm()
 ```
 
-The corresponding write functions are `write_elm_chr()` and `write_elm_xml()`. 
-Both accept objects of all classes supported by `elm`, so it is possible to 
-chain read and write functions together without any intermediate stages:
+The corresponding write function is `write_elm()`. This function accepts objects 
+of all classes supported by `elm`, so it is possible to chain read and write 
+functions together without any intermediate stages:
 
 ```{r, eval=FALSE}
 system.file("example_data", 
             "README_md_example.md", 
             package = "elm") |>
-  read_elm_chr() |>
-  write_elm_xml("output.xml")
+  read_elm() |>
+  write_elm("output.xml")
 ```
 
 It is worth noting, though, that these are quite simple wrapper functions to 
@@ -144,7 +144,7 @@ library(xml2)
 system.file("example_data", 
             "README_md_example.md", 
             package = "elm") |>
-  readLines() |> # from `base`
-  as_elm_xml() |> # from `elm`
-  write_xml("output.xml") # from `xml2`
+  base::readLines() |>
+  elm::as_elm_xml() |>
+  xml2::write_xml("output.xml")
 ```

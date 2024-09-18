@@ -2,24 +2,26 @@
 #' 
 #' Import metadata from a markdown file, or xml file locally or online. 
 #' @name read_elm
-#' @param file filename or url (latter for xml only)
-#' 
+#' @param file Filename or url (latter for xml only).
+#' @param format What format are the data in? Should be either `"md"` (for 
+#' markdown) or `"xml"`. If missing (the default), the function will guess 
+#' based on the file suffix.
 #' @returns An object of class `tbl_df`, `tbl` and `data.frame` (i.e. a `tibble`).
 #' @importFrom glue glue
 #' @importFrom rlang abort
 #' @importFrom stringr str_extract
 #' @export
 read_elm <- function(file,
-                     type){
+                     format){
   
-  # check type, but only if supplied
-  if(!missing(type)){
-    check_is_single_character(type)
-    switch(type, 
+  # check format, but only if supplied
+  if(!missing(format)){
+    check_is_single_character(format)
+    switch(format, 
            "xml" = read_elm_xml(file),
-           "chr" = read_elm_chr(file),
-           {bullets <- c(glue("Specified `type` not recognized (\"{type}\")"),
-                         i = "valid values are \"chr\" or \"xml\"")
+           "md" = read_elm_md(file),
+           {bullets <- c(glue("Specified `format` not recognized (\"{format}\")"),
+                         i = "valid values are \"md\" or \"xml\"")
            abort(bullets)}
     )
   # otherwise auto-detect file type
@@ -29,9 +31,9 @@ read_elm <- function(file,
     }else{
       file_suffix <- str_extract(file, "\\.[:alpha:]+$")
       switch(file_suffix, 
-             ".md" = read_elm_chr(file),
+             ".md" = read_elm_md(file),
              ".xml" = read_elm_xml(file),
-             {bullets <- c(glue("Specified `file` not recognized (\"{type}\")"),
+             {bullets <- c(glue("Specified `file` suffix not recognized (\"{file_suffix}\")"),
                            i = "valid file extensions are \".md\" or \".xml\"")
              abort(bullets)})
     }    
@@ -55,7 +57,7 @@ check_is_single_character <- function(x){
 #' @rdname read_elm
 #' @importFrom rlang abort
 #' @export
-read_elm_chr <- function(file){
+read_elm_md <- function(file){
   # abort if file missing
   if(missing(file)){
     abort("`file` is missing, with no default.")

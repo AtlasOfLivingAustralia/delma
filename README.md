@@ -30,61 +30,57 @@ library(elm)
 
 ## Basic usage
 
-The basic use case for `elm` is to import markdown to a tibble:
+The basic use case for `elm` is to import metadata to a tibble, for
+example from a markdown file:
 
 ``` r
-file <- system.file("example_data", "README_md_example.md", 
-                    package = "elm")
+x <- system.file("example_data", 
+                 "README_md_example.md", 
+                 package = "elm") |>
+  read_elm()
 
-x <- read_elm_chr(file)
 x 
-#> # A tibble: 21 × 3
-#>    level label                  text                                       
-#>    <int> <chr>                  <chr>                                      
-#>  1     2 dataset                ""                                         
-#>  2     3 title                  "An awesome dataset"                       
-#>  3     2 description            "This data is the best. You should use it!"
-#>  4     3 publicShortDescription ""                                         
-#>  5     3 publicDescription      ""                                         
-#>  6     3 technicalDescription   ""                                         
-#>  7     3 dataQualityDescription ""                                         
-#>  8     3 methodsDescription     ""                                         
-#>  9     3 purpose                ""                                         
-#> 10     3 dataGeneralisation     ""                                         
-#> # ℹ 11 more rows
+#> # A tibble: 28 × 4
+#>    level label                  text                                  attributes
+#>    <dbl> <chr>                  <chr>                                 <list>    
+#>  1     2 dataset                <NA>                                  <lgl [1]> 
+#>  2     3 title                  <NA>                                  <lgl [1]> 
+#>  3     4 <NA>                   An awesome dataset                    <NULL>    
+#>  4     2 description            <NA>                                  <lgl [1]> 
+#>  5     3 <NA>                   This data is the best. You should us… <NULL>    
+#>  6     3 publicShortDescription <NA>                                  <lgl [1]> 
+#>  7     3 publicDescription      <NA>                                  <lgl [1]> 
+#>  8     3 technicalDescription   <NA>                                  <lgl [1]> 
+#>  9     3 dataQualityDescription <NA>                                  <lgl [1]> 
+#> 10     3 methodsDescription     <NA>                                  <lgl [1]> 
+#> # ℹ 18 more rows
 ```
 
-Here it can be examined and modified as required, then exported to xml:
+or alternatively from xml:
 
 ``` r
-write_elm_xml(x, "metadata.xml")
-```
-
-The inverse operation - converting an `.xml` file with EML content into
-`.md` - is also possible. This can work from an xml file in your working
-directory, or from a UR:
-
-``` r
-y <- read_elm_xml("https://collections.ala.org.au/ws/eml/dr368")
-y
-#> # A tibble: 50 × 4
+read_elm("https://collections.ala.org.au/ws/eml/dr368")
+#> # A tibble: 85 × 4
 #>    level label                text                                  attributes  
 #>    <int> <chr>                <chr>                                 <list>      
 #>  1     1 Eml                  <NA>                                  <named list>
-#>  2     2 Dataset              <NA>                                  <lgl [1]>   
-#>  3     3 Alternate Identifier 0101d74b-afc2-3b0f-817c-dc350d2a6fe4  <lgl [1]>   
-#>  4     3 Alternate Identifier 10.15468/14jd9g                       <lgl [1]>   
-#>  5     3 Alternate Identifier 0645ccdb-e001-4ab0-9729-51f1755e007e  <lgl [1]>   
-#>  6     3 Alternate Identifier https://collections.ala.org.au/publi… <lgl [1]>   
-#>  7     3 Title                NSW BioNet Atlas                      <lgl [1]>   
-#>  8     3 Creator              <NA>                                  <lgl [1]>   
-#>  9     4 Organization Name    Department of Planning, Industry and… <lgl [1]>   
-#> 10     3 Metadata Provider    <NA>                                  <lgl [1]>   
-#> # ℹ 40 more rows
+#>  2     2 Dataset              <NA>                                  <named list>
+#>  3     3 Alternate Identifier <NA>                                  <lgl [1]>   
+#>  4     4 <NA>                 0101d74b-afc2-3b0f-817c-dc350d2a6fe4  <lgl [1]>   
+#>  5     4 <NA>                 10.15468/14jd9g                       <lgl [1]>   
+#>  6     4 <NA>                 0645ccdb-e001-4ab0-9729-51f1755e007e  <lgl [1]>   
+#>  7     4 <NA>                 https://collections.ala.org.au/publi… <lgl [1]>   
+#>  8     3 Title                <NA>                                  <named list>
+#>  9     4 <NA>                 NSW BioNet Atlas                      <lgl [1]>   
+#> 10     3 Creator              <NA>                                  <named list>
+#> # ℹ 75 more rows
 ```
 
+Here it can be examined and modified as required, then exported to
+either format:
+
 ``` r
-write_elm_chr(y, "metadata.md")
+write_elm(x, "metadata.xml")
 ```
 
 For a more detailed description of elm’s capabilities and methods, see

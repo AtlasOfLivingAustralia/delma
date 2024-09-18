@@ -39,33 +39,28 @@ library(elm)
 
 ## Basic usage
 
-The basic use case for `elm` is to import markdown to a tibble:
+The basic use case for `elm` is to import metadata to a tibble, for example from 
+a markdown file:
 
 ```{r}
-file <- system.file("example_data", "README_md_example.md", 
-                    package = "elm")
+x <- system.file("example_data", 
+                 "README_md_example.md", 
+                 package = "elm") |>
+  read_elm()
 
-x <- read_elm_chr(file)
 x 
 ```
 
-Here it can be examined and modified as required, then exported to xml:
-
-```{r, eval=FALSE}
-write_elm_xml(x, "metadata.xml")
-```
-
-The inverse operation - converting an `.xml` file with EML content into `.md` - 
-is also possible. This can work from an xml file in your working directory, or
-from a UR:
+or alternatively from xml:
 
 ```{r}
-y <- read_elm_xml("https://collections.ala.org.au/ws/eml/dr368")
-y
+read_elm("https://collections.ala.org.au/ws/eml/dr368")
 ```
 
+Here it can be examined and modified as required, then exported to either format:
+
 ```{r, eval=FALSE}
-write_elm_chr(y, "metadata.md")
+write_elm(x, "metadata.xml")
 ```
 
 For a more detailed description of elm's capabilities and methods, see the 

@@ -2,11 +2,13 @@
 % Please edit documentation in R/write_elm.R
 \name{write_elm}
 \alias{write_elm}
-\alias{write_elm_chr}
+\alias{write_elm_md}
 \alias{write_elm_xml}
 \title{Write metadata to markdown or xml}
 \usage{
-write_elm_chr(x, file)
+write_elm(x, file, format)
+
+write_elm_md(x, file)
 
 write_elm_xml(x, file)
 }
@@ -14,7 +16,11 @@ write_elm_xml(x, file)
 \item{x}{Object of any class handled by \code{elm}; i.e. \code{character}, \code{tbl_df},
 \code{list} or \code{xml_document}.}
 
-\item{file}{filename to save to}
+\item{file}{Filename to export to.}
+
+\item{format}{What format should the data be written to? Should be either
+\code{"md"} (for markdown) or \code{"xml"}. If missing (the default), the function will
+guess based on the \code{file} suffix.}
 }
 \description{
 Write metadata from a \code{tibble}, \code{character}, \code{list} or \code{xml_document} to

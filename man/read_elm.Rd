@@ -2,18 +2,22 @@
 % Please edit documentation in R/read_elm.R
 \name{read_elm}
 \alias{read_elm}
-\alias{read_elm_chr}
+\alias{read_elm_md}
 \alias{read_elm_xml}
 \title{Read metadata from markdown or xml}
 \usage{
-read_elm(file, type)
+read_elm(file, format)
 
-read_elm_chr(file)
+read_elm_md(file)
 
 read_elm_xml(file)
 }
 \arguments{
-\item{file}{filename}
+\item{file}{Filename or url (latter for xml only).}
+
+\item{format}{What format are the data in? Should be either \code{"md"} (for
+markdown) or \code{"xml"}. If missing (the default), the function will guess
+based on the file suffix.}
 }
 \value{
 An object of class \code{tbl_df}, \code{tbl} and \code{data.frame} (i.e. a \code{tibble}).

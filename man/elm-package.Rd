@@ -16,8 +16,7 @@ Ecological Meta Language, the format that this package creates.
 \strong{Reading and writing}
 \itemize{
 \item \code{\link[=read_elm]{read_elm()}} import markdown or \code{xml} to a \code{tibble}
-\item \code{\link[=write_elm_chr]{write_elm_chr()}} write an \code{elm} object to markdown
-\item \code{\link[=write_elm_xml]{write_elm_xml()}} write an \code{elm} objects to xml
+\item \code{\link[=write_elm]{write_elm()}} write an object to markdown or \code{xml}
 }
 
 \strong{Type Conversion}

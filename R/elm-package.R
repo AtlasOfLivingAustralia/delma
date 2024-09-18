@@ -15,8 +15,7 @@
 #' **Reading and writing**
 #' 
 #'   * [read_elm()] import markdown or `xml` to a `tibble`
-#'   * [write_elm_chr()] write an `elm` object to markdown
-#'   * [write_elm_xml()] write an `elm` objects to xml
+#'   * [write_elm()] write an object to markdown or `xml`
 #'   
 #' **Type Conversion**
 #'
