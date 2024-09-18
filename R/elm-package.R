@@ -1,10 +1,7 @@
 #' Convert ecological metadata from markdown to xml
 #' 
 #' @description
-#' `{elm}` is in development. It is similar to `{emld}`, but with the goal of
-#' seamlessly converting between markdown and R formats such as tibbles, lists,
-#' and xml.
-#' 
+#' `{elm}` is a package to convert markdown documents to xml and back.
 #' 'elm' is the common name for the genus 'Ulmus', which is a common tree in the 
 #' Northern Hemisphere. It is also an anagram of 'EML', which is an acronym for
 #' Ecological Meta Language, the format that this package creates.
@@ -17,18 +14,17 @@
 #' @section Functions:
 #' **Reading and writing**
 #' 
-#'   * [read_md_chr()] import markdown as tibble
-#'   * [read_md_xml()] import xml as tibble
-#'   * [write_md_chr()] write an `elm` object to markdown
-#'   * [write_md_xml()] write an `elm` objects to xml
+#'   * [read_elm()] import markdown or `xml` to a `tibble`
+#'   * [write_elm_chr()] write an `elm` object to markdown
+#'   * [write_elm_xml()] write an `elm` objects to xml
 #'   
-#' **Type Conversion**   
+#' **Type Conversion**
 #'
-#'   * [as_md_chr()] - convert to class `character`
-#'   * [as_md_tibble()] - convert to class `tbl_df` (i.e. a tibble)
-#'   * [as_md_list()] - convert to class `list`
-#'   * [as_md_xml()] - convert to class `xml_document`
-#'   * [add_eml_row()] - add an 'EML' row to an object of class `tibble`
+#'   * [as_elm_chr()] - convert to class `character`
+#'   * [as_elm_tibble()] - convert to class `tbl_df` (i.e. a tibble)
+#'   * [as_elm_list()] - convert to class `list`
+#'   * [as_elm_xml()] - convert to class `xml_document`
+#'   * [add_elm_header()] - add an 'EML' header row to a `tibble`
 #'   
 #' **Parsers**
 #'   * [parse_chr_to_tibble()]

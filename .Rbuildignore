@@ -4,4 +4,6 @@
 ^docs$
 ^pkgdown$
 README.Rmd
-/inst
+^inst/hex$
+.Rhistory
+.Rapp.history

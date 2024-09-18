@@ -1,8 +1,8 @@
 test_that("xml documents can be losslessly converted to list and back", {
   # read, convert, write
   xml2::read_xml("testdata/meta_example.xml") |>
-    as_md_list() |>
-    write_md_xml("testdata/TEST_meta_example.xml")
+    as_elm_list() |>
+    write_elm_xml("testdata/TEST_meta_example.xml")
   
   # scan both xml files, compare for differences
   x <- base::readLines("testdata/meta_example.xml")
@@ -16,8 +16,8 @@ test_that("xml documents can be losslessly converted to list and back", {
 test_that("xml documents can be losslessly converted to tibble and back", {
   # read, convert, write
   xml2::read_xml("testdata/meta_example.xml") |>
-    as_md_tibble() |>
-    write_md_xml("testdata/TEST_meta_example.xml")
+    as_elm_tibble() |>
+    write_elm_xml("testdata/TEST_meta_example.xml")
   
   # scan both xml files, compare for differences
   x <- base::readLines("testdata/meta_example.xml")
@@ -36,8 +36,8 @@ test_that("xml documents can be losslessly converted to tibble and back", {
 test_that("xml documents can be losslessly converted to md and back", {
   # read, convert, write
   xml2::read_xml("testdata/meta_example.xml") |>
-    as_md_chr() |>
-    write_md_xml("testdata/TEST_meta_example.xml")
+    as_elm_chr() |>
+    write_elm_xml("testdata/TEST_meta_example.xml")
   
   # scan both xml files, compare for differences
   x <- base::readLines("testdata/meta_example.xml")

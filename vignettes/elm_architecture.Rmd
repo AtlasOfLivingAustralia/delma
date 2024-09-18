@@ -86,7 +86,7 @@ isn't feasible. Conversely, creating new, bespoke S3 formats is also not ideal,
 as it would be nice to parse _any_ character, tibble, list or xml_document,
 not just those that are created using `elm`. 
 
-To avoid these problems, `elm` uses the `as_md_` prefix for all transformations,
+To avoid these problems, `elm` uses the `as_elm_` prefix for all transformations,
 rather than the more generic `as`. This adds a degree of flexibility without 
 have to define a large number of new object classes. To give a concrete example, 
 the problem in the previous code block can now be solved using only one 
@@ -96,33 +96,33 @@ function:
 c("# Heading 1", 
   "## Heading 2",
   "text content") |>
-  as_md_xml()
+  as_elm_xml()
 ```
 
-Every permutation of `as_md_` functions is provided in `elm`, meaning you can 
+Every permutation of `as_elm_` functions is provided in `elm`, meaning you can 
 simply choose the outcome you are looking for, and let `elm` handle the 
 parsing chain needed to return the object class you require.
 
 ## Reading and writing
 
 As is standard for ALA R packages, `read_` functions in `elm` return a `tibble`.
-When importing from markdown, we use `read_md_chr()`:
+When importing from markdown, we use `read_elm_chr()`:
 
 ```{r}
 file <- system.file("example_data", 
                     "README_md_example.md", 
                     package = "elm")
-read_md_chr(file)
+read_elm_chr(file)
 ```
 
-Conversely, when reading `.xml` files, we use `read_md_xml()`. Note that this
+Conversely, when reading `.xml` files, we use `read_elm_xml()`. Note that this
 function can also accept an online address, as well as a file:
 
 ```{r}
-read_md_xml("https://collections.ala.org.au/ws/eml/dr368")
+read_elm_xml("https://collections.ala.org.au/ws/eml/dr368")
 ```
 
-The corresponding write functions are `write_md_chr()` and `write_md_xml()`. 
+The corresponding write functions are `write_elm_chr()` and `write_elm_xml()`. 
 Both accept objects of all classes supported by `elm`, so it is possible to 
 chain read and write functions together without any intermediate stages:
 
@@ -130,8 +130,8 @@ chain read and write functions together without any intermediate stages:
 system.file("example_data", 
             "README_md_example.md", 
             package = "elm") |>
-  read_md_chr() |>
-  write_md_xml("output.xml")
+  read_elm_chr() |>
+  write_elm_xml("output.xml")
 ```
 
 It is worth noting, though, that these are quite simple wrapper functions to 
@@ -145,6 +145,6 @@ system.file("example_data",
             "README_md_example.md", 
             package = "elm") |>
   readLines() |> # from `base`
-  as_md_xml() |> # from `elm`
+  as_elm_xml() |> # from `elm`
   write_xml("output.xml") # from `xml2`
 ```

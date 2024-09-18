@@ -3,43 +3,43 @@
 #' These functions take objects of class `tbl_df` (i.e. tibbles), `list` or
 #' `xml_document` (from the `xml2` package), and convert them to a vector of 
 #' strings that is human- and machine- readable markdown.
-#' @name as_md_chr
+#' @name as_elm_chr
 #' @order 1
 #' @param x Object to be converted
 #' @param ... Other arguments, currently ignored
 #' @returns A `character` vector formatted as markdown.
 #' @export
-as_md_chr <- function(x, ...){
-  UseMethod("as_md_chr")
+as_elm_chr <- function(x, ...){
+  UseMethod("as_elm_chr")
 }
 
-#' @rdname as_md_chr
+#' @rdname as_elm_chr
 #' @order 2
-#' @exportS3Method elm::as_md_chr
-as_md_chr.character <- function(x, ...){
+#' @exportS3Method elm::as_elm_chr
+as_elm_chr.character <- function(x, ...){
   x
 }
 
-#' @rdname as_md_chr
+#' @rdname as_elm_chr
 #' @order 3
-#' @exportS3Method elm::as_md_chr
-as_md_chr.tbl_df <- function(x, ...){
+#' @exportS3Method elm::as_elm_chr
+as_elm_chr.tbl_df <- function(x, ...){
   parse_tibble_to_chr(x)
 }
 
-#' @rdname as_md_chr
+#' @rdname as_elm_chr
 #' @order 4
-#' @exportS3Method elm::as_md_chr
-as_md_chr.list <- function(x, ...){
+#' @exportS3Method elm::as_elm_chr
+as_elm_chr.list <- function(x, ...){
   x |>
     parse_list_to_tibble() |>
     parse_tibble_to_chr()
 }
 
-#' @rdname as_md_chr
+#' @rdname as_elm_chr
 #' @order 5
-#' @exportS3Method elm::as_md_chr
-as_md_chr.xml_document <- function(x, ...){
+#' @exportS3Method elm::as_elm_chr
+as_elm_chr.xml_document <- function(x, ...){
   x |>
     parse_xml_to_list() |>
     parse_list_to_tibble() |>

@@ -6,10 +6,7 @@
 \alias{elm-package}
 \title{Convert ecological metadata from markdown to xml}
 \description{
-\code{{elm}} is in development. It is similar to \code{{emld}}, but with the goal of
-seamlessly converting between markdown and R formats such as tibbles, lists,
-and xml.
-
+\code{{elm}} is a package to convert markdown documents to xml and back.
 'elm' is the common name for the genus 'Ulmus', which is a common tree in the
 Northern Hemisphere. It is also an anagram of 'EML', which is an acronym for
 Ecological Meta Language, the format that this package creates.
@@ -18,19 +15,18 @@ Ecological Meta Language, the format that this package creates.
 
 \strong{Reading and writing}
 \itemize{
-\item \code{\link[=read_md_chr]{read_md_chr()}} import markdown as tibble
-\item \code{\link[=read_md_xml]{read_md_xml()}} import xml as tibble
-\item \code{\link[=write_md_chr]{write_md_chr()}} write an \code{elm} object to markdown
-\item \code{\link[=write_md_xml]{write_md_xml()}} write an \code{elm} objects to xml
+\item \code{\link[=read_elm]{read_elm()}} import markdown or \code{xml} to a \code{tibble}
+\item \code{\link[=write_elm_chr]{write_elm_chr()}} write an \code{elm} object to markdown
+\item \code{\link[=write_elm_xml]{write_elm_xml()}} write an \code{elm} objects to xml
 }
 
 \strong{Type Conversion}
 \itemize{
-\item \code{\link[=as_md_chr]{as_md_chr()}} - convert to class \code{character}
-\item \code{\link[=as_md_tibble]{as_md_tibble()}} - convert to class \code{tbl_df} (i.e. a tibble)
-\item \code{\link[=as_md_list]{as_md_list()}} - convert to class \code{list}
-\item \code{\link[=as_md_xml]{as_md_xml()}} - convert to class \code{xml_document}
-\item \code{\link[=add_eml_row]{add_eml_row()}} - add an 'EML' row to an object of class \code{tibble}
+\item \code{\link[=as_elm_chr]{as_elm_chr()}} - convert to class \code{character}
+\item \code{\link[=as_elm_tibble]{as_elm_tibble()}} - convert to class \code{tbl_df} (i.e. a tibble)
+\item \code{\link[=as_elm_list]{as_elm_list()}} - convert to class \code{list}
+\item \code{\link[=as_elm_xml]{as_elm_xml()}} - convert to class \code{xml_document}
+\item \code{\link[=add_elm_header]{add_elm_header()}} - add an 'EML' header row to a \code{tibble}
 }
 
 \strong{Parsers}

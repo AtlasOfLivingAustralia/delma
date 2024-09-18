@@ -36,7 +36,7 @@ The basic use case for `elm` is to import markdown to a tibble:
 file <- system.file("example_data", "README_md_example.md", 
                     package = "elm")
 
-x <- read_md_chr(file)
+x <- read_elm_chr(file)
 x 
 #> # A tibble: 21 × 3
 #>    level label                  text                                       
@@ -57,7 +57,7 @@ x
 Here it can be examined and modified as required, then exported to xml:
 
 ``` r
-write_md_xml(x, "metadata.xml")
+write_elm_xml(x, "metadata.xml")
 ```
 
 The inverse operation - converting an `.xml` file with EML content into
@@ -65,7 +65,7 @@ The inverse operation - converting an `.xml` file with EML content into
 directory, or from a UR:
 
 ``` r
-y <- read_md_xml("https://collections.ala.org.au/ws/eml/dr368")
+y <- read_elm_xml("https://collections.ala.org.au/ws/eml/dr368")
 y
 #> # A tibble: 50 × 4
 #>    level label                text                                  attributes  
@@ -84,7 +84,7 @@ y
 ```
 
 ``` r
-write_md_chr(y, "metadata.md")
+write_elm_chr(y, "metadata.md")
 ```
 
 For a more detailed description of elm’s capabilities and methods, see
