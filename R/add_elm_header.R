@@ -22,9 +22,9 @@ add_elm_header <- function(x){
   
   # If first entry says "eml", overwrite with correct info
   if(grepl("eml|EML", x$label[[1]])){
-    x$level <- 1
+    x$level[[1]] <- 1
     x$label[[1]] <- "eml:eml"
-    x$attributes[[1]] <- eml_attributes()
+    x$attributes[[1]] <- eml_attributes()[[1]]
   # otherwise, add a new row with eml info
   }else{
     if(min(x$level) == 1){
