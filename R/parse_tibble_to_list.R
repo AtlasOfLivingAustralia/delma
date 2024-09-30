@@ -27,8 +27,7 @@ tibble_to_list_recurse <- function(x, level = 1){
     if(level > 1){
       x_list <- x_list[-1]
     }
-    current_label <- x$label[this_level] |>
-      tolower()
+    current_label <- x$label[this_level]
     # if(!is.na(current_label)){
       names(x_list) <- current_label
     # }

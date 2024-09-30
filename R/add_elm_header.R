@@ -2,9 +2,19 @@
 #' 
 #' This function adds standard EML information to a tibble, such that when 
 #' it is converted to xml, it parses correctly as EML. This is not applied 
-#' as standard by `as_elm_xml()` because it is plausible that some (many?) 
-#' users may not wish their files to be interpretable as EML.
+#' as standard by `as_elm_xml()` because it is possible that not all users will
+#' want their files to be interpretable as EML.
 #' @param x Object of class `md_tibble`
+#' @details
+#' If the first row of the supplied tibble contains the string `"eml"` or 
+#' `"EML"`, then it will be overwritten by this function. Otherwise a new row is 
+#' adding above all other rows.
+#' 
+#' Note that the attributes added to the eml header by this function are those 
+#' expected by the Darwin Core standard, which is used routinely within the 
+#' Global Biodiversity Information Facility (GBIF) and its' partner nodes. Other 
+#' applications of EML may require different attributes.
+#' @returns A tibble with a correctly formatted first row. 
 #' @importFrom dplyr mutate
 #' @importFrom rlang .data
 #' @importFrom tibble add_row
@@ -50,7 +60,9 @@ eml_attributes <- function(){
     `xmlns:eml` = "eml://ecoinformatics.org/eml-2.1.1",
     `xmlns:xsi` = "http://www.w3.org/2001/XMLSchema-instance",
     `xmlns:dc` = "http://purl.org/dc/terms/",
-    `xsi:schemaLocation` = "eml://ecoinformatics.org/eml-2.1.1 http://rs.gbif.org/schema/eml-gbif-profile/1.1/eml-gbif-profile.xsd",
+    `xsi:schemaLocation` = "eml://ecoinformatics.org/eml-2.1.1 http://rs.gbif.org/schema/eml-gbif-profile/1.3/eml-gbif-profile.xsd",
+     system = "R-elm-package",
+     scope = "system",
     `xml:lang` = "en"
     )
   )

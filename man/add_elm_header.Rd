@@ -9,9 +9,22 @@ add_elm_header(x)
 \arguments{
 \item{x}{Object of class \code{md_tibble}}
 }
+\value{
+A tibble with a correctly formatted first row.
+}
 \description{
 This function adds standard EML information to a tibble, such that when
 it is converted to xml, it parses correctly as EML. This is not applied
-as standard by \code{as_elm_xml()} because it is plausible that some (many?)
-users may not wish their files to be interpretable as EML.
+as standard by \code{as_elm_xml()} because it is possible that not all users will
+want their files to be interpretable as EML.
+}
+\details{
+If the first row of the supplied tibble contains the string \code{"eml"} or
+\code{"EML"}, then it will be overwritten by this function. Otherwise a new row is
+adding above all other rows.
+
+Note that the attributes added to the eml header by this function are those
+expected by the Darwin Core standard, which is used routinely within the
+Global Biodiversity Information Facility (GBIF) and its' partner nodes. Other
+applications of EML may require different attributes.
 }
