@@ -1,0 +1,18 @@
+# This script builds an example metadata statement as a tribble,
+# and stores it in /data, following standard outlined in:
+# https://r-pkgs.org/data.html
+
+library(tibble)
+library(usethis)
+devtools::load_all() # as internal functions required
+
+example_metadata <- tribble(
+  ~level, ~label,     ~text,
+  1,      "Dataset",  NA,
+  2,      "Title",    "A Sentence Giving Your Dataset Title In Title Case"
+) |>
+  add_elm_header()
+
+usethis::use_data(example_metadata, 
+                  internal = FALSE,
+                  overwrite = TRUE)
