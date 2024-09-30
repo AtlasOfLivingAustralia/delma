@@ -38,7 +38,8 @@ add_elm_header <- function(x){
   # otherwise, add a new row with eml info
   }else{
     if(min(x$level) == 1){
-      x <- mutate(level = .data$level + 1)
+      x <- x |>
+        mutate(level = .data$level + 1)
     }
     x <- x |>
       add_row(level = 1, 
