@@ -7,3 +7,5 @@ README.Rmd
 ^inst/hex$
 .Rhistory
 .Rapp.history
+^data-raw/
+^data-raw$
