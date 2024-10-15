@@ -13,22 +13,14 @@ Ecological Meta Language, the format that this package creates.
 }
 \section{Functions}{
 
-\strong{Example data}
+\strong{Top-level functions}
 \itemize{
-\item \link{metadata_example}
+\item \code{\link[=read_eml]{read_eml()}} - read EML from an \code{xml} file to a \code{tibble}
+\item \code{\link[=read_md]{read_md()}} - read metadata from a markdown file to a \code{tibble}
+\item \code{\link[=write_eml]{write_eml()}} - write an object to \code{xml}
+\item \code{\link[=write_md]{write_md()}} - write an object to markdown
 \item \code{\link[=add_eml_header]{add_eml_header()}} - add an 'EML' header row to a \code{tibble}
-\item \code{\link[=use_metadata]{use_metadata()}}
-\item \code{\link[=check_eml]{check_eml()}}
-}
-
-\strong{Low-level functions}
-\itemize{
-\item \code{\link[=parse_chr_to_tibble]{parse_chr_to_tibble()}}
-\item \code{\link[=parse_tibble_to_list]{parse_tibble_to_list()}}
-\item \code{\link[=parse_list_to_xml]{parse_list_to_xml()}}
-\item \code{\link[=parse_xml_to_list]{parse_xml_to_list()}}
-\item \code{\link[=parse_list_to_tibble]{parse_list_to_tibble()}}
-\item \code{\link[=parse_tibble_to_chr]{parse_tibble_to_chr()}}
+\item \code{\link[=check_eml]{check_eml()}} - run checks of a file or object against relevant standards
 }
 
 \strong{Intermediate-level functions}
@@ -39,12 +31,20 @@ Ecological Meta Language, the format that this package creates.
 \item \code{\link[=as_eml_xml]{as_eml_xml()}} - convert to class \code{xml_document}
 }
 
-\strong{Top-level functions}
+\strong{Low-level functions}
 \itemize{
-\item \code{\link[=read_eml]{read_eml()}} read EML from an \code{xml} file
-\item \code{\link[=read_md]{read_md()}} read a markdown file
-\item \code{\link[=write_eml]{write_eml()}} write an object to \code{xml}
-\item \code{\link[=write_md]{write_md()}} write an object to markdown
+\item \code{\link[=parse_chr_to_tibble]{parse_chr_to_tibble()}} - convert from \code{character} to \code{tibble}
+\item \code{\link[=parse_tibble_to_list]{parse_tibble_to_list()}} - convert from \code{tibble} to \code{list}
+\item \code{\link[=parse_list_to_xml]{parse_list_to_xml()}} - convert from \code{list} to \code{xml_document}
+\item \code{\link[=parse_xml_to_list]{parse_xml_to_list()}} - convert from \code{xml_document} to \code{list}
+\item \code{\link[=parse_list_to_tibble]{parse_list_to_tibble()}} - convert from \code{list} to \code{tibble}
+\item \code{\link[=parse_tibble_to_chr]{parse_tibble_to_chr()}} - convert from \code{tibble} to \code{character}
+}
+
+\strong{Example data}
+\itemize{
+\item \link{metadata_example} - a boilerplate metadata statement
+\item \code{\link[=use_metadata]{use_metadata()}} - create a metadata statement as a markdown file
 }
 }
 
