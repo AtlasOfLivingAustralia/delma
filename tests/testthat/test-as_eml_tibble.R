@@ -5,7 +5,7 @@ test_that("`as_eml_tibble()` works for class `character`", {
   expect_gte(nrow(x), 40)
 })
 
-# as_elm_tibble.list
+# as_eml_tibble.list
 
 test_that("as_eml_tibble() works for xml documents", {
   x <- xml2::read_xml("testdata/bionet_metadata.xml") |>

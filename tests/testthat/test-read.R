@@ -1,15 +1,15 @@
 # read_eml() tests
-test_that("`read_elm()` fails with no arguments", {
+test_that("`read_eml()` fails with no arguments", {
   read_eml() |> expect_error()
 })
 
-test_that("`read_elm()` fails for invalid format", {
+test_that("`read_eml()` fails for invalid format", {
   read_eml("testdata/bionet_metadata.md") |>
     expect_error()
 })
 
-test_that("`read_elm()` fails for invalid type", {
-  read_elm("testdata/bionet_metadata.md", 
+test_that("`read_eml()` fails for invalid type", {
+  read_eml("testdata/bionet_metadata.md", 
            format = "something") |>
     expect_error()
 })
@@ -40,7 +40,7 @@ test_that("`read_md()` fails with missing files", {
 })
 
 test_that("`read_md()` only accepts files that end in `.md`", {
-  read_elm_md("testdata/bionet_metadata.xml") |>
+  read_md("testdata/bionet_metadata.xml") |>
     expect_error()
 })
 

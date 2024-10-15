@@ -11,7 +11,7 @@ metadata_example <- tribble(
   1,      "Dataset",  NA,
   2,      "Title",    "A Sentence Giving Your Dataset Title In Title Case"
 ) |>
-  add_elm_header()
+  add_eml_header()
 
 usethis::use_data(metadata_example, 
                   internal = FALSE,

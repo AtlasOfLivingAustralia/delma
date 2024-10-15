@@ -99,14 +99,14 @@ c("# Heading 1",
   as_eml_xml()
 ```
 
-Every permutation of `as_elm_` functions is provided in `elm`, meaning you can 
+Every permutation of `as_eml_` functions is provided in `elm`, meaning you can 
 simply choose the outcome you are looking for, and let `elm` handle the 
 parsing chain needed to return the object class you require.
 
 ## Reading and writing
 
 As is standard for ALA R packages, `read_` functions in `elm` return a `tibble`.
-By default, `read_elm()` will detect file type based on suffix:
+By default, `read_eml()` will detect file type based on suffix:
 
 ```{r}
 file <- system.file("example_data", 

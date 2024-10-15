@@ -17,7 +17,7 @@ write_eml <- function(x,
     
     # stop if not converted
     if(!inherits(x, "xml_document")){
-      abort(c("`write_elm()` only accepts objects of class `xml_document`.",
+      abort(c("`write_eml()` only accepts objects of class `xml_document`.",
               i = "Use `as_eml_xml()` to convert it."))
     }else{
       class(x) <- "xml_document"

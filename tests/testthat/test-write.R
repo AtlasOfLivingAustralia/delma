@@ -37,7 +37,7 @@ test_that("`write_eml()` works for characters", {
   unlink(file_out)
 })
 
-test_that("`write_elm()` works for lists", {
+test_that("`write_eml()` works for lists", {
   x <- list(eml = list(archive = list("something")))
   file_out <- "test_file.xml"
   write_eml(x, file_out)
