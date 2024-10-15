@@ -28,5 +28,6 @@ information.
 \details{
 This function uses local versions of \code{dc.xsd}, \code{eml-gbif-profile.xsd} and
 \code{eml.xsd} downloaded
-from \link{http://rs.gbif.org/schema/eml-gbif-profile/1.3/} on 2024-09-25.
+from \code{http://rs.gbif.org/schema/eml-gbif-profile/1.3/} on
+2024-09-25.
 }

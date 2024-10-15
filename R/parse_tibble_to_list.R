@@ -1,10 +1,14 @@
 #' @rdname parse_
 #' @order 2
+#' @importFrom rlang .data
+#' @importFrom snakecase to_lower_camel_case
 #' @export
 parse_tibble_to_list <- function(x){
   if(!inherits(x, "tbl_df")){
     abort("`parse_chr_to_tibble()` only works on objects of class `tbl_df`")
   }
+  x <- mutate(x,
+              label = to_lower_camel_case(.data$label))
   result <- tibble_to_list_recurse(x, level = 1)
   add_tibble_attributes_to_list(result, x)
 }

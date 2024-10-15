@@ -13,7 +13,8 @@
 #' @details
 #' This function uses local versions of `dc.xsd`, `eml-gbif-profile.xsd` and 
 #' `eml.xsd` downloaded
-#'  from \link{http://rs.gbif.org/schema/eml-gbif-profile/1.3/} on 2024-09-25.
+#'  from \code{http://rs.gbif.org/schema/eml-gbif-profile/1.3/} on 
+#'  2024-09-25.
 #' @return Invisibly returns a tibble showing parsed errors; or an empty 
 #' tibble if no errors are identified.
 #' @importFrom dplyr bind_rows
