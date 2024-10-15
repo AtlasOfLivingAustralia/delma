@@ -13,22 +13,15 @@ Ecological Meta Language, the format that this package creates.
 }
 \section{Functions}{
 
-\strong{Reading and writing}
+\strong{Example data}
 \itemize{
-\item \code{\link[=read_elm]{read_elm()}} import markdown or \code{xml} to a \code{tibble}
-\item \code{\link[=write_elm]{write_elm()}} write an object to markdown or \code{xml}
+\item \link{metadata_example}
+\item \code{\link[=add_eml_header]{add_eml_header()}} - add an 'EML' header row to a \code{tibble}
+\item \code{\link[=use_metadata]{use_metadata()}}
+\item \code{\link[=check_eml]{check_eml()}}
 }
 
-\strong{Type Conversion}
-\itemize{
-\item \code{\link[=as_elm_chr]{as_elm_chr()}} - convert to class \code{character}
-\item \code{\link[=as_elm_tibble]{as_elm_tibble()}} - convert to class \code{tbl_df} (i.e. a tibble)
-\item \code{\link[=as_elm_list]{as_elm_list()}} - convert to class \code{list}
-\item \code{\link[=as_elm_xml]{as_elm_xml()}} - convert to class \code{xml_document}
-\item \code{\link[=add_elm_header]{add_elm_header()}} - add an 'EML' header row to a \code{tibble}
-}
-
-\strong{Parsers}
+\strong{Low-level functions}
 \itemize{
 \item \code{\link[=parse_chr_to_tibble]{parse_chr_to_tibble()}}
 \item \code{\link[=parse_tibble_to_list]{parse_tibble_to_list()}}
@@ -36,6 +29,22 @@ Ecological Meta Language, the format that this package creates.
 \item \code{\link[=parse_xml_to_list]{parse_xml_to_list()}}
 \item \code{\link[=parse_list_to_tibble]{parse_list_to_tibble()}}
 \item \code{\link[=parse_tibble_to_chr]{parse_tibble_to_chr()}}
+}
+
+\strong{Intermediate-level functions}
+\itemize{
+\item \code{\link[=as_eml_chr]{as_eml_chr()}} - convert to class \code{character}
+\item \code{\link[=as_eml_tibble]{as_eml_tibble()}} - convert to class \code{tbl_df} (i.e. a tibble)
+\item \code{\link[=as_eml_list]{as_eml_list()}} - convert to class \code{list}
+\item \code{\link[=as_eml_xml]{as_eml_xml()}} - convert to class \code{xml_document}
+}
+
+\strong{Top-level functions}
+\itemize{
+\item \code{\link[=read_eml]{read_eml()}} read EML from an \code{xml} file
+\item \code{\link[=read_md]{read_md()}} read a markdown file
+\item \code{\link[=write_eml]{write_eml()}} write an object to \code{xml}
+\item \code{\link[=write_md]{write_md()}} write an object to markdown
 }
 }
 

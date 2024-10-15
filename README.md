@@ -37,7 +37,7 @@ example from a markdown file:
 x <- system.file("example_data", 
                  "README_md_example.md", 
                  package = "elm") |>
-  read_elm()
+  read_md()
 
 x 
 #> # A tibble: 28 × 4
@@ -59,7 +59,7 @@ x
 or alternatively from xml:
 
 ``` r
-read_elm("https://collections.ala.org.au/ws/eml/dr368")
+read_eml("https://collections.ala.org.au/ws/eml/dr368")
 #> # A tibble: 85 × 4
 #>    level label                text                                  attributes  
 #>    <int> <chr>                <chr>                                 <list>      
@@ -80,7 +80,7 @@ Here it can be examined and modified as required, then exported to
 either format:
 
 ``` r
-write_elm(x, "metadata.xml")
+write_eml(x, "metadata.xml")
 ```
 
 For a more detailed description of elm’s capabilities and methods, see

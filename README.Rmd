@@ -46,7 +46,7 @@ a markdown file:
 x <- system.file("example_data", 
                  "README_md_example.md", 
                  package = "elm") |>
-  read_elm()
+  read_md()
 
 x 
 ```
@@ -54,13 +54,13 @@ x
 or alternatively from xml:
 
 ```{r}
-read_elm("https://collections.ala.org.au/ws/eml/dr368")
+read_eml("https://collections.ala.org.au/ws/eml/dr368")
 ```
 
 Here it can be examined and modified as required, then exported to either format:
 
 ```{r, eval=FALSE}
-write_elm(x, "metadata.xml")
+write_eml(x, "metadata.xml")
 ```
 
 For a more detailed description of elm's capabilities and methods, see the 

@@ -12,26 +12,31 @@
 #' [support@ala.org.au](mailto:support@ala.org.au).
 #'
 #' @section Functions:
-#' **Reading and writing**
-#' 
-#'   * [read_elm()] import markdown or `xml` to a `tibble`
-#'   * [write_elm()] write an object to markdown or `xml`
+#' **Example data**
+#'   * [metadata_example]
+#'   * [add_eml_header()] - add an 'EML' header row to a `tibble`
+#'   * [use_metadata()]
+#'   * [check_eml()]
 #'   
-#' **Type Conversion**
-#'
-#'   * [as_elm_chr()] - convert to class `character`
-#'   * [as_elm_tibble()] - convert to class `tbl_df` (i.e. a tibble)
-#'   * [as_elm_list()] - convert to class `list`
-#'   * [as_elm_xml()] - convert to class `xml_document`
-#'   * [add_elm_header()] - add an 'EML' header row to a `tibble`
-#'   
-#' **Parsers**
+#' **Low-level functions**
 #'   * [parse_chr_to_tibble()]
 #'   * [parse_tibble_to_list()]
 #'   * [parse_list_to_xml()]
 #'   * [parse_xml_to_list()]
 #'   * [parse_list_to_tibble()]
 #'   * [parse_tibble_to_chr()]
-#'  
+#' 
+#' **Intermediate-level functions**
+#'   * [as_eml_chr()] - convert to class `character`
+#'   * [as_eml_tibble()] - convert to class `tbl_df` (i.e. a tibble)
+#'   * [as_eml_list()] - convert to class `list`
+#'   * [as_eml_xml()] - convert to class `xml_document`
+#'
+#' **Top-level functions**
+#'   * [read_eml()] read EML from an `xml` file
+#'   * [read_md()] read a markdown file
+#'   * [write_eml()] write an object to `xml`
+#'   * [write_md()] write an object to markdown
+#'   
 #' @keywords internal
 "_PACKAGE"

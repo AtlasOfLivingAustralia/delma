@@ -20,7 +20,7 @@
 #' @importFrom xml2 read_xml
 #' @importFrom xml2 xml_validate
 #' @export
-check_elm <- function(x, # TODO: support file names
+check_eml <- function(x, # TODO: support file names
                       schema = c("xml",
                                  "dc",
                                  "eml-2.2.0",
@@ -61,10 +61,10 @@ check_file_or_object <- function(x){
     if(length(x) == 1){
       result <- read_xml(x)
     }else{
-      result <- try(as_elm_xml(x))
+      result <- try(as_eml_xml(x))
     }
   }else{
-    result <- try(as_elm_xml(x))
+    result <- try(as_eml_xml(x))
   }
   # return
   if(inherits(result, "try-error")){

@@ -2,7 +2,7 @@
 #' 
 #' This function adds standard EML information to a tibble, such that when 
 #' it is converted to xml, it parses correctly as EML. This is not applied 
-#' as standard by `as_elm_xml()` because it is possible that not all users will
+#' as standard by `as_eml_xml()` because it is possible that not all users will
 #' want their files to be interpretable as EML.
 #' @param x Object of class `md_tibble`
 #' @details
@@ -19,9 +19,9 @@
 #' @importFrom rlang .data
 #' @importFrom tibble add_row
 #' @export
-add_elm_header <- function(x){
+add_eml_header <- function(x){
   if(!inherits(x, "tbl_df")){
-    abort("add_eml() requires an object of class `tbl_df`")
+    abort("add_eml_header() requires an object of class `tbl_df`")
   }
   
   # if `attributes` list-column is missing, add it (with NA for each entry)

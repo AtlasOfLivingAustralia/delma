@@ -96,7 +96,7 @@ function:
 c("# Heading 1", 
   "## Heading 2",
   "text content") |>
-  as_elm_xml()
+  as_eml_xml()
 ```
 
 Every permutation of `as_elm_` functions is provided in `elm`, meaning you can 
@@ -112,14 +112,14 @@ By default, `read_elm()` will detect file type based on suffix:
 file <- system.file("example_data", 
                     "README_md_example.md", 
                     package = "elm")
-read_elm(file)
+read_md(file)
 ```
 
 However, you can specify the suffix using either the `format` argument, or using 
 a more specific microfunction:
 
 ```{r}
-read_elm_xml("https://collections.ala.org.au/ws/eml/dr368") # same as read_elm()
+read_eml("https://collections.ala.org.au/ws/eml/dr368")
 ```
 
 The corresponding write function is `write_elm()`. This function accepts objects 
@@ -130,8 +130,8 @@ functions together without any intermediate stages:
 system.file("example_data", 
             "README_md_example.md", 
             package = "elm") |>
-  read_elm() |>
-  write_elm("output.xml")
+  read_md() |>
+  write_eml("output.xml")
 ```
 
 It is worth noting, though, that these are quite simple wrapper functions to 
@@ -145,6 +145,6 @@ system.file("example_data",
             "README_md_example.md", 
             package = "elm") |>
   base::readLines() |>
-  elm::as_elm_xml() |>
+  elm::as_eml_xml() |>
   xml2::write_xml("output.xml")
 ```

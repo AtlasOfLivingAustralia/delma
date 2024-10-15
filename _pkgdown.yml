@@ -23,3 +23,30 @@ navbar:
     news:
       text: News
       href: news/index.html
+reference:
+- title: Example data
+  contents:
+  - metadata_example
+  - add_eml_header
+  - check_eml
+  - use_metadata
+- title: Low-level functions (parsers)
+  contents:
+  - parse_chr_to_tibble
+  - parse_tibble_to_list
+  - parse_list_to_xml
+  - parse_xml_to_list
+  - parse_list_to_tibble
+  - parse_tibble_to_chr
+- title: Intermediate-level functions (type conversion)
+  contents:
+  - as_eml_chr
+  - as_eml_list
+  - as_eml_tibble
+  - as_eml_xml
+- title: Top-level functions (wrappers)
+  contents:
+  - read_md
+  - write_md
+  - read_eml
+  - write_eml
