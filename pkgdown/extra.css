@@ -8,12 +8,12 @@ h1, h2, h3, h4, .h1, .h2, .h3, .main-title, .main-subtitle {
 }
 
 a {
-    color: #5B397D;
+    color: #003A70;
     text-decoration: none;
 }
 
 a:hover {
-  color: #9b74c2;
+  color: #34608a;
 }
 
 body { font-family: Roboto; }
@@ -31,27 +31,27 @@ body { font-family: Roboto; }
   /*background-image: linear-gradient(#93d6d6, #78CCCC 60%, #6cb7b7);*/
 }
 
-.navbar-dark .navbar-brand {
-    color: #182828;
+.navbar-brand {
+    color: #003A70;
 }
 
 .navbar-dark .navbar-brand:hover {
     color: #f8fcf0;
 }
 
-.navbar-dark .navbar-nav .nav-link {
+.navbar-nav .nav-link {
     color: rgba(24,40,40,0.8);
 }
 
-.navbar-dark .navbar-nav .nav-link:hover {
+.navbar-nav .nav-link:hover {
     color: rgba(24,40,40,0.8);
 }
 
-.navbar-dark .navbar-nav .nav-link:focus {
+.navbar-nav .nav-link:focus {
     color: rgba(24,40,40,0.8);
 }
 
-.navbar-dark .navbar-nav .active>.nav-link {
+.navbar-nav .active>.nav-link {
   background-color: #C3EDEF;
   color: #003A70;
 }
