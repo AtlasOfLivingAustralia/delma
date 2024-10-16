@@ -6,8 +6,8 @@
 ## Overview
 
 `elm` is a package for import and type conversion of metadata
-statements. It’s function is to enable users to store metadata in
-markdown files, and convert them to EML.
+statements. Its purpose is to enable users to store metadata in markdown
+files, and convert them to EML.
 
 If you have any comments, questions or suggestions, please [contact
 us](mailto:support@ala.org.au).
@@ -30,8 +30,8 @@ library(elm)
 
 ## Basic usage
 
-The basic use case for `elm` is to import metadata to a tibble, for
-example from a markdown file:
+The primary use case for `elm` is to import metadata into a tibble. This
+can be done from a markdown file:
 
 ``` r
 x <- system.file("example_data", 
@@ -56,7 +56,7 @@ x
 #> # ℹ 18 more rows
 ```
 
-or alternatively from xml:
+or an xml file:
 
 ``` r
 read_eml("https://collections.ala.org.au/ws/eml/dr368")
@@ -81,6 +81,7 @@ either format:
 
 ``` r
 write_eml(x, "metadata.xml")
+write_md(x, "metadata.md")
 ```
 
 For a more detailed description of elm’s capabilities and methods, see
