@@ -26,8 +26,8 @@ This package is under active development, and is not yet available on CRAN. You
 can install the latest development version from GitHub with:
 
 ```{r, eval = FALSE}
-install.packages("remotes")
-remotes::install_github("atlasoflivingaustralia/elm")
+# install.packages("devtools")
+devtools::install_github("AtlasOfLivingAustralia/elm")
 ```
 
 Load the package:
