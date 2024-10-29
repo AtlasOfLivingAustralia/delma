@@ -17,7 +17,7 @@ documenting research data"
 adopted as a community-maintained standard for metadata exchange, to the point 
 that supplying metadata in this format is a requirement of several data-sharing
 institutions, such as the Global Biodiversity Information Facility
-([GBIF](https://gbif.org])) and its' partner nodes. Unfortunately, however, the 
+([GBIF](https://gbif.org])) and its partner nodes. Unfortunately, however, the 
 nested structure and xml formatting of EML make it difficult for people to use
 without drawing on bespoke programming tools. In contrast, markdown is 
 considerably more generic, especially for those who are familiar with tools such 
@@ -130,7 +130,7 @@ read_eml("https://collections.ala.org.au/ws/eml/dr368")
 ```
 
 The corresponding write functions are `write_md()` and `write_eml()`. Both
-functions accepts objects of all classes supported by `elm`, so it is possible 
+functions accept objects of all classes supported by `elm`, so it is possible 
 to pipe read and write functions together without any intermediate stages:
 
 ```{r, eval=FALSE}
