@@ -62,7 +62,7 @@ eml_attributes <- function(){
     `xmlns:xsi` = "http://www.w3.org/2001/XMLSchema-instance",
     `xmlns:dc` = "http://purl.org/dc/terms/",
     `xsi:schemaLocation` = "eml://ecoinformatics.org/eml-2.1.1 http://rs.gbif.org/schema/eml-gbif-profile/1.3/eml-gbif-profile.xsd",
-     system = "R-elm-package",
+     system = "R-paperbark-package",
      scope = "system",
     `xml:lang` = "en"
     )

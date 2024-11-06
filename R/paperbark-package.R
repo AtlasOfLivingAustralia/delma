@@ -1,12 +1,9 @@
 #' Convert ecological metadata from markdown to xml
 #' 
 #' @description
-#' `{elm}` is a package to convert markdown documents to xml and back.
-#' 'elm' is the common name for the genus 'Ulmus', which is a common tree in the 
-#' Northern Hemisphere. It is also an anagram of 'EML', which is an acronym for
-#' Ecological Meta Language, the format that this package creates.
+#' `{paperbark}` is a package to convert markdown documents to xml and back.
 #' 
-#' @name elm-package
+#' @name paperbark-package
 #' @docType package
 #' @references If you have any questions, comments or suggestions, please email
 #' [support@ala.org.au](mailto:support@ala.org.au).

@@ -19,7 +19,7 @@ navbar:
   components:
     architecture:
       text: Architecture
-      href: articles/elm_architecture.html
+      href: articles/architecture.html
     news:
       text: News
       href: news/index.html

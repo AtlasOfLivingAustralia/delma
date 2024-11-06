@@ -7,8 +7,8 @@
 write_eml(x, file)
 }
 \arguments{
-\item{x}{Object of any class handled by \code{elm}; i.e. \code{character}, \code{tbl_df},
-\code{list} or \code{xml_document}.}
+\item{x}{Object of any class handled by \code{paperbark}; i.e. \code{character},
+\code{tbl_df}, \code{list} or \code{xml_document}.}
 
 \item{file}{Filename to export to.}
 }

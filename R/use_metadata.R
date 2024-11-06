@@ -17,13 +17,13 @@ use_metadata <- function(file, overwrite = FALSE){
     file <- "metadata.md"
   }
   if(overwrite){
-      write_md(elm::metadata_example, file = file)
+      write_md(paperbark::metadata_example, file = file)
   }else{
     if(file.exists(file)){
       abort(c(glue("file `{file}` already exists."),
             i = "give a different `file` or set `overwrite = TRUE`"))
     }else{
-      write_md(elm::metadata_example, file = file)
+      write_md(paperbark::metadata_example, file = file)
     }
   }
 }

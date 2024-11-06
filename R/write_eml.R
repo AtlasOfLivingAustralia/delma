@@ -2,8 +2,8 @@
 #' 
 #' Write metadata from a `tibble`, `character`, `list` or `xml_document` to
 #' an xml (`.xml`) document.
-#' @param x Object of any class handled by `elm`; i.e. `character`, `tbl_df`,
-#' `list` or `xml_document`.
+#' @param x Object of any class handled by `paperbark`; i.e. `character`, 
+#' `tbl_df`, `list` or `xml_document`.
 #' @param file Filename to export to.
 #' @importFrom rlang abort
 #' @importFrom xml2 write_xml

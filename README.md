@@ -1,11 +1,11 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# elm <img src="man/figures/logo.png" align="right" style="margin: 0px 10px 0px 10px;" alt="" width="120"/><br>
+# paperbark <img src="man/figures/logo.png" align="right" style="margin: 0px 10px 0px 10px;" alt="" width="120"/><br>
 
 ## Overview
 
-`elm` is a package for import and type conversion of metadata
+`paperbark` is a package for import and type conversion of metadata
 statements. Its purpose is to enable users to store metadata in markdown
 files, and convert them to EML.
 
@@ -19,24 +19,24 @@ CRAN. You can install the latest development version from GitHub with:
 
 ``` r
 # install.packages("devtools")
-devtools::install_github("AtlasOfLivingAustralia/elm")
+devtools::install_github("AtlasOfLivingAustralia/paperbark")
 ```
 
 Load the package:
 
 ``` r
-library(elm)
+library(paperbark)
 ```
 
 ## Basic usage
 
-The primary use case for `elm` is to import metadata into a tibble. This
-can be done from a markdown file:
+The primary use case for `paperbark` is to import metadata into a
+tibble. This can be done from a markdown file:
 
 ``` r
 x <- system.file("example_data", 
                  "README_md_example.md", 
-                 package = "elm") |>
+                 package = "paperbark") |>
   read_md()
 
 x 
@@ -84,19 +84,19 @@ write_eml(x, "metadata.xml")
 write_md(x, "metadata.md")
 ```
 
-For a more detailed description of elm’s capabilities and methods, see
-the ‘elm architecture’ vignette.
+For a more detailed description of paperbark’s capabilities and methods,
+see the ‘paperbark architecture’ vignette.
 
-## Citing `elm`
+## Citing `paperbark`
 
 To generate a citation for the package version you are using, you can
 run:
 
 ``` r
-citation(package = "elm")
+citation(package = "paperbark")
 ```
 
 The current recommended citation is:
 
-> Westgate MJ, Balasubramaniam S & Kellie D (2024) elm: Convert markdown
-> files to EML. R Package version 0.1.0.
+> Westgate MJ, Balasubramaniam S & Kellie D (2024) paperbark: Convert
+> markdown files to EML. R Package version 0.1.0.

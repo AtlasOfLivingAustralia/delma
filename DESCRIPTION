@@ -1,4 +1,4 @@
-Package: elm
+Package: paperbark
 Type: Package
 Title: Convert markdown to ecological meta language (EML) and back
 Version: 0.1.0

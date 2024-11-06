@@ -1,4 +1,4 @@
-# draw a hex sticker for `elm`
+# draw a hex sticker for `paperbark`
 library(tibble)
 library(dplyr)
 library(sf)
@@ -80,10 +80,10 @@ p <- ggplot() +
   geom_sf(data = background_polygons,
           fill = "#abcdde",
           color = NA) +
-  geom_sf(data = snowy_box,
-          fill = "#ffffff",
-          color = NA,
-          linewidth = 0) +
+  # geom_sf(data = snowy_box,
+  #         fill = "#ffffff",
+  #         color = NA,
+  #         linewidth = 0) +
   geom_sf(data = border, 
           fill = edge_color, 
           color = NA) +
@@ -97,23 +97,23 @@ p <- ggplot() +
            hjust = 0,
            color = edge_color) +
   annotate(geom = "text",
-           x = 0.05,
-           y = -0.74,
-           label = "elm",
+           x = 0,
+           y = 0,
+           label = "paperbark",
            family = "lato",
-           size = 8,
-           angle = -30,
-           hjust = 1,
+           size = 7,
+           angle = 0,
+           hjust = 0.5,
            color = edge_color) +
   scale_colour_gradientn(colors = simple_palette) +
   theme_void() +
   theme(legend.position = "none")
 
-ggsave("man/figures/logo_r.pdf",
+ggsave("man/figures/logo.png",
        p,
        width = 43.9,
        height = 50.8,
        units = "mm",
        bg = "transparent",
-       device = cairo_pdf,
+       # device = cairo_pdf,
        dpi = 600)

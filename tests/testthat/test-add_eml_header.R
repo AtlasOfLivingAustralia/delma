@@ -1,7 +1,7 @@
-test_that("add_elm_header() works properly", {
+test_that("add_eml_header() works properly", {
   x <- system.file("example_data", 
                    "README_md_example.md", 
-                   package = "elm") |>
+                   package = "paperbark") |>
     read_md() |>
     add_eml_header()
   expect_equal(x$label[[1]], "eml:eml") # q: is this what we'd expect?
