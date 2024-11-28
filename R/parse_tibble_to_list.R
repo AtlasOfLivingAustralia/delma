@@ -2,7 +2,8 @@
 #' @order 2
 #' @importFrom rlang .data
 #' @importFrom snakecase to_lower_camel_case
-#' @export
+#' @noRd
+#' @keywords Internal
 parse_tibble_to_list <- function(x){
   if(!inherits(x, "tbl_df")){
     abort("`parse_chr_to_tibble()` only works on objects of class `tbl_df`")

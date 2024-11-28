@@ -2,7 +2,8 @@
 #' @order 4
 #' @param x an R object of the requisite type. No type checking is done.
 #' @importFrom xml2 as_list
-#' @export
+#' @noRd
+#' @keywords Internal
 parse_xml_to_list <- function(x)
 {
   # type check

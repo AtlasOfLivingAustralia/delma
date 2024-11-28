@@ -7,9 +7,10 @@
 #' however, that this function doesn't check the _content_ of those files,
 #' meaning a file could be structurally sound and still be lacking critical 
 #' information.
-#' @param x An object of class `xml_document` from xml2, or optionally a file.
-#' @param schema Vector of strings selecting one or more schemas to check 
-#' against.
+#' @param x Object of any class handled by `paperbark`; i.e. `character`, 
+#' `tbl_df`, `list` or `xml_document`.
+#' @param file Alternatively an EML file to check. If both `x` and `file` are 
+#' supplied, `x` is chosen.
 #' @details
 #' This function uses local versions of `dc.xsd`, `eml-gbif-profile.xsd` and 
 #' `eml.xsd` downloaded
@@ -17,94 +18,45 @@
 #'  2024-09-25.
 #' @return Invisibly returns a tibble showing parsed errors; or an empty 
 #' tibble if no errors are identified.
+#' @examples \dontrun{
+#' # check a file
+#' check_eml(file = "https://collections.ala.org.au/ws/eml/dr368")
+#' }
+#' @importFrom rlang abort
 #' @importFrom dplyr bind_rows
 #' @importFrom xml2 read_xml
 #' @importFrom xml2 xml_validate
 #' @export
-check_eml <- function(x, # TODO: support file names
-                      schema = c("xml",
-                                 "dc",
-                                 "eml-2.2.0",
-                                 "eml-gbif-profile-1.3")) {
+check_eml <- function(x,
+                      file
+                      ) {
   # check inputs
-  x <- check_file_or_object(x)
-  schema <- match.arg(schema, several.ok = TRUE)
-  
-  
-  # check file using xml_validate
-  result <- map(schema,
-      \(a){
-        validator_file <- switch_schemas(a) |>
-          read_xml()
-        xml_validate(x, 
-                     schema = validator_file) |>
-          validator_to_tibble()
-      }) |>
-    bind_rows() |>
-    unique()
-
-  # print validation errors
-  # NOTE: this uses functions defined in `check_occurrences()`
-
-  invisible(result)
-}
-
-#' Internal function to check whether object supplied is a file or an object
-#' @importFrom glue glue
-#' @importFrom rlang abort
-#' @importFrom xml2 read_xml
-#' @noRd
-#' @keywords Internal
-check_file_or_object <- function(x){
-  if(inherits(x, "xml_document")){
-    result <- x
-  }else if(inherits(x, "character")){
-    if(length(x) == 1){
-      result <- read_xml(x)
+  if(!missing(x)){
+    if(!inherits(x, "xml_document")){
+      xmldoc <- as_eml_xml(x)
     }else{
-      result <- try(as_eml_xml(x))
+      xmldoc <- x
     }
   }else{
-    result <- try(as_eml_xml(x))
+    if(missing(file)){
+      abort("both `x` and `file` are missing, with no default")
+    }else{
+      xmldoc <- read_xml(file)
+    }
   }
-  # return
-  if(inherits(result, "try-error")){
-    abort(glue("Unable to convert `{x}` to xml."))
-  }else{
-    result
-  }
-}
 
-#' Internal function to select the file associated with a given schema
-#' 
-#' NOTE: we use `extdata` here because storing these files in `sysdata.rda`
-#' breaks the connections between files, causing validation to fail.
-#' @importFrom rlang abort
-#' @noRd
-#' @keywords Internal
-switch_schemas <- function(string){
-  switch(string,
-         "xml" = system.file("extdata", 
-                             "xml.xsd",
-                             package = "paperbark",
-                             mustWork = TRUE),
-         "dc" = system.file("extdata", 
-                            "dc.xsd", 
+  # look up schema doc
+  schema_doc <- system.file("extdata", 
+                            "eml-gbif-profile",
+                            "1.3",
+                            "eml-gbif-profile.xsd", 
                             package = "paperbark",
-                            mustWork = TRUE),
-         "eml-2.2.0" = system.file("extdata", 
-                                   "eml-2.2.0",
-                                   "eml.xsd", 
-                                   package = "paperbark",
-                                   mustWork = TRUE),
-         "eml-gbif-profile-1.3" = system.file("extdata", 
-                                              "eml-gbif-profile",
-                                              "1.3",
-                                              "eml-gbif-profile.xsd", 
-                                              package = "paperbark",
-                                              mustWork = TRUE),
-         abort("unknown schema")
-      )
+                            mustWork = TRUE)
+  
+  # run validation
+  xml_validate(xmldoc, schema = schema_doc) |>
+    validator_to_tibble() |>
+    invisible()
 }
 
 #' Internal function to get validator to return a tibble
@@ -157,7 +109,7 @@ print_xsd_messages <- function(df){
   if(nrow(df) > 0){
     cli_h2("Check result:")
     split(df, seq_len(nrow(df))) |>
-      map(~ format_messages_from_checks(.x)) |> # NOTE: need to recreate this
+      map(~ format_messages_from_checks(.x)) |>
       invisible()
   }else{
     cli_h2("No errors found!")

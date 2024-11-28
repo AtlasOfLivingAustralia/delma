@@ -2,16 +2,39 @@
 % Please edit documentation in R/read_md.R
 \name{read_md}
 \alias{read_md}
-\title{Read metadata from markdown}
+\alias{write_md}
+\title{Read or write markdown-formatted metadata}
 \usage{
 read_md(file)
+
+write_md(x, file)
 }
 \arguments{
-\item{file}{A file to import.}
+\item{file}{Filename to read from or write to. Must have a \code{.md} file extension.}
+
+\item{x}{Object of any class handled by \code{paperbark}; i.e. \code{character},
+\code{tbl_df}, \code{list} or \code{xml_document}.}
 }
 \value{
-An object of class \code{tbl_df}, \code{tbl} and \code{data.frame} (i.e. a \code{tibble}).
+\code{read_md()} returns an object of class \code{tbl_df}, \code{tbl} and
+\code{data.frame} (i.e. a \code{tibble}). \code{write_md()} doesn't return anything, and
+is called for the side-effect of writing the specified markdown file to disk.
 }
 \description{
-Import metadata from a markdown file.
+\code{read_md()} imports metadata from a markdown file into the workspace as a
+\code{tibble}. \code{write_md()} write a \code{string}, \code{tibble}, \code{list} or \code{xml_document}
+to a markdown file. Because \code{paperbark} cannot yet import code blocks, only
+the file extension \code{.md} is currently supported (and not \code{.Rmd} or \code{.qmd}).
+}
+\examples{
+\dontrun{
+# read from a url
+file <- system.file("example_data", 
+                    "README_md_example.md", 
+                    package = "paperbark")
+df <- read_md(file)
+
+# write to disk
+write_md(df, "example.md")
+}
 }

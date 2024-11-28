@@ -1,7 +1,10 @@
-#' Convert ecological metadata from markdown to xml
+#' Convert metadata between markdown and EML
 #' 
 #' @description
-#' `{paperbark}` is a package to convert markdown documents to xml and back.
+#' Ecological Meta Language is a common framework for describing ecological 
+#' datasets so they can be shared and reused. `paperbark` supports users to 
+#' write metadata statements in markdown for greater transparency and 
+#' ease-of-use, then convert them to EML for efficient transfer.
 #' 
 #' @name paperbark-package
 #' @docType package
@@ -9,32 +12,18 @@
 #' [support@ala.org.au](mailto:support@ala.org.au).
 #'
 #' @section Functions:
-#' **Top-level functions**
-#'   * [read_eml()] - read EML from an `xml` file to a `tibble`
-#'   * [read_md()] - read metadata from a markdown file to a `tibble`
-#'   * [write_eml()] - write an object to `xml`
-#'   * [write_md()] - write an object to markdown
-#'   * [add_eml_header()] - add an 'EML' header row to a `tibble`
-#'   * [check_eml()] - run checks of a file or object against relevant standards
-#'   
-#' **Intermediate-level functions**
-#'   * [as_eml_chr()] - convert to class `character`
-#'   * [as_eml_tibble()] - convert to class `tbl_df` (i.e. a tibble)
-#'   * [as_eml_list()] - convert to class `list`
-#'   * [as_eml_xml()] - convert to class `xml_document`
-#'   
-#' **Low-level functions**
-#'   * [parse_chr_to_tibble()] - convert from `character` to `tibble`
-#'   * [parse_tibble_to_list()] - convert from `tibble` to `list`
-#'   * [parse_list_to_xml()] - convert from `list` to `xml_document`
-#'   * [parse_xml_to_list()] - convert from `xml_document` to `list`
-#'   * [parse_list_to_tibble()] - convert from `list` to `tibble`
-#'   * [parse_tibble_to_chr()] - convert from `tibble` to `character`
 #' 
-#' **Example data**
-#'   * [metadata_example] - a boilerplate metadata statement
-#'   * [use_metadata()] - create a metadata statement as a markdown file
-#'
+#' **Basic usage**
+#'   * [use_metadata()] - Create a blank metadata statement as a markdown file
+#'   * [read_eml()]/[write_eml()] - Convert between EML and tibbles
+#'   * [read_md()]/[write_md()] - Convert between markdown files and tibbles
+#'   * [check_eml()] - Check your metadata statement against relevant standards
+#'   
+#' **Type conversion**
+#'   * [as_eml_chr()] - Convert metadata to class `character`
+#'   * [as_eml_tibble()] - Convert metadata to class `tbl_df` (i.e. a tibble)
+#'   * [as_eml_list()] - Convert metadata to class `list`
+#'   * [as_eml_xml()] - Convert metadata to class `xml_document`
 #'   
 #' @keywords internal
 "_PACKAGE"

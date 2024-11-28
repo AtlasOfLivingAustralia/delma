@@ -4,13 +4,14 @@
 \alias{check_eml}
 \title{Check validity of a metadata statement}
 \usage{
-check_eml(x, schema = c("xml", "dc", "eml-2.2.0", "eml-gbif-profile-1.3"))
+check_eml(x, file)
 }
 \arguments{
-\item{x}{An object of class \code{xml_document} from xml2, or optionally a file.}
+\item{x}{Object of any class handled by \code{paperbark}; i.e. \code{character},
+\code{tbl_df}, \code{list} or \code{xml_document}.}
 
-\item{schema}{Vector of strings selecting one or more schemas to check
-against.}
+\item{file}{Alternatively an EML file to check. If both \code{x} and \code{file} are
+supplied, \code{x} is chosen.}
 }
 \value{
 Invisibly returns a tibble showing parsed errors; or an empty
@@ -30,4 +31,10 @@ This function uses local versions of \code{dc.xsd}, \code{eml-gbif-profile.xsd} 
 \code{eml.xsd} downloaded
 from \code{http://rs.gbif.org/schema/eml-gbif-profile/1.3/} on
 2024-09-25.
+}
+\examples{
+\dontrun{
+# check a file
+check_eml(file = "https://collections.ala.org.au/ws/eml/dr368")
+}
 }

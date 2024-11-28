@@ -12,7 +12,8 @@
 #' @importFrom dplyr select
 #' @importFrom rlang .data
 #' @importFrom snakecase to_lower_camel_case
-#' @export
+#' @noRd
+#' @keywords Internal
 parse_chr_to_tibble <- function(x){
   # type check
   if(!inherits(x, "character")){

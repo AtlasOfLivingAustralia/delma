@@ -1,7 +1,8 @@
 #' @rdname parse_
 #' @order 3
 #' @importFrom xml2 as_xml_document
-#' @export
+#' @noRd
+#' @keywords Internal
 parse_list_to_xml <- function(x){
   # type check
   if(!inherits(x, "list")){

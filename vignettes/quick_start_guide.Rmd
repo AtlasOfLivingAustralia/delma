@@ -1,11 +1,11 @@
 ---
-title: "Architecture"
+title: "Quick start guide"
 author: "Martin Westgate"
 date: "2024-11-06"
 output:
   rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{architecture}
+  %\VignetteIndexEntry{Quick start guide}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -52,9 +52,9 @@ data in this sequence:
 ```
 .md file -> character -> tibble -> list -> xml -> .xml file
 ```
-We have also built the inverse parsers to convert back from `.xml` to `.md`. All
-parsers are named in the form `parse_{class1}_to_{class2}`; so to convert a 
-character to a tibble, for example, we use `parse_chr_to_tibble()`:
+
+Rather than export all these individual parsers, `paperbark` provides a set of
+transformers with the `as_eml_` prefix, e.g.:
 
 ```{r}
 library(paperbark)
@@ -62,45 +62,8 @@ library(paperbark)
 c("# Heading 1", 
   "## Heading 2",
   "text content") |>
-  parse_chr_to_tibble()
-```
+  as_eml_tibble()
 
-While this parser is new, parsing between xml and lists is handled entirely by 
-the `xml2` package. All new parsers in `paperbark` are built to plug into the formats 
-defined by `xml2`.
-
-## Generic transformers
-
-While these low-level parsers are critical, they are fairly verbose. They also
-only handle one 'link' in the parsing 'chain' each, meaning that to complete the 
-whole operation, we would need to pipe them together in sequence:
-
-```{r}
-library(paperbark)
-
-c("# Heading 1", 
-  "## Heading 2",
-  "text content") |>
-  parse_chr_to_tibble() |>
-  parse_tibble_to_list() |>
-  parse_list_to_xml()
-```
-
-Clearly this isn't ideal; we would prefer to use object-oriented programming
-to specify our preferred output format. In practice, however, it would be 
-undesirable to overwrite existing functions such as `base::as.list()` or
-`tibble::as_tibble()` with more EML-specific variants, as these would have a
-high chance of breaking existing code. Nor would it be desirable to create
-new, bespoke S3 classes for the `paperbark` package, as it would be nice to parse
-_any_ character, tibble, list or xml_document, not just those that are created 
-using `paperbark`.
-
-To avoid these problems, `paperbark` uses the `as_eml_` prefix for all transformations,
-rather than the more generic `as`. This adds a degree of flexibility without 
-having to define any new object classes. To give a concrete example, the problem 
-in the previous code block can now be solved using only one function:
-
-```{r}
 c("# Heading 1", 
   "## Heading 2",
   "text content") |>

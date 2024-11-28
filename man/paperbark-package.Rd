@@ -4,44 +4,30 @@
 \name{paperbark-package}
 \alias{paperbark}
 \alias{paperbark-package}
-\title{Convert ecological metadata from markdown to xml}
+\title{Convert metadata between markdown and EML}
 \description{
-\code{{paperbark}} is a package to convert markdown documents to xml and back.
+Ecological Meta Language is a common framework for describing ecological
+datasets so they can be shared and reused. \code{paperbark} supports users to
+write metadata statements in markdown for greater transparency and
+ease-of-use, then convert them to EML for efficient transfer.
 }
 \section{Functions}{
 
-\strong{Top-level functions}
+
+\strong{Basic usage}
 \itemize{
-\item \code{\link[=read_eml]{read_eml()}} - read EML from an \code{xml} file to a \code{tibble}
-\item \code{\link[=read_md]{read_md()}} - read metadata from a markdown file to a \code{tibble}
-\item \code{\link[=write_eml]{write_eml()}} - write an object to \code{xml}
-\item \code{\link[=write_md]{write_md()}} - write an object to markdown
-\item \code{\link[=add_eml_header]{add_eml_header()}} - add an 'EML' header row to a \code{tibble}
-\item \code{\link[=check_eml]{check_eml()}} - run checks of a file or object against relevant standards
+\item \code{\link[=use_metadata]{use_metadata()}} - Create a blank metadata statement as a markdown file
+\item \code{\link[=read_eml]{read_eml()}}/\code{\link[=write_eml]{write_eml()}} - Convert between EML and tibbles
+\item \code{\link[=read_md]{read_md()}}/\code{\link[=write_md]{write_md()}} - Convert between markdown files and tibbles
+\item \code{\link[=check_eml]{check_eml()}} - Check your metadata statement against relevant standards
 }
 
-\strong{Intermediate-level functions}
+\strong{Type conversion}
 \itemize{
-\item \code{\link[=as_eml_chr]{as_eml_chr()}} - convert to class \code{character}
-\item \code{\link[=as_eml_tibble]{as_eml_tibble()}} - convert to class \code{tbl_df} (i.e. a tibble)
-\item \code{\link[=as_eml_list]{as_eml_list()}} - convert to class \code{list}
-\item \code{\link[=as_eml_xml]{as_eml_xml()}} - convert to class \code{xml_document}
-}
-
-\strong{Low-level functions}
-\itemize{
-\item \code{\link[=parse_chr_to_tibble]{parse_chr_to_tibble()}} - convert from \code{character} to \code{tibble}
-\item \code{\link[=parse_tibble_to_list]{parse_tibble_to_list()}} - convert from \code{tibble} to \code{list}
-\item \code{\link[=parse_list_to_xml]{parse_list_to_xml()}} - convert from \code{list} to \code{xml_document}
-\item \code{\link[=parse_xml_to_list]{parse_xml_to_list()}} - convert from \code{xml_document} to \code{list}
-\item \code{\link[=parse_list_to_tibble]{parse_list_to_tibble()}} - convert from \code{list} to \code{tibble}
-\item \code{\link[=parse_tibble_to_chr]{parse_tibble_to_chr()}} - convert from \code{tibble} to \code{character}
-}
-
-\strong{Example data}
-\itemize{
-\item \link{metadata_example} - a boilerplate metadata statement
-\item \code{\link[=use_metadata]{use_metadata()}} - create a metadata statement as a markdown file
+\item \code{\link[=as_eml_chr]{as_eml_chr()}} - Convert metadata to class \code{character}
+\item \code{\link[=as_eml_tibble]{as_eml_tibble()}} - Convert metadata to class \code{tbl_df} (i.e. a tibble)
+\item \code{\link[=as_eml_list]{as_eml_list()}} - Convert metadata to class \code{list}
+\item \code{\link[=as_eml_xml]{as_eml_xml()}} - Convert metadata to class \code{xml_document}
 }
 }
 

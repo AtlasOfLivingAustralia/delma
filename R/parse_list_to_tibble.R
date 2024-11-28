@@ -5,7 +5,8 @@
 #' @importFrom dplyr select
 #' @importFrom purrr list_flatten
 #' @importFrom purrr pluck_depth
-#' @export
+#' @noRd
+#' @keywords Internal
 parse_list_to_tibble <- function(x){
   
   # type check

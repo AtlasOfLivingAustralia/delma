@@ -18,35 +18,22 @@ navbar:
     - github
   components:
     architecture:
-      text: Architecture
-      href: articles/architecture.html
+      text: Quick start guide
+      href: articles/quick_start_guide.html
     news:
       text: News
       href: news/index.html
 reference:
-- title: Top-level functions (wrappers)
+- title: Basic usage
   contents:
-  - read_md
-  - write_md
+  - use_metadata
+  - metadata_example
   - read_eml
-  - write_eml
-  - add_eml_header
+  - read_md
   - check_eml
-- title: Intermediate-level functions (type conversion)
+- title: Type conversion
   contents:
   - as_eml_chr
   - as_eml_list
   - as_eml_tibble
   - as_eml_xml
-- title: Low-level functions (parsers)
-  contents:
-  - parse_chr_to_tibble
-  - parse_tibble_to_list
-  - parse_list_to_xml
-  - parse_xml_to_list
-  - parse_list_to_tibble
-  - parse_tibble_to_chr
-- title: Example data
-  contents:
-  - metadata_example
-  - use_metadata

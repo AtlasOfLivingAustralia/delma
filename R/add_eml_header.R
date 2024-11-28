@@ -18,7 +18,8 @@
 #' @importFrom dplyr mutate
 #' @importFrom rlang .data
 #' @importFrom tibble add_row
-#' @export
+#' @noRd
+#' @keywords Internal
 add_eml_header <- function(x){
   if(!inherits(x, "tbl_df")){
     abort("add_eml_header() requires an object of class `tbl_df`")
@@ -49,6 +50,26 @@ add_eml_header <- function(x){
               .before = 1)
   }
   return(x) 
+}
+
+#' Internal function to remove EML headers before rendering to markdown
+#' 
+#' Basically the inverse of add_eml_header().
+#' @importFrom dplyr slice
+#' @noRd
+#' @keywords Internal
+remove_eml_header <- function(x){
+  if(!inherits(x, "tbl_df")){
+    abort("remove_eml_header() requires an object of class `tbl_df`")
+  }
+  # If first entry says "eml", overwrite with correct info
+  if(grepl("eml|EML", x$label[[1]])){
+    x |>
+      slice(-1) |>
+      mutate(level = .data$level - 1)
+  }else{
+    x
+  }
 }
 
 #' Internal function to call standard EML attributes

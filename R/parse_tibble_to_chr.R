@@ -1,6 +1,7 @@
 #' @rdname parse_
 #' @order 6
-#' @export
+#' @noRd
+#' @keywords Internal
 parse_tibble_to_chr <- function(x){
   # type check
   if(!inherits(x, "tbl_df")){
