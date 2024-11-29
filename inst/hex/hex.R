@@ -4,6 +4,12 @@ library(dplyr)
 library(sf)
 library(ggplot2)
 
+
+# example images
+# https://biocache.ala.org.au/occurrences/7dbe5cec-6ba1-49bf-af65-8e8c3e83fee6
+# https://biocache.ala.org.au/occurrences/fe35f669-3883-4fbf-ae1b-cd7fafb14236
+# https://biocache.ala.org.au/occurrences/2ffacfac-3312-4336-aaf5-42c564e9c46d
+
 # create hexagons
 # adapt code from hexSticker to use sf objects
 create_hexagon <- function(scale = 1){
@@ -61,7 +67,7 @@ snowy_box <- tibble(x = c(-1, 1, 1, -1, -1),
   st_intersection(internal_hexagon)
 
 # draw
-edge_color <- "#003A70"
+
 simple_palette <- c(# "#003A70",
                     # "#396691",
                     # "#7697b8",
@@ -74,46 +80,48 @@ simple_palette <- c(# "#003A70",
 
 p <- ggplot() +
   geom_sf(data = internal_hexagon,
-          fill = "#d6f1ff",
+          fill = "#38613D",
           color = NA,
           linewidth = 0) +
-  geom_sf(data = background_polygons,
-          fill = "#abcdde",
-          color = NA) +
+  # geom_sf(data = background_polygons,
+  #         fill = "#fcfeff",
+  #         color = NA) +
   # geom_sf(data = snowy_box,
   #         fill = "#ffffff",
   #         color = NA,
   #         linewidth = 0) +
   geom_sf(data = border, 
-          fill = edge_color, 
+          fill = "#000000", 
           color = NA) +
   annotate(geom = "text",
-           x = 0.35,
-           y = -0.63,
+           x = 0.40,
+           y = -0.60,
            label = "ala.org.au",
            family = "lato",
            size = 2,
            angle = 30,
            hjust = 0,
-           color = edge_color) +
+           color = "#ffffff") +
   annotate(geom = "text",
-           x = 0,
-           y = 0,
+           x = -0.33,
+           y = -0.57,
            label = "paperbark",
            family = "lato",
-           size = 7,
-           angle = 0,
+           size = 4.5,
+           angle = -30,
            hjust = 0.5,
-           color = edge_color) +
+           color = "#ffffff") +
   scale_colour_gradientn(colors = simple_palette) +
   theme_void() +
   theme(legend.position = "none")
 
-ggsave("man/figures/logo.png",
+
+
+ggsave("man/figures/logo.pdf",
        p,
        width = 43.9,
        height = 50.8,
        units = "mm",
        bg = "transparent",
-       # device = cairo_pdf,
+       device = cairo_pdf,
        dpi = 600)

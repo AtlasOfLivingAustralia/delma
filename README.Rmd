@@ -17,7 +17,9 @@ knitr::opts_chunk$set(
 
 `paperbark` is a package for import and type conversion of metadata statements. 
 Its purpose is to enable users to store metadata in markdown files, and convert
-them to EML.
+them to EML. It is named for the peeling growth form displayed by a number of 
+Australian plant species. The logo was drawn by Martin Westgate, and shows the 
+flower of the swamp paperbark _Melaleuca ericifolia_.
 
 If you have any comments, questions or suggestions, please [contact us](mailto:support@ala.org.au).
  
@@ -42,33 +44,44 @@ devtools::load_all()
 
 ## Basic usage
 
-The primary use case for `paperbark` is to import metadata into a tibble. This can
-be done from a markdown file:
+The primary use case for `paperbark` is to create metadata statements for 
+sharing biodiversity data. You can create a blank file by calling 
+`use_metadata()`. When you open the resulting file, it will show a markdown file
+with some pre-chosen headings, like this:
 
-```{r}
-x <- system.file("example_data", 
-                 "README_md_example.md", 
-                 package = "paperbark") |>
-  read_md()
+```{r, echo = FALSE}
+as_eml_chr(metadata_example)[1:10] # a bit ugly. remove_eml_header() not working
+```
 
+You can then populate your metadata statement with whatever 
+information is needed to support effective re-use. You can add further headings 
+as you wish, presuming that they follow the EML standard. The header 'level' 
+(i.e. number of `#`) is used to designate the degree of nesting.
+
+Once you are done, import it to R using `read_md()`. It will be stored as a 
+`tibble`:
+
+```{r, eval=FALSE}
+x <- read_md("metadata.md")
 x 
 ```
 
-or an xml file:
 
-```{r}
-read_eml("https://collections.ala.org.au/ws/eml/dr368")
+```{r, echo=FALSE}
+system.file("example_data", 
+                 "README_md_example.md", 
+                 package = "paperbark") |>
+  read_md()
 ```
 
-Here it can be examined and modified as required, then exported to either format:
+You can then export it as an xml file without any intermediate steps:
 
 ```{r, eval=FALSE}
 write_eml(x, "metadata.xml")
-write_md(x, "metadata.md")
 ```
 
 For a more detailed description of paperbark's capabilities and methods, see the 
-'paperbark architecture' vignette.
+'Quick start guide' vignette.
 
 ## Citing `paperbark`
 To generate a citation for the package version you are using, you can run:

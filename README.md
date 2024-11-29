@@ -7,7 +7,10 @@
 
 `paperbark` is a package for import and type conversion of metadata
 statements. Its purpose is to enable users to store metadata in markdown
-files, and convert them to EML.
+files, and convert them to EML. It is named for the peeling growth form
+displayed by a number of Australian plant species. The logo was drawn by
+Martin Westgate, and shows the flower of the swamp paperbark *Melaleuca
+ericifolia*.
 
 If you have any comments, questions or suggestions, please [contact
 us](mailto:support@ala.org.au).
@@ -30,62 +33,58 @@ library(paperbark)
 
 ## Basic usage
 
-The primary use case for `paperbark` is to import metadata into a
-tibble. This can be done from a markdown file:
+The primary use case for `paperbark` is to create metadata statements
+for sharing biodiversity data. You can create a blank file by calling
+`use_metadata()`. When you open the resulting file, it will show a
+markdown file with some pre-chosen headings, like this:
+
+    #>  [1] "<h1 xmlns:d=\"eml://ecoinformatics.org/dataset-2.1.0\" xmlns:eml=\"eml://ecoinformatics.org/eml-2.1.1\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:dc=\"http://purl.org/dc/terms/\" xsi:schemaLocation=\"eml://ecoinformatics.org/eml-2.1.1 http://rs.gbif.org/schema/eml-gbif-profile/1.3/eml-gbif-profile.xsd\" system=\"R-elm-package\" scope=\"system\" xml:lang=\"en\">eml:eml</h1>"
+    #>  [2] ""                                                                                                                                                                                                                                                                                                                                                                                                           
+    #>  [3] ""                                                                                                                                                                                                                                                                                                                                                                                                           
+    #>  [4] ""                                                                                                                                                                                                                                                                                                                                                                                                           
+    #>  [5] "## Dataset"                                                                                                                                                                                                                                                                                                                                                                                                 
+    #>  [6] ""                                                                                                                                                                                                                                                                                                                                                                                                           
+    #>  [7] "### Title"                                                                                                                                                                                                                                                                                                                                                                                                  
+    #>  [8] ""                                                                                                                                                                                                                                                                                                                                                                                                           
+    #>  [9] "A Sentence Giving Your Dataset Title In Title Case"                                                                                                                                                                                                                                                                                                                                                         
+    #> [10] ""
+
+You can then populate your metadata statement with whatever information
+is needed to support effective re-use. You can add further headings as
+you wish, presuming that they follow the EML standard. The header
+‘level’ (i.e. number of `#`) is used to designate the degree of nesting.
+
+Once you are done, import it to R using `read_md()`. It will be stored
+as a `tibble`:
 
 ``` r
-x <- system.file("example_data", 
-                 "README_md_example.md", 
-                 package = "paperbark") |>
-  read_md()
-
+x <- read_md("metadata.md")
 x 
-#> # A tibble: 28 × 4
-#>    level label                  text                                  attributes
-#>    <dbl> <chr>                  <chr>                                 <list>    
-#>  1     2 dataset                <NA>                                  <lgl [1]> 
-#>  2     3 title                  <NA>                                  <lgl [1]> 
-#>  3     4 <NA>                   An awesome dataset                    <NULL>    
-#>  4     2 description            <NA>                                  <lgl [1]> 
-#>  5     3 <NA>                   This data is the best. You should us… <NULL>    
-#>  6     3 publicShortDescription <NA>                                  <lgl [1]> 
-#>  7     3 publicDescription      <NA>                                  <lgl [1]> 
-#>  8     3 technicalDescription   <NA>                                  <lgl [1]> 
-#>  9     3 dataQualityDescription <NA>                                  <lgl [1]> 
-#> 10     3 methodsDescription     <NA>                                  <lgl [1]> 
-#> # ℹ 18 more rows
 ```
 
-or an xml file:
+    #> # A tibble: 29 × 4
+    #>    level label                  text                                attributes  
+    #>    <dbl> <chr>                  <chr>                               <list>      
+    #>  1     1 eml:eml                ""                                  <named list>
+    #>  2     2 dataset                 <NA>                               <lgl [1]>   
+    #>  3     3 title                   <NA>                               <lgl [1]>   
+    #>  4     4 <NA>                   "An awesome dataset"                <NULL>      
+    #>  5     2 description             <NA>                               <lgl [1]>   
+    #>  6     3 <NA>                   "This data is the best. You should… <NULL>      
+    #>  7     3 publicShortDescription  <NA>                               <lgl [1]>   
+    #>  8     3 publicDescription       <NA>                               <lgl [1]>   
+    #>  9     3 technicalDescription    <NA>                               <lgl [1]>   
+    #> 10     3 dataQualityDescription  <NA>                               <lgl [1]>   
+    #> # ℹ 19 more rows
 
-``` r
-read_eml("https://collections.ala.org.au/ws/eml/dr368")
-#> # A tibble: 85 × 4
-#>    level label                text                                  attributes  
-#>    <int> <chr>                <chr>                                 <list>      
-#>  1     1 Eml                  <NA>                                  <named list>
-#>  2     2 Dataset              <NA>                                  <named list>
-#>  3     3 Alternate Identifier <NA>                                  <lgl [1]>   
-#>  4     4 <NA>                 0101d74b-afc2-3b0f-817c-dc350d2a6fe4  <lgl [1]>   
-#>  5     4 <NA>                 10.15468/14jd9g                       <lgl [1]>   
-#>  6     4 <NA>                 0645ccdb-e001-4ab0-9729-51f1755e007e  <lgl [1]>   
-#>  7     4 <NA>                 https://collections.ala.org.au/publi… <lgl [1]>   
-#>  8     3 Title                <NA>                                  <named list>
-#>  9     4 <NA>                 NSW BioNet Atlas                      <lgl [1]>   
-#> 10     3 Creator              <NA>                                  <named list>
-#> # ℹ 75 more rows
-```
-
-Here it can be examined and modified as required, then exported to
-either format:
+You can then export it as an xml file without any intermediate steps:
 
 ``` r
 write_eml(x, "metadata.xml")
-write_md(x, "metadata.md")
 ```
 
 For a more detailed description of paperbark’s capabilities and methods,
-see the ‘paperbark architecture’ vignette.
+see the ‘Quick start guide’ vignette.
 
 ## Citing `paperbark`
 
