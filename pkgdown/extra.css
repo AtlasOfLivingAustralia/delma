@@ -4,22 +4,22 @@
 h1, h2, h3, h4, .h1, .h2, .h3, .main-title, .main-subtitle {
   font-family: Lato;
   font-weight: normal;
-  color: #38613D;
+  color: #1158A9;
 }
 
 a {
-    color: #38613D;
+    color: #1158A9;
     text-decoration: none;
 }
 
 a:hover {
-  color: #679e6d;
+  color: #70a2db;
 }
 
 body { font-family: Roboto; }
 
 .navbar {
-  background: #f8fcf0;
+  background: #d7eaf7;
   transition: all 0.3s ease;
   box-shadow: 0 0 10px 2px rgba(0,0,0,.15);
   border: none;
@@ -27,12 +27,12 @@ body { font-family: Roboto; }
 }
 
 .navbar.bg-primary {
-  background-image: linear-gradient(to bottom, #e4f2ce, #B7CD96);
+  background-image: linear-gradient(to bottom, #d7eaf7, #B4D9F1);
   /*background-image: linear-gradient(#93d6d6, #78CCCC 60%, #6cb7b7);*/
 }
 
 .navbar-brand {
-    color: #38613D;
+    color: #1158A9;
 }
 
 .navbar-dark .navbar-brand:hover {

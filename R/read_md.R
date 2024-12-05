@@ -62,5 +62,6 @@ write_md <- function(x, file){
   
   x |>
     remove_eml_header() |>
+    as_eml_chr() |>
     writeLines(con = file)
 }

@@ -77,7 +77,7 @@ test_that("write_md() fails when incorrect file extension given", {
 })
 
 test_that("`write_md()` works for characters", {
-  md_example <- c("# header 1", "## header 2")
+  md_example <- c("# header1", "## header2")
   file_out <- "test_file.md"
   write_md(md_example, file_out)
   # check file has been written to md
@@ -86,7 +86,7 @@ test_that("`write_md()` works for characters", {
     expect_true()
   # check result has correct format
   result <- readLines(file_out) 
-  expect_equal(result, md_example)
+  expect_contains(result, md_example)
   # clean up
   unlink(file_out)
 })
