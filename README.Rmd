@@ -28,8 +28,8 @@ This package is under active development, and is not yet available on CRAN. You
 can install the latest development version from GitHub with:
 
 ```{r, eval = FALSE}
-# install.packages("devtools")
-devtools::install_github("AtlasOfLivingAustralia/paperbark")
+install.packages("remotes")
+remotes::install_github("AtlasOfLivingAustralia/paperbark")
 ```
 
 Load the package:
@@ -40,23 +40,29 @@ library(paperbark)
 
 ```{r, include = FALSE}
 devtools::load_all()
+library(dplyr)
 ```
 
 ## Basic usage
 
-The primary use case for `paperbark` is to create metadata statements for 
-sharing biodiversity data. You can create a blank file by calling 
-`use_metadata()`. When you open the resulting file, it will show a markdown file
-with some pre-chosen headings, like this:
+The primary use case for `paperbark` is to manipulate the format of metadata 
+statements for sharing biodiversity data. The first step is to create a markdown
+file, and add any headings that you like that conform to the EML standard. The 
+header 'level' (i.e. number of `#`) is used to designate the degree of nesting.
+If you don't want to start from scratch, you can use the example dataset 
+`metadata_example`:
 
-```{r, echo = FALSE}
-as_eml_chr(metadata_example)[1:10] # a bit ugly. remove_eml_header() not working
+```{r}
+library(dplyr)
+metadata_example |>
+  slice_head(n = 5)
 ```
 
-You can then populate your metadata statement with whatever 
-information is needed to support effective re-use. You can add further headings 
-as you wish, presuming that they follow the EML standard. The header 'level' 
-(i.e. number of `#`) is used to designate the degree of nesting.
+It is straightforward to export this to your working directory using `write_md()`:
+
+```{r, eval=FALSE}
+write_md(metadata_example, "metadata.md")
+```
 
 Once you are done, import it to R using `read_md()`. It will be stored as a 
 `tibble`:

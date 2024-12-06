@@ -16,7 +16,6 @@ ease-of-use, then convert them to EML for efficient transfer.
 
 \strong{Basic usage}
 \itemize{
-\item \code{\link[=use_metadata]{use_metadata()}} - Create a blank metadata statement as a markdown file
 \item \code{\link[=read_eml]{read_eml()}}/\code{\link[=write_eml]{write_eml()}} - Convert between EML and tibbles
 \item \code{\link[=read_md]{read_md()}}/\code{\link[=write_md]{write_md()}} - Convert between markdown files and tibbles
 \item \code{\link[=check_eml]{check_eml()}} - Check your metadata statement against relevant standards
@@ -34,6 +33,13 @@ ease-of-use, then convert them to EML for efficient transfer.
 \references{
 If you have any questions, comments or suggestions, please email
 \href{mailto:support@ala.org.au}{support@ala.org.au}.
+}
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://paperbark.ala.org.au}
+}
+
 }
 \author{
 \strong{Maintainer}: Martin Westgate \email{martin.westgate@csiro.au}

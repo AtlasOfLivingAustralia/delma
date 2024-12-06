@@ -26,7 +26,6 @@ navbar:
 reference:
 - title: Basic usage
   contents:
-  - use_metadata
   - metadata_example
   - read_eml
   - read_md

@@ -14,7 +14,6 @@
 #' @section Functions:
 #' 
 #' **Basic usage**
-#'   * [use_metadata()] - Create a blank metadata statement as a markdown file
 #'   * [read_eml()]/[write_eml()] - Convert between EML and tibbles
 #'   * [read_md()]/[write_md()] - Convert between markdown files and tibbles
 #'   * [check_eml()] - Check your metadata statement against relevant standards

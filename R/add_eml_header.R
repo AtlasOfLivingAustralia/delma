@@ -45,7 +45,7 @@ add_eml_header <- function(x){
     x <- x |>
       add_row(level = 1, 
               label = "eml:eml", 
-              text = "",
+              text = NA,
               attributes = eml_attributes(),
               .before = 1)
   }

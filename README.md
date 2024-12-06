@@ -21,8 +21,8 @@ This package is under active development, and is not yet available on
 CRAN. You can install the latest development version from GitHub with:
 
 ``` r
-# install.packages("devtools")
-devtools::install_github("AtlasOfLivingAustralia/paperbark")
+install.packages("remotes")
+remotes::install_github("AtlasOfLivingAustralia/paperbark")
 ```
 
 Load the package:
@@ -33,26 +33,33 @@ library(paperbark)
 
 ## Basic usage
 
-The primary use case for `paperbark` is to create metadata statements
-for sharing biodiversity data. You can create a blank file by calling
-`use_metadata()`. When you open the resulting file, it will show a
-markdown file with some pre-chosen headings, like this:
+The primary use case for `paperbark` is to manipulate the format of
+metadata statements for sharing biodiversity data. The first step is to
+create a markdown file, and add any headings that you like that conform
+to the EML standard. The header ‘level’ (i.e. number of `#`) is used to
+designate the degree of nesting. If you don’t want to start from
+scratch, you can use the example dataset `metadata_example`:
 
-    #>  [1] "<h1 xmlns:d=\"eml://ecoinformatics.org/dataset-2.1.0\" xmlns:eml=\"eml://ecoinformatics.org/eml-2.1.1\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:dc=\"http://purl.org/dc/terms/\" xsi:schemaLocation=\"eml://ecoinformatics.org/eml-2.1.1 http://rs.gbif.org/schema/eml-gbif-profile/1.3/eml-gbif-profile.xsd\" system=\"R-elm-package\" scope=\"system\" xml:lang=\"en\">eml:eml</h1>"
-    #>  [2] ""                                                                                                                                                                                                                                                                                                                                                                                                           
-    #>  [3] ""                                                                                                                                                                                                                                                                                                                                                                                                           
-    #>  [4] ""                                                                                                                                                                                                                                                                                                                                                                                                           
-    #>  [5] "## Dataset"                                                                                                                                                                                                                                                                                                                                                                                                 
-    #>  [6] ""                                                                                                                                                                                                                                                                                                                                                                                                           
-    #>  [7] "### Title"                                                                                                                                                                                                                                                                                                                                                                                                  
-    #>  [8] ""                                                                                                                                                                                                                                                                                                                                                                                                           
-    #>  [9] "A Sentence Giving Your Dataset Title In Title Case"                                                                                                                                                                                                                                                                                                                                                         
-    #> [10] ""
+``` r
+library(dplyr)
+metadata_example |>
+  slice_head(n = 5)
+#> # A tibble: 5 × 4
+#>   level label    text                                               attributes  
+#>   <dbl> <chr>    <chr>                                              <list>      
+#> 1     1 eml:eml  <NA>                                               <named list>
+#> 2     2 Dataset  <NA>                                               <lgl [1]>   
+#> 3     3 Title    A Sentence Giving Your Dataset Title In Title Case <lgl [1]>   
+#> 4     3 Abstract A paragraph outlining the content of the dataset   <lgl [1]>   
+#> 5     3 Creator  <NA>                                               <lgl [1]>
+```
 
-You can then populate your metadata statement with whatever information
-is needed to support effective re-use. You can add further headings as
-you wish, presuming that they follow the EML standard. The header
-‘level’ (i.e. number of `#`) is used to designate the degree of nesting.
+It is straightforward to export this to your working directory using
+`write_md()`:
+
+``` r
+write_md(metadata_example, "metadata.md")
+```
 
 Once you are done, import it to R using `read_md()`. It will be stored
 as a `tibble`:
@@ -65,16 +72,16 @@ x
     #> # A tibble: 29 × 4
     #>    level label                  text                                attributes  
     #>    <dbl> <chr>                  <chr>                               <list>      
-    #>  1     1 eml:eml                ""                                  <named list>
-    #>  2     2 dataset                 <NA>                               <lgl [1]>   
-    #>  3     3 title                   <NA>                               <lgl [1]>   
-    #>  4     4 <NA>                   "An awesome dataset"                <NULL>      
-    #>  5     2 description             <NA>                               <lgl [1]>   
-    #>  6     3 <NA>                   "This data is the best. You should… <NULL>      
-    #>  7     3 publicShortDescription  <NA>                               <lgl [1]>   
-    #>  8     3 publicDescription       <NA>                               <lgl [1]>   
-    #>  9     3 technicalDescription    <NA>                               <lgl [1]>   
-    #> 10     3 dataQualityDescription  <NA>                               <lgl [1]>   
+    #>  1     1 eml:eml                <NA>                                <named list>
+    #>  2     2 dataset                <NA>                                <lgl [1]>   
+    #>  3     3 title                  <NA>                                <lgl [1]>   
+    #>  4     4 <NA>                   An awesome dataset                  <NULL>      
+    #>  5     2 description            <NA>                                <lgl [1]>   
+    #>  6     3 <NA>                   This data is the best. You should … <NULL>      
+    #>  7     3 publicShortDescription <NA>                                <lgl [1]>   
+    #>  8     3 publicDescription      <NA>                                <lgl [1]>   
+    #>  9     3 technicalDescription   <NA>                                <lgl [1]>   
+    #> 10     3 dataQualityDescription <NA>                                <lgl [1]>   
     #> # ℹ 19 more rows
 
 You can then export it as an xml file without any intermediate steps:
