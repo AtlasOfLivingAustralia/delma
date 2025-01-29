@@ -46,6 +46,6 @@ as_eml_tibble.list <- function(x, ...){
 #' @exportS3Method paperbark::as_eml_tibble
 as_eml_tibble.xml_document <- function(x, ...){
   x |>
-    parse_xml_to_list() |>
+    xml2::as_list() |>
     parse_list_to_tibble()
 }

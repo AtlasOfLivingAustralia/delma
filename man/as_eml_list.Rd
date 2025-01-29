@@ -28,6 +28,7 @@ A list, where both the nested structure of the XML/md and the
 attributes of XML nodes, are preserved.
 }
 \description{
-Takes an object of class \code{character}, \code{xml_document} or a tibble, and
-converts it to a \code{list}.
+Takes an object of class \code{character}, \code{xml_document} or \code{tibble}, and
+converts it to a \code{list}. When converting from an \code{xml_document}, this is
+simply a wrapper for \code{xml2::as_list()}
 }

@@ -1,7 +1,8 @@
 #' Convert metadata to an `xml_document`
 #' 
 #' Takes a `character` vector, tibble, or `list` and converts it to an 
-#' `xml_document`, as defined by the `xml2` package.
+#' `xml_document`, as defined by the `xml2` package. When converting from
+#' a list, this is simply a wrapper for `xml2::as_xml_document()`
 #' @order 1
 #' @param x Object to be converted
 #' @param ... Other arguments, currently ignored
@@ -19,7 +20,7 @@ as_eml_xml.character <- function(x, ...){
   x |>
     parse_chr_to_tibble() |>
     parse_tibble_to_list() |>
-    parse_list_to_xml()
+    xml2::as_xml_document()
 }
 
 #' @rdname as_eml_xml
@@ -28,14 +29,14 @@ as_eml_xml.character <- function(x, ...){
 as_eml_xml.tbl_df <- function(x, ...){
   x |>
     parse_tibble_to_list() |>
-    parse_list_to_xml()
+    xml2::as_xml_document()
 }
 
 #' @rdname as_eml_xml
 #' @order 4
 #' @exportS3Method paperbark::as_eml_xml
 as_eml_xml.list <- function(x, ...){
-  parse_list_to_xml(x)
+  xml2::as_xml_document()
 }
 
 #' @rdname as_eml_xml

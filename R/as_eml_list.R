@@ -1,7 +1,8 @@
 #' Convert metadata to a `list`
 #' 
-#' Takes an object of class `character`, `xml_document` or a tibble, and 
-#' converts it to a `list`.
+#' Takes an object of class `character`, `xml_document` or `tibble`, and 
+#' converts it to a `list`. When converting from an `xml_document`, this is 
+#' simply a wrapper for `xml2::as_list()`
 #' @name as_eml_list
 #' @order 1
 #' @param x Object to be converted
@@ -40,5 +41,5 @@ as_eml_list.list <- function(x, ...){
 #' @order 5
 #' @exportS3Method paperbark::as_eml_list
 as_eml_list.xml_document <- function(x, ...){
-  parse_xml_to_list(x)   
+  xml2::as_list(x) 
 }

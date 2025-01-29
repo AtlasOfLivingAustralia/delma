@@ -1,17 +1,36 @@
 #' @rdname parse_
 #' @order 2
 #' @importFrom rlang .data
-#' @importFrom snakecase to_lower_camel_case
 #' @noRd
 #' @keywords Internal
 parse_tibble_to_list <- function(x){
-  if(!inherits(x, "tbl_df")){
-    abort("`parse_chr_to_tibble()` only works on objects of class `tbl_df`")
+  # modify the tibble to the required conventions for list/xml
+  # `label` should be camel case
+  x <- x |>
+    mutate(label = snakecase::to_lower_camel_case(.data$label))
+  # undo conversion of "eml:eml" to "emlEml"
+  if(x$label[1] == "emlEml"){
+    x$label[1] <- "eml:eml"
   }
-  x <- mutate(x,
-              label = to_lower_camel_case(.data$label))
+  # ensure lists in `text` column are parsed correctly
+  # requires modification to add `para` tag within list-entries
+  inherits(x$text, "list")
+  list_check <- map(x$text, 
+                    \(a){inherits(a, "list")}) |>
+    unlist()
+  if(any(list_check)){
+    list_update <- x$text[list_check]
+    x$text[list_check] <- map(list_update,
+        \(a){
+          result <- map(a, \(b){list(b)})
+          names(result) <- rep("para", length(result))
+          result
+    })
+  }
+  # build with recursion
   result <- tibble_to_list_recurse(x, level = 1)
-  add_tibble_attributes_to_list(result, x)
+  add_tibble_attributes_to_list(empty = result,
+                                full = x)
 }
 
 #' Internal function to power `parse_tibble_to_list()`
@@ -24,7 +43,11 @@ tibble_to_list_recurse <- function(x, level = 1){
     if(is.na(x$text)){
       list()
     }else{
-      x$text 
+      if(length(x$text[[1]]) > 1){
+        x$text[[1]]
+      }else{
+        x$text
+      }
     }
   }else{
     this_level <- x$level == level

@@ -11,17 +11,9 @@
 #' @importFrom dplyr mutate
 #' @importFrom dplyr select
 #' @importFrom rlang .data
-#' @importFrom snakecase to_lower_camel_case
 #' @noRd
 #' @keywords Internal
 parse_chr_to_tibble <- function(x){
-  # type check
-  if(!inherits(x, "character")){
-    abort("`parse_chr_to_tibble()` only works on objects of class `character`")
-  }
-  
-  x <- clean_empty_rows(x)
-  
   # find titles, in either `<h1>` or `#` format
   title_check <- grepl("^\\s*(#|<h[[:digit:]])", x)
   
@@ -36,22 +28,24 @@ parse_chr_to_tibble <- function(x){
   tibble2 <- get_header_label_md(x, which(markdown_check))
   
   # join and order
-  bind_rows(tibble1, tibble2) |>
+  result <- bind_rows(tibble1, tibble2) |>
     arrange(.data$start_row) |>
-    mutate(label = to_lower_camel_case(.data$label)) |>
     get_md_text(x) |>
-    select(any_of(c("level", "label", "text", "attributes"))) |>
-    split_text_rows()
-    
+    select(any_of(c("level", "label", "text", "attributes")))
+  
+  if(check_for_jump_levels(result$level)){
+    abort(c("`level` variable includes jumps (increases > 1)", 
+            i = "Please ensure that nesting levels only ever increase by 1"))
+  }else{
+    result
+  }
 }
 
-#' Internal function to remove empty rows from data
-#' Note that this is very crude right now; it will hide paragraph breaks for
-#' example
+#' Internal function to find bugs in levels
 #' @noRd
 #' @keywords Internal
-clean_empty_rows <- function(x){
-  x[x != ""]
+check_for_jump_levels <- function(x){
+  any((x - dplyr::lag(x)) > 1, na.rm = TRUE)
 }
 
 #' get header attributes when formatted as ##Header
@@ -164,49 +158,40 @@ get_md_text <- function(df, string){
     end = c(df$start_row[-1] - 1, length(string))) |>
     mutate(row_length = .data$end - .data$start)
   
+  # this needs to return a list column
+  # list entries must have the option of being split by paragraph breaks
   text <- map(  
     .x = split(text_df, seq_len(nrow(text_df))),
     .f = \(i){
       if(i$row_length < 0){
         NA
       }else if(i$row_length == 0){
-        string[i$start]
+        x <- string[seq(i$start, i$end)]
+        if(x == ""){
+          NA
+        }else{
+          x |>
+            trimws() |>
+            str_replace("\\s{2,}", "\\s")
+        }
       }else{
-        glue_collapse(string[seq(i$start, i$end)], sep = " ")
+        x <- string[seq(i$start, i$end)]
+        while(x[length(x)] == ""){x <- x[-length(x)]}
+        if(any(x == "")){
+          x[x == ""] <- "{BREAKPOINT}"
+          glue_collapse(x, sep = " ") |>
+            strsplit(split = "\\{BREAKPOINT\\}") |>
+            purrr::pluck(!!!list(1)) |>
+            trimws() |>
+            str_replace("\\s{2,}", "\\s") |>
+            as.list()
+        }else{
+          glue_collapse(x, sep = " ") |>
+            as.character()
+        }
       }
-    }) |>
-    unlist() |>
-    trimws() |>
-    str_replace("\\s{2,}", "\\s")
-  df$text <- text
-  df
-}
+    })
 
-#' Internal function to put text on new rows, for consistency with
-#' xml code
-#' @noRd
-#' @keywords Internal
-split_text_rows <- function(x){
-  text_rows_initial <- !is.na(x$text)
-  if(any(text_rows_initial)){
-    row_index <- text_rows_initial |>
-                 which() |>
-                 seq_along()
-    for(a in row_index){
-      # regenerate each loop to prevent index errors as rows are added
-      b <- which(!is.na(x$text))[a] 
-      # create new row
-      new_row <- tibble(level = x$level[b] + 1,
-                        label = NA,
-                        text = x$text[b],
-                        attributes = NA)
-      x <- x |>
-        add_row(new_row, .after = b)
-      # remove old text
-      x$text[b] <- NA      
-    }
-    x
-  }else{
-    x
-  }
+  df |>
+    dplyr::mutate(text = unname(text))
 }

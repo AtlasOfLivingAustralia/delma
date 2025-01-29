@@ -41,7 +41,7 @@ as_eml_chr.list <- function(x, ...){
 #' @exportS3Method paperbark::as_eml_chr
 as_eml_chr.xml_document <- function(x, ...){
   x |>
-    parse_xml_to_list() |>
+    xml2::as_list() |>
     parse_list_to_tibble() |>
     parse_tibble_to_chr()
 }
