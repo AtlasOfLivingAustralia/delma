@@ -22,28 +22,28 @@ as_eml_tibble <- function(x, ...){
 
 #' @name as_eml_tibble
 #' @order 2
-#' @exportS3Method paperbark::as_eml_tibble
+#' @exportS3Method delma::as_eml_tibble
 as_eml_tibble.character <- function(x, ...){
   parse_chr_to_tibble(x)
 }
 
 #' @name as_eml_tibble
 #' @order 3
-#' @exportS3Method paperbark::as_eml_tibble
+#' @exportS3Method delma::as_eml_tibble
 as_eml_tibble.tbl_df <- function(x, ...){
   x
 }
 
 #' @rdname as_eml_tibble
 #' @order 4
-#' @exportS3Method paperbark::as_eml_tibble
+#' @exportS3Method delma::as_eml_tibble
 as_eml_tibble.list <- function(x, ...){
   parse_list_to_tibble(x)
 }
 
 #' @rdname as_eml_tibble
 #' @order 5
-#' @exportS3Method paperbark::as_eml_tibble
+#' @exportS3Method delma::as_eml_tibble
 as_eml_tibble.xml_document <- function(x, ...){
   x |>
     xml2::as_list() |>

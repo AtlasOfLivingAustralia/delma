@@ -2,11 +2,11 @@
 #' 
 #' @description
 #' Ecological Meta Language is a common framework for describing ecological 
-#' datasets so they can be shared and reused. `paperbark` supports users to 
+#' datasets so they can be shared and reused. `delma` supports users to 
 #' write metadata statements in markdown for greater transparency and 
 #' ease-of-use, then convert them to EML for efficient transfer.
 #' 
-#' @name paperbark-package
+#' @name delma-package
 #' @docType package
 #' @references If you have any questions, comments or suggestions, please email
 #' [support@ala.org.au](mailto:support@ala.org.au).

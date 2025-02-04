@@ -13,7 +13,7 @@ write_eml(x, file)
 \item{file}{Filename to read from or write to. In the case of \code{read_eml()},
 can alternatively be a url to a valid EML document.}
 
-\item{x}{Object of any class handled by \code{paperbark}; i.e. \code{character},
+\item{x}{Object of any class handled by \code{delma}; i.e. \code{character},
 \code{tbl_df}, \code{list} or \code{xml_document}.}
 }
 \value{

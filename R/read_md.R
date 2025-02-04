@@ -2,9 +2,9 @@
 #' 
 #' `read_md()` imports metadata from a markdown file into the workspace as a 
 #' `tibble`. `write_md()` write a `string`, `tibble`, `list` or `xml_document` 
-#' to a markdown file. Because `paperbark` cannot yet import code blocks, only 
-#' the file extension `.md` is currently supported (and not `.Rmd` or `.qmd`).
-#' @param file Filename to read from or write to. Must have a `.md` file extension.
+#' to a markdown file.
+#' @param file Filename to read from or write to. Must be either `.md`, `.Rmd`
+#' or `.Qmd` file.
 #' @returns `read_md()` returns an object of class `tbl_df`, `tbl` and 
 #' `data.frame` (i.e. a `tibble`). `write_md()` doesn't return anything, and
 #' is called for the side-effect of writing the specified markdown file to disk.
@@ -27,18 +27,32 @@ read_md <- function(file){
   }
   # check file is correctly specified
   check_is_single_character(file)
-  # check valid suffix
-  if(!grepl("\\.md$", file)){
-    abort("Argument `file` must end in the suffix `md`")
-  }
+  # check valid suffix (update to Rmd, md, Qmd?)
+  # if(!grepl("\\.md$", file)){
+  #   abort("Argument `file` must end in the suffix `md`")
+  # }
   # check file exists
   if(!file.exists(file)){
     abort("Specified `file` does not exist.")
   }
   # import and convert to tibble
-  readLines(file) |> 
-    as_eml_tibble() |>
-    add_eml_header()
+  lightparser::split_to_tbl(file) |>
+    run_rmd_code() |> 
+    assign_yaml_info()
+}
+
+# is it sensible to rebuild rendering code for blocks in rmarkdown files? 
+# Should we use quarto or rmarkdown to do this instead?
+## BUT if we can assume that they will only use R for simple stuff, we might be ok
+
+assign_yaml_info <- function(x){
+  if(!any(x$type == "yaml")){
+    x
+  }else{
+    row <- which(x$type == "yaml")[1]
+    yaml_params <- x$params[[row]]
+    
+  }
 }
 
 #' @rdname read_md
@@ -51,17 +65,19 @@ write_md <- function(x, file){
   
   # stop if file suffix is incorrect
   check_is_single_character(file)
-  if(!grepl(".md$", file)){
-    abort("`write_md()` only writes files with a `.md` suffix.")
-  }
+  # if(!grepl(".md$", file)){
+  #   abort("`write_md()` only writes files with a `.md` suffix.")
+  # }
   
   # check for correct format
   if(!inherits(x, "tbl_df")){
     x <- as_eml_tibble(x)
   }
   
+  # x |>
+  #   remove_eml_header() |>
+  #   as_eml_chr() |>
+  #   writeLines(con = file)
   x |>
-    remove_eml_header() |>
-    as_eml_chr() |>
-    writeLines(con = file)
+    lightparser::combine_tbl_to_file(output_file = file)
 }

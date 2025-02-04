@@ -15,11 +15,10 @@ knitr::opts_chunk$set(
 
 ## Overview
 
-`paperbark` is a package for import and type conversion of metadata statements. 
+`delma` is a package for import and type conversion of metadata statements. 
 Its purpose is to enable users to store metadata in markdown files, and convert
-them to EML. It is named for the peeling growth form displayed by a number of 
-Australian plant species. The logo was drawn by Martin Westgate, and shows the 
-flower of the swamp paperbark _Melaleuca ericifolia_.
+them to EML. It is named for a genus of legless lizards that are endemic to 
+Australia.
 
 If you have any comments, questions or suggestions, please [contact us](mailto:support@ala.org.au).
  
@@ -29,13 +28,13 @@ can install the latest development version from GitHub with:
 
 ```{r, eval = FALSE}
 install.packages("remotes")
-remotes::install_github("AtlasOfLivingAustralia/paperbark")
+remotes::install_github("AtlasOfLivingAustralia/delma")
 ```
 
 Load the package:
 
 ```{r, eval=FALSE}
-library(paperbark)
+library(delma)
 ```
 
 ```{r, include = FALSE}
@@ -45,17 +44,16 @@ library(dplyr)
 
 ## Basic usage
 
-The primary use case for `paperbark` is to manipulate the format of metadata 
+The primary use case for `delma` is to manipulate the format of metadata 
 statements for sharing biodiversity data. The first step is to create a markdown
 file, and add any headings that you like that conform to the EML standard. The 
 header 'level' (i.e. number of `#`) is used to designate the degree of nesting.
 If you don't want to start from scratch, you can use the example dataset 
-`metadata_example`:
+provided:
 
 ```{r}
 library(dplyr)
-metadata_example |>
-  slice_head(n = 5)
+use_metadata()
 ```
 
 It is straightforward to export this to your working directory using `write_md()`:
@@ -74,9 +72,9 @@ x
 
 
 ```{r, echo=FALSE}
-system.file("example_data", 
-                 "README_md_example.md", 
-                 package = "paperbark") |>
+system.file("extdata", 
+            "README_md_example.md", 
+            package = "delma") |>
   read_md()
 ```
 
@@ -86,17 +84,17 @@ You can then export it as an xml file without any intermediate steps:
 write_eml(x, "metadata.xml")
 ```
 
-For a more detailed description of paperbark's capabilities and methods, see the 
+For a more detailed description of delma's capabilities and methods, see the 
 'Quick start guide' vignette.
 
-## Citing `paperbark`
+## Citing `delma`
 To generate a citation for the package version you are using, you can run:
 
 ```r
-citation(package = "paperbark")
+citation(package = "delma")
 ```
 
 The current recommended citation is:
 
-> Westgate MJ, Balasubramaniam S & Kellie D (2024) paperbark: Convert markdown files
+> Westgate MJ, Balasubramaniam S & Kellie D (2024) delma: Convert markdown files
 to EML. R Package version 0.1.0.

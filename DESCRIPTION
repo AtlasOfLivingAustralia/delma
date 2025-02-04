@@ -1,4 +1,4 @@
-Package: paperbark
+Package: delma
 Type: Package
 Title: Convert markdown to ecological meta language (EML) and back
 Version: 0.1.0
@@ -22,6 +22,7 @@ Imports:
   cli,
   dplyr,
   glue,
+  lightparser,
   purrr,
   rlang,
   snakecase,

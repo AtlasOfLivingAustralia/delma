@@ -55,7 +55,7 @@ check_is_single_character <- function(x){
 }
 
 #' @rdname read_eml
-#' @param x Object of any class handled by `paperbark`; i.e. `character`, 
+#' @param x Object of any class handled by `delma`; i.e. `character`, 
 #' `tbl_df`, `list` or `xml_document`.
 #' @importFrom rlang abort
 #' @importFrom xml2 write_xml

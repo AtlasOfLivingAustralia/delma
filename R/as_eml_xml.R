@@ -15,7 +15,7 @@ as_eml_xml <- function(x, ...){
 
 #' @rdname as_eml_xml
 #' @order 2
-#' @exportS3Method paperbark::as_eml_xml
+#' @exportS3Method delma::as_eml_xml
 as_eml_xml.character <- function(x, ...){
   x |>
     parse_chr_to_tibble() |>
@@ -25,7 +25,7 @@ as_eml_xml.character <- function(x, ...){
 
 #' @rdname as_eml_xml
 #' @order 3
-#' @exportS3Method paperbark::as_eml_xml
+#' @exportS3Method delma::as_eml_xml
 as_eml_xml.tbl_df <- function(x, ...){
   x |>
     parse_tibble_to_list() |>
@@ -34,14 +34,14 @@ as_eml_xml.tbl_df <- function(x, ...){
 
 #' @rdname as_eml_xml
 #' @order 4
-#' @exportS3Method paperbark::as_eml_xml
+#' @exportS3Method delma::as_eml_xml
 as_eml_xml.list <- function(x, ...){
   xml2::as_xml_document()
 }
 
 #' @rdname as_eml_xml
 #' @order 5
-#' @exportS3Method paperbark::as_eml_xml
+#' @exportS3Method delma::as_eml_xml
 as_eml_xml.xml_document <- function(x, ...){
   x
 }
