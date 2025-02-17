@@ -1,9 +1,41 @@
+# draw a hex sticker for `delma`
+library(hexSticker)
+library(showtext)
+library(ggplot2)
+font_add_google("Lato", family = "lato")
+p <- ggplot() + theme_void()
+
+# export as sticker
+sticker(
+  subplot = p,
+  # package name
+  package = "delma",
+  p_color = "#C44D34",
+  p_y = 1,
+  p_family = "lato",
+  p_size = 20,
+  # border
+  h_fill = "#ffffff",
+  h_color = "#000000",
+  h_size = 1.5,
+  filename = "man/figures/logo.pdf",
+  # url
+  url = "delma.ala.org.au",
+  u_family = "lato",
+  u_color = "black",
+  u_y = 0.12,
+  u_size = 5
+)
+
+# example image:
+# https://biocache.ala.org.au/occurrences/c3a37aea-8b63-42f1-8c32-0f24dfd2f5ed
+
+
 # draw a hex sticker for `paperbark`
 library(tibble)
 library(dplyr)
 library(sf)
 library(ggplot2)
-
 
 # example images
 # https://biocache.ala.org.au/occurrences/7dbe5cec-6ba1-49bf-af65-8e8c3e83fee6

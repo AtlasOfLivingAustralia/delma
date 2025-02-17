@@ -33,23 +33,21 @@ add_eml_header <- function(x){
   
   # If first entry says "eml", overwrite with correct info
   if(grepl("eml|EML", x$label[[1]])){
-    x$level[[1]] <- 1
-    x$label[[1]] <- "eml:eml"
-    x$attributes[[1]] <- eml_attributes()[[1]]
+    x <- x |>
+      dplyr::slice(-1)
   # otherwise, add a new row with eml info
   }else{
     if(min(x$level) == 1){
       x <- x |>
         mutate(level = .data$level + 1)
     }
-    x <- x |>
-      add_row(level = 1, 
-              label = "eml:eml", 
-              text = NA,
-              attributes = eml_attributes(),
-              .before = 1)
   }
-  return(x) 
+  x |>
+    add_row(level = 1, 
+            label = "eml:eml", 
+            text = list(NA),
+            attributes = eml_attributes(),
+            .before = 1)
 }
 
 #' Internal function to remove EML headers before rendering to markdown
@@ -83,7 +81,7 @@ eml_attributes <- function(){
     `xmlns:xsi` = "http://www.w3.org/2001/XMLSchema-instance",
     `xmlns:dc` = "http://purl.org/dc/terms/",
     `xsi:schemaLocation` = "eml://ecoinformatics.org/eml-2.1.1 http://rs.gbif.org/schema/eml-gbif-profile/1.3/eml-gbif-profile.xsd",
-     system = "R-paperbark-package",
+     system = "R-delma-package",
      scope = "system",
     `xml:lang` = "en"
     )

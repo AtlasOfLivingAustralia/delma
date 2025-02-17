@@ -10,7 +10,8 @@ read_md(file)
 write_md(x, file)
 }
 \arguments{
-\item{file}{Filename to read from or write to. Must have a \code{.md} file extension.}
+\item{file}{Filename to read from or write to. Must be either \code{.md}, \code{.Rmd}
+or \code{.Qmd} file.}
 
 \item{x}{Object of any class handled by \code{paperbark}; i.e. \code{character},
 \code{tbl_df}, \code{list} or \code{xml_document}.}
@@ -23,8 +24,7 @@ is called for the side-effect of writing the specified markdown file to disk.
 \description{
 \code{read_md()} imports metadata from a markdown file into the workspace as a
 \code{tibble}. \code{write_md()} write a \code{string}, \code{tibble}, \code{list} or \code{xml_document}
-to a markdown file. Because \code{paperbark} cannot yet import code blocks, only
-the file extension \code{.md} is currently supported (and not \code{.Rmd} or \code{.qmd}).
+to a markdown file.
 }
 \examples{
 \dontrun{

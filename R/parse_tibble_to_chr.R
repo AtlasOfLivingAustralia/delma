@@ -3,13 +3,13 @@
 #' @noRd
 #' @keywords Internal
 parse_tibble_to_chr <- function(x){
-  # type check
-  if(!inherits(x, "tbl_df")){
-    abort("`parse_chr_to_tibble()` only works on objects of class `tbl_df`")
-  }
   # split apply recombine
   rows <- nrow(x)
-  y <- split(x, seq_len(rows))
+  y <- x |>
+    dplyr::mutate(double_line = level < dplyr::lag(.data$level)) |>
+    split(f = seq_len(rows))
+  y[[1]]$double_line <- FALSE
+  
   map(.x = y,
       .f = \(a){
         c(format_md_header(a), 
@@ -29,12 +29,12 @@ parse_tibble_to_chr <- function(x){
 format_md_header <- function(a){
   if(is.na(a$attributes)){
     hashes <- strrep("#", a$level)
-    glue("{hashes} {a$label}")
+    result <- glue("{hashes} {a$label}")
   }else{
     z <- a$attributes[[1]]
     if(length(z) < 1){
       hashes <- strrep("#", a$level)
-      glue("{hashes} {a$label}")
+      result <- glue("{hashes} {a$label}")
     }else{
       z <- a$attributes[[1]]
       attributes <- map(seq_along(z),
@@ -47,8 +47,13 @@ format_md_header <- function(a){
                         }) |>
         unlist() |>
         glue_collapse(sep = " ")
-      glue("<h{a$level} {attributes}>{a$label}</h{a$level}>")
+      result <- glue("<h{a$level} {attributes}>{a$label}</h{a$level}>")
     }
+  }
+  if(a$double_line){
+    c("", result)
+  }else{
+    result
   }
 }
 
@@ -56,10 +61,16 @@ format_md_header <- function(a){
 #' @noRd
 #' @keywords Internal 
 format_md_text <- function(string){
-  if(is.na(string)){
-    ""
+  x <- string[[1]] # assuming all entries will be length-1; should be safe
+  if(length(x) > 1){
+    result <- map(x, \(a){c(a, "")}) |> unlist()
+    c(result, "") # add extra line to prevent crowding
   }else{
-    c("", string, "")
+    if(is.na(x)){
+      ""  
+    }else{
+      c(x, "")
+    }
   }
 }
 

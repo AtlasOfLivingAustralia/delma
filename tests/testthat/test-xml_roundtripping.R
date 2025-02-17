@@ -1,3 +1,33 @@
+test_that("`example_metadata` can be converted to md and back", {
+  write_md(metadata_example, "EXAMPLE.md")
+  x <- read_md("EXAMPLE.md")
+  expect_equal(metadata_example,  dplyr::slice(x, -1))
+  # paragraphs in tibble should be in list-entries, 
+  # but are not nested; no `para` tag
+  
+  # test that `para` tag is added at `as_eml_list()` stage
+  x_list <- as_eml_list(x)
+  x_list |> 
+    unlist() |>
+    names() |>
+    grepl("para$", x = _) |>
+    any() |>
+    expect_true()
+  
+  # convert to eml
+  write_eml(x_list, "EXAMPLE.xml")
+  
+  # reimport
+  y <- xml2::read_xml("EXAMPLE.xml")
+  y_list <- xml2::as_list(y) # this works
+  as_eml_tibble(y_list)
+  
+  # aka
+  z <- read_eml("EXAMPLE.xml")
+  z
+  z$attributes[[3]]  
+})
+
 test_that("xml documents can be losslessly converted to list and back", {
   # read, convert, write
   xml2::read_xml("testdata/meta_example.xml") |>

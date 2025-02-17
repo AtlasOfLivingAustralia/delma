@@ -55,7 +55,7 @@ check_is_single_character <- function(x){
 }
 
 #' @rdname read_eml
-#' @param x Object of any class handled by `paperbark`; i.e. `character`, 
+#' @param x Object of any class handled by `delma`; i.e. `character`, 
 #' `tbl_df`, `list` or `xml_document`.
 #' @importFrom rlang abort
 #' @importFrom xml2 write_xml
@@ -66,13 +66,11 @@ write_eml <- function(x,
   if(inherits(x, c("character", "tbl_df", "list"))){
     x <- as_eml_xml(x)
   }
-  
+
   # stop if not converted
   if(!inherits(x, "xml_document")){
     abort(c("`write_eml()` only accepts objects of class `xml_document`.",
             i = "Use `as_eml_xml()` to convert it."))
-  }else{
-    class(x) <- "xml_document"
   }
   
   # stop if file suffix is incorrect
@@ -80,6 +78,11 @@ write_eml <- function(x,
   if(!grepl(".xml$", file)){
     abort("`write_eml()` only writes files with a `.xml` suffix.")
   }
+  # browser()
+  # xml_find_all(x, ".//title") # works
+  # xml_find_all(x, ".//para") # fails
   
-  write_xml(x, file)
+  write_xml(x, 
+            file, 
+            options = list("format", "as_xml"))
 }
