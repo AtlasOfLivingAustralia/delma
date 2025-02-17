@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>Convert markdown to ecological meta language (EML) and back • paperbark</title>
+<title>Convert markdown to ecological meta language (EML) and back • delma</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
 <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="apple-touch-icon.png">
@@ -29,7 +29,7 @@
 
     <nav class="navbar navbar-expand-lg fixed-top bg-primary" data-bs-theme="dark" aria-label="Site navigation"><div class="container">
 
-    <a class="navbar-brand me-2" href="index.html">paperbark</a>
+    <a class="navbar-brand me-2" href="index.html">delma</a>
 
     <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.1.0</small>
 
@@ -44,6 +44,9 @@
 <li class="nav-item"><a class="nav-link" href="reference/index.html">Reference</a></li>
       </ul>
 <ul class="navbar-nav">
+<li class="nav-item"><form class="form-inline" role="search">
+ <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="search.json">
+</form></li>
 <li class="nav-item"><a class="nav-link" href="news/index.html">News</a></li>
       </ul>
 </div>
@@ -54,13 +57,14 @@
 <div class="row">
   <main id="main" class="col-md-9"><div class="section level1">
 <div class="page-header">
-<img src="logo.png" class="logo" alt=""><h1 id="paperbark--">paperbark <br><a class="anchor" aria-label="anchor" href="#paperbark--"></a>
+<img src="logo.png" class="logo" alt=""><h1 id="delma--">delma <br><a class="anchor" aria-label="anchor" href="#delma--"></a>
 </h1>
 </div>
 <div class="section level2">
 <h2 id="overview">Overview<a class="anchor" aria-label="anchor" href="#overview"></a>
 </h2>
-<p><code>paperbark</code> is a package for import and type conversion of metadata statements. Its purpose is to enable users to store metadata in markdown files, and convert them to EML. It is named for the peeling growth form displayed by a number of Australian plant species. The logo was drawn by Martin Westgate, and shows the flower of the swamp paperbark <em>Melaleuca ericifolia</em>.</p>
+<p><code>delma</code> is a package for converting metadata statements written in markdown, RMarkdown or Quarto markdown to Ecological Meta-language (EML). It is named for a genus of legless lizards that are endemic to Australia, whose name happens to contain the letters ‘e’, ‘m’ and ‘l’.</p>
+<p>The logo depicts a striped legless lizard (<em>Delma impar</em>) in the style of the classic mobile game ‘snake’, a play on the observation that <em>Delma</em> are often mistaken for snakes. It was drawn by Martin Westgate.</p>
 <p>If you have any comments, questions or suggestions, please <a href="mailto:support@ala.org.au">contact us</a>.</p>
 </div>
 <div class="section level2">
@@ -69,27 +73,19 @@
 <p>This package is under active development, and is not yet available on CRAN. You can install the latest development version from GitHub with:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"remotes"</span><span class="op">)</span></span>
-<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"AtlasOfLivingAustralia/paperbark"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"AtlasOfLivingAustralia/delma"</span><span class="op">)</span></span></code></pre></div>
 <p>Load the package:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://paperbark.ala.org.au">paperbark</a></span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://paperbark.ala.org.au">delma</a></span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="basic-usage">Basic usage<a class="anchor" aria-label="anchor" href="#basic-usage"></a>
 </h2>
-<p>The primary use case for <code>paperbark</code> is to manipulate the format of metadata statements for sharing biodiversity data. The first step is to create a markdown file, and add any headings that you like that conform to the EML standard. The header ‘level’ (i.e. number of <code>#</code>) is used to designate the degree of nesting. If you don’t want to start from scratch, you can use the example dataset <code>metadata_example</code>:</p>
+<p>The primary use case for <code>delma</code> is to manipulate the format of metadata statements for sharing biodiversity data. The first step is to create a markdown file, and add any headings that you like that conform to the EML standard. The header ‘level’ (i.e. number of <code>#</code>) is used to designate the degree of nesting. If you don’t want to start from scratch, you can use the example dataset provided:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
-<span><span class="va">metadata_example</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/slice.html" class="external-link">slice_head</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span>
-<span><span class="co">#&gt; # A tibble: 5 × 4</span></span>
-<span><span class="co">#&gt;   level label    text                                               attributes  </span></span>
-<span><span class="co">#&gt;   &lt;dbl&gt; &lt;chr&gt;    &lt;chr&gt;                                              &lt;list&gt;      </span></span>
-<span><span class="co">#&gt; 1     1 eml:eml  &lt;NA&gt;                                               &lt;named list&gt;</span></span>
-<span><span class="co">#&gt; 2     2 Dataset  &lt;NA&gt;                                               &lt;lgl [1]&gt;   </span></span>
-<span><span class="co">#&gt; 3     3 Title    A Sentence Giving Your Dataset Title In Title Case &lt;lgl [1]&gt;   </span></span>
-<span><span class="co">#&gt; 4     3 Abstract A paragraph outlining the content of the dataset   &lt;lgl [1]&gt;   </span></span>
-<span><span class="co">#&gt; 5     3 Creator  &lt;NA&gt;                                               &lt;lgl [1]&gt;</span></span></code></pre></div>
+<span><span class="fu"><a href="reference/use_metadata.html">use_metadata</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] FALSE</span></span></code></pre></div>
 <p>It is straightforward to export this to your working directory using <code><a href="reference/read_md.html">write_md()</a></code>:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/read_md.html">write_md</a></span><span class="op">(</span><span class="va">metadata_example</span>, <span class="st">"metadata.md"</span><span class="op">)</span></span></code></pre></div>
@@ -97,35 +93,21 @@
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/read_md.html">read_md</a></span><span class="op">(</span><span class="st">"metadata.md"</span><span class="op">)</span></span>
 <span><span class="va">x</span> </span></code></pre></div>
-<div class="sourceCode" id="cb6"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="co">#&gt; # A tibble: 29 × 4</span></span>
-<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a><span class="co">#&gt;    level label                  text                                attributes  </span></span>
-<span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a><span class="co">#&gt;    &lt;dbl&gt; &lt;chr&gt;                  &lt;chr&gt;                               &lt;list&gt;      </span></span>
-<span id="cb6-4"><a href="#cb6-4" tabindex="-1"></a><span class="co">#&gt;  1     1 eml:eml                &lt;NA&gt;                                &lt;named list&gt;</span></span>
-<span id="cb6-5"><a href="#cb6-5" tabindex="-1"></a><span class="co">#&gt;  2     2 dataset                &lt;NA&gt;                                &lt;lgl [1]&gt;   </span></span>
-<span id="cb6-6"><a href="#cb6-6" tabindex="-1"></a><span class="co">#&gt;  3     3 title                  &lt;NA&gt;                                &lt;lgl [1]&gt;   </span></span>
-<span id="cb6-7"><a href="#cb6-7" tabindex="-1"></a><span class="co">#&gt;  4     4 &lt;NA&gt;                   An awesome dataset                  &lt;NULL&gt;      </span></span>
-<span id="cb6-8"><a href="#cb6-8" tabindex="-1"></a><span class="co">#&gt;  5     2 description            &lt;NA&gt;                                &lt;lgl [1]&gt;   </span></span>
-<span id="cb6-9"><a href="#cb6-9" tabindex="-1"></a><span class="co">#&gt;  6     3 &lt;NA&gt;                   This data is the best. You should … &lt;NULL&gt;      </span></span>
-<span id="cb6-10"><a href="#cb6-10" tabindex="-1"></a><span class="co">#&gt;  7     3 publicShortDescription &lt;NA&gt;                                &lt;lgl [1]&gt;   </span></span>
-<span id="cb6-11"><a href="#cb6-11" tabindex="-1"></a><span class="co">#&gt;  8     3 publicDescription      &lt;NA&gt;                                &lt;lgl [1]&gt;   </span></span>
-<span id="cb6-12"><a href="#cb6-12" tabindex="-1"></a><span class="co">#&gt;  9     3 technicalDescription   &lt;NA&gt;                                &lt;lgl [1]&gt;   </span></span>
-<span id="cb6-13"><a href="#cb6-13" tabindex="-1"></a><span class="co">#&gt; 10     3 dataQualityDescription &lt;NA&gt;                                &lt;lgl [1]&gt;   </span></span>
-<span id="cb6-14"><a href="#cb6-14" tabindex="-1"></a><span class="co">#&gt; # ℹ 19 more rows</span></span></code></pre></div>
 <p>You can then export it as an xml file without any intermediate steps:</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/read_eml.html">write_eml</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"metadata.xml"</span><span class="op">)</span></span></code></pre></div>
-<p>For a more detailed description of paperbark’s capabilities and methods, see the ‘Quick start guide’ vignette.</p>
+<p>For a more detailed description of delma’s capabilities and methods, see the ‘Quick start guide’ vignette.</p>
 </div>
 <div class="section level2">
-<h2 id="citing-paperbark">Citing <code>paperbark</code>
-<a class="anchor" aria-label="anchor" href="#citing-paperbark"></a>
+<h2 id="citing-delma">Citing <code>delma</code>
+<a class="anchor" aria-label="anchor" href="#citing-delma"></a>
 </h2>
 <p>To generate a citation for the package version you are using, you can run:</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/citation.html" class="external-link">citation</a></span><span class="op">(</span>package <span class="op">=</span> <span class="st">"paperbark"</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/citation.html" class="external-link">citation</a></span><span class="op">(</span>package <span class="op">=</span> <span class="st">"delma"</span><span class="op">)</span></span></code></pre></div>
 <p>The current recommended citation is:</p>
 <blockquote>
-<p>Westgate MJ, Balasubramaniam S &amp; Kellie D (2024) paperbark: Convert markdown files to EML. R Package version 0.1.0.</p>
+<p>Westgate MJ, Balasubramaniam S &amp; Kellie D (2024) delma: Convert markdown files to EML. R Package version 0.1.0.</p>
 </blockquote>
 </div>
 </div>
@@ -140,7 +122,7 @@
 <div class="citation">
 <h2 data-toc-skip>Citation</h2>
 <ul class="list-unstyled">
-<li><a href="authors.html#citation">Citing paperbark</a></li>
+<li><a href="authors.html#citation">Citing delma</a></li>
 </ul>
 </div>
 

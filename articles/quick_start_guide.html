@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>Quick start guide • paperbark</title>
+<title>Quick start guide • delma</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
 <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png">
@@ -26,7 +26,7 @@
 
     <nav class="navbar navbar-expand-lg fixed-top bg-primary" data-bs-theme="dark" aria-label="Site navigation"><div class="container">
 
-    <a class="navbar-brand me-2" href="../index.html">paperbark</a>
+    <a class="navbar-brand me-2" href="../index.html">delma</a>
 
     <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.1.0</small>
 
@@ -41,6 +41,9 @@
 <li class="nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
       </ul>
 <ul class="navbar-nav">
+<li class="nav-item"><form class="form-inline" role="search">
+ <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json">
+</form></li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">News</a></li>
       </ul>
 </div>
@@ -66,9 +69,9 @@ Westgate</h4>
 
     
     
-<p>The <code>paperbark</code> package converts markdown files to
-Ecological Metadata Language (EML), which is a “comprehensive vocabulary
-and a readable XML markup syntax for documenting research data” (<a href="https://doi.org/10.5063/F11834T2" class="external-link">Jones et al. 2019</a>). EML has
+<p>The <code>delma</code> package converts markdown files to Ecological
+Metadata Language (EML), which is a “comprehensive vocabulary and a
+readable XML markup syntax for documenting research data” (<a href="https://doi.org/10.5063/F11834T2" class="external-link">Jones et al. 2019</a>). EML has
 been widely adopted as a community-maintained standard for metadata
 exchange, to the point that supplying metadata in this format is a
 requirement of several data-sharing institutions, such as the Global
@@ -78,14 +81,14 @@ make it difficult for people to use without drawing on bespoke
 programming tools. In contrast, markdown is considerably more generic,
 especially for those who are familiar with tools such as RMarkdown or
 Quarto; but no general-purpose parser exists to transform markdown into
-EML. <code>paperbark</code> fills this gap.</p>
+EML. <code>delma</code> fills this gap.</p>
 <div class="section level2">
 <h2 id="methodological-approach">Methodological approach<a class="anchor" aria-label="anchor" href="#methodological-approach"></a>
 </h2>
-<p>To convert between markdown and EML, <code>paperbark</code> relies on
-the assumption that header levels in markdown reflect the nested
-structure of the resulting xml. For example, the markdown file might
-contain this text:</p>
+<p>To convert between markdown and EML, <code>delma</code> relies on the
+assumption that header levels in markdown reflect the nested structure
+of the resulting xml. For example, the markdown file might contain this
+text:</p>
 <pre><code># EML
 ## Dataset
 ### Title
@@ -99,99 +102,62 @@ My title</code></pre>
 <p>To accomplish this conversion, we have built a set of parsers that
 convert data in this sequence:</p>
 <pre><code>.md file -&gt; character -&gt; tibble -&gt; list -&gt; xml -&gt; .xml file</code></pre>
-<p>Rather than export all these individual parsers,
-<code>paperbark</code> provides a set of transformers with the
-<code>as_eml_</code> prefix, e.g.:</p>
+<p>Rather than export all these individual parsers, <code>delma</code>
+provides a set of transformers with the <code>as_eml_</code> prefix,
+e.g.:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://paperbark.ala.org.au">paperbark</a></span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://paperbark.ala.org.au">delma</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"# Heading 1"</span>, </span>
 <span>  <span class="st">"## Heading 2"</span>,</span>
 <span>  <span class="st">"text content"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="../reference/as_eml_tibble.html">as_eml_tibble</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 3 × 4</span></span></span>
-<span><span class="co">##   level label    text         attributes</span></span>
-<span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>    </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">1</span>     1 heading1 <span style="color: #BB0000;">NA</span>           <span style="color: #949494;">&lt;lgl [1]&gt;</span> </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">2</span>     2 heading2 <span style="color: #BB0000;">NA</span>           <span style="color: #949494;">&lt;lgl [1]&gt;</span> </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">3</span>     3 <span style="color: #BB0000;">NA</span>       text content <span style="color: #949494;">&lt;NULL&gt;</span></span></span></code></pre>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"# Heading 1"</span>, </span>
+<span>  <span class="fu"><a href="../reference/as_eml_tibble.html">as_eml_tibble</a></span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"# Heading 1"</span>, </span>
 <span>  <span class="st">"## Heading 2"</span>,</span>
 <span>  <span class="st">"text content"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/as_eml_xml.html">as_eml_xml</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## {xml_document}</span></span>
-<span><span class="co">## &lt;heading1&gt;</span></span>
-<span><span class="co">## [1] &lt;heading2&gt;text content&lt;/heading2&gt;</span></span></code></pre>
 <p>Every permutation of <code>as_eml_</code> functions is provided in
-<code>paperbark</code>, meaning you can simply choose the outcome you
-are looking for, and let <code>paperbark</code> handle the parsing chain
-needed to return the object class you require.</p>
+<code>delma</code>, meaning you can simply choose the outcome you are
+looking for, and let <code>delma</code> handle the parsing chain needed
+to return the object class you require.</p>
 </div>
 <div class="section level2">
 <h2 id="reading-and-writing">Reading and writing<a class="anchor" aria-label="anchor" href="#reading-and-writing"></a>
 </h2>
 <p>As is standard for ALA R packages, <code>read_</code> functions in
-<code>paperbark</code> return a <code>tibble</code>. There are two
-variants, one for reading data from markdown:</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code>delma</code> return a <code>tibble</code>. There are two variants,
+one for reading data from markdown:</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">file</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"example_data"</span>, </span>
 <span>                    <span class="st">"README_md_example.md"</span>, </span>
-<span>                    package <span class="op">=</span> <span class="st">"paperbark"</span><span class="op">)</span></span>
+<span>                    package <span class="op">=</span> <span class="st">"delma"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/read_md.html">read_md</a></span><span class="op">(</span><span class="va">file</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 29 × 4</span></span></span>
-<span><span class="co">##    level label                  text                                attributes  </span></span>
-<span><span class="co">##    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                               <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>      </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 1</span>     1 eml:eml                <span style="color: #BB0000;">NA</span>                                  <span style="color: #949494;">&lt;named list&gt;</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 2</span>     2 dataset                <span style="color: #BB0000;">NA</span>                                  <span style="color: #949494;">&lt;lgl [1]&gt;</span>   </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 3</span>     3 title                  <span style="color: #BB0000;">NA</span>                                  <span style="color: #949494;">&lt;lgl [1]&gt;</span>   </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 4</span>     4 <span style="color: #BB0000;">NA</span>                     An awesome dataset                  <span style="color: #949494;">&lt;NULL&gt;</span>      </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 5</span>     2 description            <span style="color: #BB0000;">NA</span>                                  <span style="color: #949494;">&lt;lgl [1]&gt;</span>   </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 6</span>     3 <span style="color: #BB0000;">NA</span>                     This data is the best. You should … <span style="color: #949494;">&lt;NULL&gt;</span>      </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 7</span>     3 publicShortDescription <span style="color: #BB0000;">NA</span>                                  <span style="color: #949494;">&lt;lgl [1]&gt;</span>   </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 8</span>     3 publicDescription      <span style="color: #BB0000;">NA</span>                                  <span style="color: #949494;">&lt;lgl [1]&gt;</span>   </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 9</span>     3 technicalDescription   <span style="color: #BB0000;">NA</span>                                  <span style="color: #949494;">&lt;lgl [1]&gt;</span>   </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">10</span>     3 dataQualityDescription <span style="color: #BB0000;">NA</span>                                  <span style="color: #949494;">&lt;lgl [1]&gt;</span>   </span></span>
-<span><span class="co">## <span style="color: #949494;"># ℹ 19 more rows</span></span></span></code></pre>
 <p>And a second for reading data from EML:</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/read_eml.html">read_eml</a></span><span class="op">(</span><span class="st">"https://collections.ala.org.au/ws/eml/dr368"</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 85 × 4</span></span></span>
-<span><span class="co">##    level label                text                                  attributes  </span></span>
-<span><span class="co">##    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                                 <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>      </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 1</span>     1 Eml                  <span style="color: #BB0000;">NA</span>                                    <span style="color: #949494;">&lt;named list&gt;</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 2</span>     2 Dataset              <span style="color: #BB0000;">NA</span>                                    <span style="color: #949494;">&lt;named list&gt;</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 3</span>     3 Alternate Identifier <span style="color: #BB0000;">NA</span>                                    <span style="color: #949494;">&lt;lgl [1]&gt;</span>   </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 4</span>     4 <span style="color: #BB0000;">NA</span>                   0101d74b-afc2-3b0f-817c-dc350d2a6fe4  <span style="color: #949494;">&lt;lgl [1]&gt;</span>   </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 5</span>     4 <span style="color: #BB0000;">NA</span>                   10.15468/14jd9g                       <span style="color: #949494;">&lt;lgl [1]&gt;</span>   </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 6</span>     4 <span style="color: #BB0000;">NA</span>                   0645ccdb-e001-4ab0-9729-51f1755e007e  <span style="color: #949494;">&lt;lgl [1]&gt;</span>   </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 7</span>     4 <span style="color: #BB0000;">NA</span>                   https://collections.ala.org.au/publi… <span style="color: #949494;">&lt;lgl [1]&gt;</span>   </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 8</span>     3 Title                <span style="color: #BB0000;">NA</span>                                    <span style="color: #949494;">&lt;named list&gt;</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 9</span>     4 <span style="color: #BB0000;">NA</span>                   NSW BioNet Atlas                      <span style="color: #949494;">&lt;lgl [1]&gt;</span>   </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">10</span>     3 Creator              <span style="color: #BB0000;">NA</span>                                    <span style="color: #949494;">&lt;named list&gt;</span></span></span>
-<span><span class="co">## <span style="color: #949494;"># ℹ 75 more rows</span></span></span></code></pre>
 <p>The corresponding write functions are <code><a href="../reference/read_md.html">write_md()</a></code> and
 <code><a href="../reference/read_eml.html">write_eml()</a></code>. Both functions accept objects of all classes
-supported by <code>paperbark</code>, so it is possible to pipe read and
+supported by <code>delma</code>, so it is possible to pipe read and
 write functions together without any intermediate stages:</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"example_data"</span>, </span>
 <span>            <span class="st">"README_md_example.md"</span>, </span>
-<span>            package <span class="op">=</span> <span class="st">"paperbark"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>            package <span class="op">=</span> <span class="st">"delma"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/read_md.html">read_md</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/read_eml.html">write_eml</a></span><span class="op">(</span><span class="st">"output.xml"</span><span class="op">)</span></span></code></pre></div>
 <p>It is worth noting, though, that these are quite simple wrapper
 functions to existing import and transformation functions. For example,
-the code block above can be rewritten using only one
-<code>paperbark</code> function, as follows:</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+the code block above can be rewritten using only one <code>delma</code>
+function, as follows:</p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://xml2.r-lib.org/" class="external-link">xml2</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"example_data"</span>, </span>
 <span>            <span class="st">"README_md_example.md"</span>, </span>
-<span>            package <span class="op">=</span> <span class="st">"paperbark"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>            package <span class="op">=</span> <span class="st">"delma"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">base</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/base/readLines.html" class="external-link">readLines</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu">paperbark</span><span class="fu">::</span><span class="fu"><a href="../reference/as_eml_xml.html">as_eml_xml</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">delma</span><span class="fu">::</span><span class="fu"><a href="../reference/as_eml_xml.html">as_eml_xml</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">xml2</span><span class="fu">::</span><span class="fu"><a href="http://xml2.r-lib.org/reference/write_xml.html" class="external-link">write_xml</a></span><span class="op">(</span><span class="st">"output.xml"</span><span class="op">)</span></span></code></pre></div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
