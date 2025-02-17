@@ -27,10 +27,10 @@ navbar:
 reference:
 - title: Basic usage
   contents:
-  - metadata_example
   - read_eml
   - read_md
   - check_eml
+  - use_metadata
 - title: Type conversion
   contents:
   - as_eml_chr

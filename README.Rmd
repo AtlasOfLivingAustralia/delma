@@ -11,14 +11,18 @@ knitr::opts_chunk$set(
 )
 ```
 
-# paperbark <img src="man/figures/logo.png" align="right" style="margin: 0px 10px 0px 10px;" alt="" width="120"/><br>
+# delma <img src="man/figures/logo.png" align="right" style="margin: 0px 10px 0px 10px;" alt="" width="120"/><br>
 
 ## Overview
 
-`delma` is a package for import and type conversion of metadata statements. 
-Its purpose is to enable users to store metadata in markdown files, and convert
-them to EML. It is named for a genus of legless lizards that are endemic to 
-Australia.
+`delma` is a package for converting metadata statements written in markdown,
+RMarkdown or Quarto markdown to Ecological Meta-language (EML). It is named for 
+a genus of legless lizards that are endemic to Australia, whose name happens to
+contain the letters 'e', 'm' and 'l'.
+
+The logo depicts a striped legless lizard (_Delma impar_) in the 
+style of the classic mobile game 'snake', a play on the observation that
+_Delma_ are often mistaken for snakes. It was drawn by Martin Westgate.
 
 If you have any comments, questions or suggestions, please [contact us](mailto:support@ala.org.au).
  
@@ -71,7 +75,7 @@ x
 ```
 
 
-```{r, echo=FALSE}
+```{r, eval=FALSE, echo=FALSE}
 system.file("extdata", 
             "README_md_example.md", 
             package = "delma") |>

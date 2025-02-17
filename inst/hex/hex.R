@@ -18,7 +18,7 @@ sticker(
   h_fill = "#ffffff",
   h_color = "#000000",
   h_size = 1.5,
-  filename = "man/figures/logo.png",
+  filename = "man/figures/logo.pdf",
   # url
   url = "delma.ala.org.au",
   u_family = "lato",
@@ -26,6 +26,9 @@ sticker(
   u_y = 0.12,
   u_size = 5
 )
+
+# example image:
+# https://biocache.ala.org.au/occurrences/c3a37aea-8b63-42f1-8c32-0f24dfd2f5ed
 
 
 # draw a hex sticker for `paperbark`
