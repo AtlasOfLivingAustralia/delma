@@ -12,7 +12,7 @@
 #' # read from a url
 #' file <- system.file("example_data", 
 #'                     "README_md_example.md", 
-#'                     package = "paperbark")
+#'                     package = "delma")
 #' df <- read_md(file)
 #' 
 #' # write to disk
@@ -35,49 +35,155 @@ read_md <- function(file){
   if(!file.exists(file)){
     abort("Specified `file` does not exist.")
   }
-  # import and convert to tibble
-  lightparser::split_to_tbl(file) |>
-    run_rmd_code() |> 
-    assign_yaml_info()
+  
+  # set a working directory
+  temp_dir <- tempdir()
+  
+  # create a temporary file and convert output format to markdown
+  temp_source <- glue("{temp_dir}/temp_source.Rmd")
+  file.copy(from = file, 
+            to = temp_source) |>
+    invisible()
+  convert_to_markdown_output(temp_source)
+  
+  # create a rendered version of this doc
+  temp_md <- glue("{temp_dir}/temp_md.md")
+  rmarkdown::render(input = temp_source,
+                    output_file = temp_md) |>
+    suppressWarnings() |>
+    suppressMessages()
+  add_standard_yaml(temp_md)
+  # NOTE: we MUST call `render()` here, and not `knit()`.
+  # Only the former will extract and calculate metadata that is necessary to place
+  # title and date properly in the body of the markdown file
+  
+  # purrr::quietly doesn't work on `render()`
+  
+  # import both tibbles
+  tbl_rendered <- lightparser::split_to_tbl(temp_md)
+  tbl_source <- lightparser::split_to_tbl(file)
+  
+  # clean `tbl_rendered` into format expected by `delma`
+  result <- tbl_rendered |>
+    clean_header_level() |> # downfill heading level
+    dplyr::filter(.data$type != "yaml",
+                  is.na(.data$heading),
+                  .data$heading_level > 0) |>
+    clean_text() |>
+    dplyr::select("heading_level", "section", "text") |>
+    dplyr::rename("level" = "heading_level", 
+                  "label" = "section") |>
+    add_eml_header()
+  
+  # add code blocks with titles as eml attributes.
+  # browser()
+  # tbl_source |>
+  #   dplyr::filter(.data$type == "block" &
+  #                 !is.na(.data$label)) 
+  # currently working here
+  
+  # clean up
+  unlink(temp_dir, recursive = TRUE)
+  return(result)
 }
 
-# is it sensible to rebuild rendering code for blocks in rmarkdown files? 
-# Should we use quarto or rmarkdown to do this instead?
-## BUT if we can assume that they will only use R for simple stuff, we might be ok
-
-assign_yaml_info <- function(x){
-  if(!any(x$type == "yaml")){
-    x
-  }else{
-    row <- which(x$type == "yaml")[1]
-    yaml_params <- x$params[[row]]
-    
-  }
+#' Internal function to clean text column
+#' @param x A tibble
+#' @noRd
+#' @keywords Internal
+clean_text <- function(x){
+  x$text <- purrr::map(x$text,
+             \(a){
+               a <- trimws(a)
+               if(length(a) < 2){
+                 if(a == ""){
+                   NA
+                 }else{
+                   a
+                 }
+               }else{
+                 if(any(a == "")){
+                   a[a == ""] <- "{BREAKPOINT}"
+                   b <- glue_collapse(a, sep = " ") |>
+                     strsplit(split = "\\{BREAKPOINT\\}") |>
+                     purrr::pluck(!!!list(1)) |>
+                     trimws() |>
+                     str_replace("\\s{2,}", "\\s") 
+                   as.list(b[b != ""])
+                 }else{
+                   glue_collapse(x, sep = " ") |>
+                     as.character()
+                 }                 
+               }
+             })
+  x
 }
 
-#' @rdname read_md
-#' @param x Object of any class handled by `paperbark`; i.e. `character`, 
-#' `tbl_df`, `list` or `xml_document`.
-#' @importFrom rlang abort
-#' @importFrom xml2 write_xml
-#' @export
-write_md <- function(x, file){
-  
-  # stop if file suffix is incorrect
-  check_is_single_character(file)
-  # if(!grepl(".md$", file)){
-  #   abort("`write_md()` only writes files with a `.md` suffix.")
-  # }
-  
-  # check for correct format
-  if(!inherits(x, "tbl_df")){
-    x <- as_eml_tibble(x)
+#' Internal function to clean header levels
+#' @param x a tibble with the column heading level
+#' @noRd
+#' @keywords Internal
+clean_header_level <- function(x){
+  heading_value <- 0
+  for(i in c(2:nrow(x))){
+    if(!is.na(x$heading_level[i])){
+      heading_value <- x$heading_level[i]
+    }else{
+      x$heading_level[i] <- heading_value
+    }
   }
+  x
+}
+
+#' Internal function to add yaml to a file that is missing one
+#' @returns Called for side-effect of editing file given by `input`
+#' @noRd
+#' @keywords Internal
+add_standard_yaml <- function(input){
+  # write this as a text string
+  yaml_new <- list(author = "unknown",
+                   date = "today") |>
+    ymlthis::yml(get_yml = FALSE,
+                 author = FALSE,
+                 date = FALSE) |>
+    capture.output()
+  c(yaml_new,
+    readLines(input)) |>
+    writeLines(con = input)
+}
+
+#' Internal function to convert an Rmd or Qmd to have `md_document` as output
+#' @param input location of a file to be editted
+#' @returns Called for side-effect of editing file given by `input`
+#' @noRd
+#' @keywords Internal
+convert_to_markdown_output <- function(input){
   
-  # x |>
-  #   remove_eml_header() |>
-  #   as_eml_chr() |>
-  #   writeLines(con = file)
-  x |>
-    lightparser::combine_tbl_to_file(output_file = file)
+  x <- readLines(input)
+  
+  # find yaml in plain text
+  yaml_finder <- grepl("^---", x)
+  if(length(which(yaml_finder)) < 2){
+    rlang::abort("yaml not found")
+  }
+  yaml_end <- which(yaml_finder)[2]
+  
+  # import yaml text as a list 
+  # convert output to markdown
+  x_yaml <- rmarkdown::yaml_front_matter(input) |>
+    ymlthis::yml_output(rmarkdown::md_document())
+  
+  # write this as a text string
+  yaml_new <- ymlthis::yml(x_yaml, 
+                           get_yml = FALSE,
+                           author = FALSE,
+                           date = FALSE) |>
+    capture.output()
+  
+  # add new yaml in place of old yaml
+  result <- c(yaml_new,
+              x[seq(yaml_end + 1, length(x), by = 1)])
+  
+  # write to file
+  writeLines(result, con = input)
 }

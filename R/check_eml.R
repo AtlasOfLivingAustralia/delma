@@ -7,7 +7,7 @@
 #' however, that this function doesn't check the _content_ of those files,
 #' meaning a file could be structurally sound and still be lacking critical 
 #' information.
-#' @param x Object of any class handled by `paperbark`; i.e. `character`, 
+#' @param x Object of any class handled by `delma`; i.e. `character`, 
 #' `tbl_df`, `list` or `xml_document`.
 #' @param file Alternatively an EML file to check. If both `x` and `file` are 
 #' supplied, `x` is chosen.
@@ -50,7 +50,7 @@ check_eml <- function(x,
                             "eml-gbif-profile",
                             "1.3",
                             "eml-gbif-profile.xsd", 
-                            package = "paperbark",
+                            package = "delma",
                             mustWork = TRUE)
   
   # run validation

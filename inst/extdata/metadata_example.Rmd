@@ -4,16 +4,18 @@ output: html_document
 date: 2025-02-01
 ---
 <!--
-This is a metadata template in .Rmd format, which has been formatted such that it can render either to the `output` specified in the yaml section (above) AND to Ecological Meta-language (EML) using the {paperbark} R package. Sections can be added, re-arranged or removed to suit the dataset being described. Some features to be aware of:
+This is a metadata template in .Rmd format, which has been formatted such that it can render either to the `output` specified in the yaml section (above) AND to Ecological Meta-language (EML) using the {delma} R package. Sections can be added, re-arranged or removed to suit the dataset being described. Some features to be aware of:
 
 - Headings are converted to camelCase for use as EML tags
 - Header level sets the degree of nestedness for those tags
 - Code blocks whose name corresponds to a present EML tag are used to set attributes for that tag using `list()`
 
-You can delete this section if you want. See https:://paperbark.ala.org.au for further details.
+You can delete this section if you want. See https:://delma.ala.org.au for further details.
 -->
 
-```{r eml, include=FALSE}
+```{r}
+#| label: 'eml'
+#| include: false
 # This sections sets metadata for the EML file itself
 list(
   `xmlns:d` = "eml://ecoinformatics.org/dataset-2.1.0",
@@ -30,10 +32,11 @@ list(
 # Dataset
 
 ## Title
-```{r echo=FALSE, results='asis'}
+```{r}
+#| echo: false
+#| results: 'asis'
 # NOTE: This is set using the yaml above; do not edit by hand
-library(rmarkdown)
-cat(metadata$title)
+cat(rmarkdown::metadata$title)
 ```
 
 
@@ -89,10 +92,11 @@ Australia
 
 
 ## Pubdate
-```{r echo=FALSE, results='asis'}
+```{r}
+#| echo: false
+#| results: 'asis'
 # NOTE: This is set using the yaml above; do not edit by hand
-library(rmarkdown)
-cat(metadata$date)
+cat(rmarkdown::metadata$date)
 ```
 
 
