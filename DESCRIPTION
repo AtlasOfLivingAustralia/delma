@@ -24,10 +24,12 @@ Imports:
   glue,
   lightparser,
   purrr,
+  quarto,
   rlang,
   snakecase,
   stringr,
   tibble,
+  ymlthis,
   xml2
 Suggests:
   knitr,

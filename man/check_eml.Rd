@@ -7,7 +7,7 @@
 check_eml(x, file)
 }
 \arguments{
-\item{x}{Object of any class handled by \code{paperbark}; i.e. \code{character},
+\item{x}{Object of any class handled by \code{delma}; i.e. \code{character},
 \code{tbl_df}, \code{list} or \code{xml_document}.}
 
 \item{file}{Alternatively an EML file to check. If both \code{x} and \code{file} are
