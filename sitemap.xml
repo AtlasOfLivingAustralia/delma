@@ -1,19 +1,19 @@
 <urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
-<url><loc>https://paperbark.ala.org.au/404.html</loc></url>
-<url><loc>https://paperbark.ala.org.au/articles/index.html</loc></url>
-<url><loc>https://paperbark.ala.org.au/articles/quick_start_guide.html</loc></url>
-<url><loc>https://paperbark.ala.org.au/authors.html</loc></url>
-<url><loc>https://paperbark.ala.org.au/index.html</loc></url>
-<url><loc>https://paperbark.ala.org.au/news/index.html</loc></url>
-<url><loc>https://paperbark.ala.org.au/reference/as_eml_chr.html</loc></url>
-<url><loc>https://paperbark.ala.org.au/reference/as_eml_list.html</loc></url>
-<url><loc>https://paperbark.ala.org.au/reference/as_eml_tibble.html</loc></url>
-<url><loc>https://paperbark.ala.org.au/reference/as_eml_xml.html</loc></url>
-<url><loc>https://paperbark.ala.org.au/reference/check_eml.html</loc></url>
-<url><loc>https://paperbark.ala.org.au/reference/delma-package.html</loc></url>
-<url><loc>https://paperbark.ala.org.au/reference/index.html</loc></url>
-<url><loc>https://paperbark.ala.org.au/reference/read_eml.html</loc></url>
-<url><loc>https://paperbark.ala.org.au/reference/read_md.html</loc></url>
-<url><loc>https://paperbark.ala.org.au/reference/use_metadata.html</loc></url>
+<url><loc>https://delma.ala.org.au/404.html</loc></url>
+<url><loc>https://delma.ala.org.au/articles/index.html</loc></url>
+<url><loc>https://delma.ala.org.au/articles/quick_start_guide.html</loc></url>
+<url><loc>https://delma.ala.org.au/authors.html</loc></url>
+<url><loc>https://delma.ala.org.au/index.html</loc></url>
+<url><loc>https://delma.ala.org.au/news/index.html</loc></url>
+<url><loc>https://delma.ala.org.au/reference/as_eml_chr.html</loc></url>
+<url><loc>https://delma.ala.org.au/reference/as_eml_list.html</loc></url>
+<url><loc>https://delma.ala.org.au/reference/as_eml_tibble.html</loc></url>
+<url><loc>https://delma.ala.org.au/reference/as_eml_xml.html</loc></url>
+<url><loc>https://delma.ala.org.au/reference/check_eml.html</loc></url>
+<url><loc>https://delma.ala.org.au/reference/delma-package.html</loc></url>
+<url><loc>https://delma.ala.org.au/reference/index.html</loc></url>
+<url><loc>https://delma.ala.org.au/reference/read_eml.html</loc></url>
+<url><loc>https://delma.ala.org.au/reference/read_md.html</loc></url>
+<url><loc>https://delma.ala.org.au/reference/use_metadata.html</loc></url>
 </urlset>
 
