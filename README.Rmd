@@ -16,9 +16,9 @@ knitr::opts_chunk$set(
 ## Overview
 
 `delma` is a package for converting metadata statements written in markdown,
-RMarkdown or Quarto markdown to Ecological Meta-language (EML). It is named for 
-a genus of legless lizards that are endemic to Australia, whose name happens to
-contain the letters 'e', 'm' and 'l'.
+RMarkdown or Quarto markdown to [Ecological Metadata Language](https://eml.ecoinformatics.org) (EML). It is named
+for a genus of legless lizards that are endemic to Australia, whose name happens
+to contain the letters 'e', 'm' and 'l'.
 
 The logo depicts a striped legless lizard (_Delma impar_) in the 
 style of the classic mobile game 'snake', a play on the observation that

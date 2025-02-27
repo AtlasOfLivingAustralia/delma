@@ -2,13 +2,20 @@
 % Please edit documentation in R/use_metadata.R
 \name{use_metadata}
 \alias{use_metadata}
-\title{Write an example metadata template to the working directory}
+\title{Write an example metadata statement to disk}
 \usage{
-use_metadata(file = "metadata.Rmd")
+use_metadata(file = "metadata.Rmd", format = c("Rmd", "Qmd"))
 }
 \arguments{
-\item{file}{(string) a file name to place}
+\item{file}{(string) A name for the resulting file}
+
+\item{format}{(string) What format should the metadata statement take?
+Should be one of either "Rmd" (default) or "Qmd".}
 }
 \description{
-Test function
+This function places a metadata template at the address specified by \code{"file"},
+defaulting to \code{"metadata.Rmd"} in the working directory. The template is
+built in such a way that standard rendering with \code{rmarkdown} or Quarto to
+HTML or PDF will function; but also that it renders to valid EML using
+\code{\link[=render_metadata]{render_metadata()}}.
 }

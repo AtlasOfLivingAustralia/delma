@@ -6,27 +6,27 @@
 \alias{delma-package}
 \title{Convert metadata between markdown and EML}
 \description{
-Ecological Meta Language is a common framework for describing ecological
-datasets so they can be shared and reused. \code{delma} supports users to
-write metadata statements in markdown for greater transparency and
-ease-of-use, then convert them to EML for efficient transfer.
+Ecological Metadata Language is a common
+framework for describing ecological datasets so they can be shared and reused.
+\code{delma} supports users to write metadata statements in markdown for greater
+transparency and ease-of-use, then convert them to EML for efficient transfer.
 }
 \section{Functions}{
 
 
-\strong{Basic usage}
+\strong{Main functions}
 \itemize{
-\item \code{\link[=read_eml]{read_eml()}}/\code{\link[=write_eml]{write_eml()}} - Convert between EML and tibbles
-\item \code{\link[=read_md]{read_md()}}/\code{\link[=write_md]{write_md()}} - Convert between markdown files and tibbles
-\item \code{\link[=check_eml]{check_eml()}} - Check your metadata statement against relevant standards
+\item \code{\link[=use_metadata]{use_metadata()}} - Create a boilerplate metadata statement
+\item \code{\link[=render_metadata]{render_metadata()}} - Render metadata as an EML document
+\item \code{\link[=check_metadata]{check_metadata()}} - Run checks on an EML document
 }
 
-\strong{Type conversion}
+\strong{Data manipulation}
 \itemize{
-\item \code{\link[=as_eml_chr]{as_eml_chr()}} - Convert metadata to class \code{character}
-\item \code{\link[=as_eml_tibble]{as_eml_tibble()}} - Convert metadata to class \code{tbl_df} (i.e. a tibble)
-\item \code{\link[=as_eml_list]{as_eml_list()}} - Convert metadata to class \code{list}
-\item \code{\link[=as_eml_xml]{as_eml_xml()}} - Convert metadata to class \code{xml_document}
+\item \code{\link[=read_eml]{read_eml()}}/\code{\link[=write_eml]{write_eml()}} - Read / write EML files to \code{tbl_df}
+\item \code{\link[=read_md]{read_md()}}/\code{\link[=write_md]{write_md()}} - Read / write Rmd or Qmd files to \code{tbl_df}
+\item \code{\link[=as_eml]{as_eml()}} - Convert metadata from class \code{tbl_df} to class \code{xml_document}
+\item \code{\link[=as_tibble.xml_document]{as_tibble.xml_document()}} - Convert metadata from class \code{xml_document} to class \code{tbl_df}
 }
 }
 
@@ -37,7 +37,7 @@ If you have any questions, comments or suggestions, please email
 \seealso{
 Useful links:
 \itemize{
-  \item \url{https://paperbark.ala.org.au}
+  \item \url{https://delma.ala.org.au}
 }
 
 }

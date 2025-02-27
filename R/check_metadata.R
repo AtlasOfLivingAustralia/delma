@@ -1,16 +1,13 @@
 #' Check validity of a metadata statement
 #' 
 #' In the Darwin Core standard, metadata statements are mandatory and must be
-#' provided in Ecological Meta Language (EML) in a file called `eml.xml`. This
+#' provided in Ecological Metadata Language (EML) in a file called `eml.xml`. This
 #' function applies a series of checks designed by GBIF to check the structure
 #' of the specified xml document for consistency with the standard. Note, 
 #' however, that this function doesn't check the _content_ of those files,
 #' meaning a file could be structurally sound and still be lacking critical 
 #' information.
-#' @param x Object of any class handled by `delma`; i.e. `character`, 
-#' `tbl_df`, `list` or `xml_document`.
-#' @param file Alternatively an EML file to check. If both `x` and `file` are 
-#' supplied, `x` is chosen.
+#' @param file An EML file to check Can be either local or a URL.
 #' @details
 #' This function uses local versions of `dc.xsd`, `eml-gbif-profile.xsd` and 
 #' `eml.xsd` downloaded
@@ -22,27 +19,13 @@
 #' # check a file
 #' check_eml(file = "https://collections.ala.org.au/ws/eml/dr368")
 #' }
-#' @importFrom rlang abort
-#' @importFrom dplyr bind_rows
-#' @importFrom xml2 read_xml
-#' @importFrom xml2 xml_validate
 #' @export
-check_eml <- function(x,
-                      file
-                      ) {
+check_metadata <- function(file = NULL){
   # check inputs
-  if(!missing(x)){
-    if(!inherits(x, "xml_document")){
-      xmldoc <- as_eml_xml(x)
-    }else{
-      xmldoc <- x
-    }
+  if(is.null(file)){
+    rlang::abort("both `x` and `file` are missing, with no default")
   }else{
-    if(missing(file)){
-      abort("both `x` and `file` are missing, with no default")
-    }else{
-      xmldoc <- read_xml(file)
-    }
+    xmldoc <- xml2::read_xml(file)
   }
 
   # look up schema doc
@@ -54,7 +37,7 @@ check_eml <- function(x,
                             mustWork = TRUE)
   
   # run validation
-  xml_validate(xmldoc, schema = schema_doc) |>
+  xml2::xml_validate(xmldoc, schema = schema_doc) |>
     validator_to_tibble() |>
     invisible()
 }

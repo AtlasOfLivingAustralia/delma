@@ -25,15 +25,14 @@ navbar:
       text: News
       href: news/index.html
 reference:
-- title: Basic usage
+- title: Main functions
+  contents: 
+  - use_metadata
+  - render_metadata
+  - check_metadata
+- title: Data manipulation
   contents:
   - read_eml
   - read_md
-  - check_eml
-  - use_metadata
-- title: Type conversion
-  contents:
-  - as_eml_chr
-  - as_eml_list
-  - as_eml_tibble
-  - as_eml_xml
+  - as_eml
+  - as_tibble

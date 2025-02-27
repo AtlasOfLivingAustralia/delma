@@ -1,12 +1,23 @@
-#' Write an example metadata template to the working directory
+#' Write an example metadata statement to disk
 #' 
-#' Test function
-#' @param file (string) a file name to place 
+#' This function places a metadata template at the address specified by `"file"`,
+#' defaulting to `"metadata.Rmd"` in the working directory. The template is 
+#' built in such a way that standard rendering with `rmarkdown` or Quarto to
+#' HTML or PDF will function; but also that it renders to valid EML using
+#' [render_metadata()]. 
+#' @param file (string) A name for the resulting file
+#' @param format (string) What format should the metadata statement take?
+#' Should be one of either "Rmd" (default) or "Qmd".
 #' @export
-use_metadata <- function(file = "metadata.Rmd"){
+use_metadata <- function(file = "metadata.Rmd",
+                         format = c("Rmd", "Qmd")){
+  format <- match.arg(format)
   source_file <- system.file("extdata", 
-                             "metadata_example.md", 
+                             switch(format,
+                                    "Rmd" = "metadata_example.Rmd", 
+                                    "Qmd" = "metadata_exmaple.Qmd"),
                              package = "delma")
   file.copy(from = source_file,
-            to = file)
+            to = file) |>
+    invisible()
 }

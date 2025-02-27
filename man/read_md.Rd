@@ -23,8 +23,27 @@ is called for the side-effect of writing the specified markdown file to disk.
 }
 \description{
 \code{read_md()} imports metadata from a markdown file into the workspace as a
-\code{tibble}. \code{write_md()} write a \code{string}, \code{tibble}, \code{list} or \code{xml_document}
-to a markdown file.
+\code{tibble}. \code{write_md()} write that \code{tibble} to a markdown file.
+}
+\details{
+\code{\link[=read_md]{read_md()}} is unusual in that it calls \code{\link[rmarkdown:render]{rmarkdown::render()}} or
+\code{\link[quarto:quarto_render]{quarto::quarto_render()}} internally to ensure code blocks and snippets
+are parsed correctly. This ensures dynamic content is rendered correctly in
+the resulting \code{EML} document, but makes this function considerably slower
+than a standard import function. Conceptually, therefore, it is closer to a
+renderer with output type \code{tibble} than a traditional \code{read_} function.
+
+This approach has one unusual consequence; it prevents 'round-tripping' of
+embedded code. That is, dynamic content written in code snippets within the
+metadata statement is rendered to plain text in \code{EML.} If that \code{EML} document
+is later re-imported to \code{Rmd} using \code{\link[=read_eml]{read_eml()}} and \code{\link[=write_md]{write_md()}}, formerly
+dynamic content will be shown as plain text.
+
+Similar to \code{\link[=read_md]{read_md()}}, \code{\link[=write_md]{write_md()}} is considerably less generic than most
+\code{write_} functions. To parse correctly, the supplied \code{tibble} \strong{must}
+contain the columns supplied by \code{\link[=read_md]{read_md()}}.
+Internally, \code{\link[=read_md]{read_md()}} calls \code{\link[lightparser:split_to_tbl]{lightparser::split_to_tbl()}}, while
+\code{write_md()} calls \link[lightparser:combine_tbl_to_file]{lightparser::combine_tbl_to_file}.
 }
 \examples{
 \dontrun{

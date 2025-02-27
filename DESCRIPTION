@@ -1,6 +1,6 @@
 Package: delma
 Type: Package
-Title: Convert markdown to ecological meta language (EML) and back
+Title: Convert markdown to ecological metadata language (EML) and back
 Version: 0.1.0
 Authors@R:
     c(person(given = "Martin",
@@ -35,7 +35,7 @@ Suggests:
   knitr,
   testthat (>= 3.0.0)
 License: GPL-3
-URL: https://paperbark.ala.org.au
+URL: https://delma.ala.org.au
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)

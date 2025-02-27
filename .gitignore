@@ -52,3 +52,6 @@ rsconnect/
 docs
 /doc/
 /Meta/
+
+# Rendered version of boilerplate metadata statement
+inst/extdata/metadata_example.html

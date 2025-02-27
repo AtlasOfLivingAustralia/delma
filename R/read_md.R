@@ -1,10 +1,28 @@
 #' Read or write markdown-formatted metadata
 #' 
 #' `read_md()` imports metadata from a markdown file into the workspace as a 
-#' `tibble`. `write_md()` write a `string`, `tibble`, `list` or `xml_document` 
-#' to a markdown file.
+#' `tibble`. `write_md()` write that `tibble` to a markdown file.
 #' @param file Filename to read from or write to. Must be either `.md`, `.Rmd`
 #' or `.Qmd` file.
+#' @details
+#' [read_md()] is unusual in that it calls [rmarkdown::render()] or 
+#' [quarto::quarto_render()] internally to ensure code blocks and snippets 
+#' are parsed correctly. This ensures dynamic content is rendered correctly in 
+#' the resulting `EML` document, but makes this function considerably slower 
+#' than a standard import function. Conceptually, therefore, it is closer to a 
+#' renderer with output type `tibble` than a traditional `read_` function.
+#' 
+#' This approach has one unusual consequence; it prevents 'round-tripping' of 
+#' embedded code. That is, dynamic content written in code snippets within the 
+#' metadata statement is rendered to plain text in `EML.` If that `EML` document 
+#' is later re-imported to `Rmd` using [read_eml()] and [write_md()], formerly 
+#' dynamic content will be shown as plain text. 
+#' 
+#' Similar to [read_md()], [write_md()] is considerably less generic than most 
+#' `write_` functions. To parse correctly, the supplied `tibble` **must** 
+#' contain the columns supplied by [read_md()].
+#' Internally, [read_md()] calls [lightparser::split_to_tbl()], while 
+#' `write_md()` calls [lightparser::combine_tbl_to_file].
 #' @returns `read_md()` returns an object of class `tbl_df`, `tbl` and 
 #' `data.frame` (i.e. a `tibble`). `write_md()` doesn't return anything, and
 #' is called for the side-effect of writing the specified markdown file to disk.
@@ -49,12 +67,14 @@ read_md <- function(file){
   # create a rendered version of this doc
   temp_md <- glue("{temp_dir}/temp_md.md")
   rmarkdown::render(input = temp_source,
-                    output_file = temp_md) |>
-    suppressWarnings() |>
-    suppressMessages()
+                    output_file = temp_md,
+                    quiet = TRUE)
+    # suppressWarnings() |>
+    # suppressMessages()
   add_standard_yaml(temp_md)
   # NOTE: we MUST call `render()` here, and not `knit()`.
-  # Only the former will extract and calculate metadata that is necessary to place
+  # Only `render()` uses `pandoc`, meaning it will extract and 
+  # calculate metadata that is necessary to place the
   # title and date properly in the body of the markdown file
   
   # purrr::quietly doesn't work on `render()`
@@ -76,7 +96,7 @@ read_md <- function(file){
     add_eml_header()
   
   # add code blocks with titles as eml attributes.
-  # browser()
+  browser()
   # tbl_source |>
   #   dplyr::filter(.data$type == "block" &
   #                 !is.na(.data$label)) 
