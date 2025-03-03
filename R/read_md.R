@@ -1,8 +1,8 @@
-#' Read or write markdown-formatted metadata
+#' Read markdown-formatted metadata
 #' 
 #' `read_md()` imports metadata from a markdown file into the workspace as a 
-#' `tibble`. `write_md()` write that `tibble` to a markdown file.
-#' @param file Filename to read from or write to. Must be either `.md`, `.Rmd`
+#' `tibble`.
+#' @param file Filename to read from. Must be either `.md`, `.Rmd`
 #' or `.Qmd` file.
 #' @details
 #' [read_md()] is unusual in that it calls [rmarkdown::render()] or 
@@ -18,23 +18,15 @@
 #' is later re-imported to `Rmd` using [read_eml()] and [write_md()], formerly 
 #' dynamic content will be shown as plain text. 
 #' 
-#' Similar to [read_md()], [write_md()] is considerably less generic than most 
-#' `write_` functions. To parse correctly, the supplied `tibble` **must** 
-#' contain the columns supplied by [read_md()].
-#' Internally, [read_md()] calls [lightparser::split_to_tbl()], while 
-#' `write_md()` calls [lightparser::combine_tbl_to_file].
+#' Internally, [read_md()] calls [lightparser::split_to_tbl()].
 #' @returns `read_md()` returns an object of class `tbl_df`, `tbl` and 
-#' `data.frame` (i.e. a `tibble`). `write_md()` doesn't return anything, and
-#' is called for the side-effect of writing the specified markdown file to disk.
+#' `data.frame` (i.e. a `tibble`).
 #' @examples \dontrun{
 #' # read from a url
 #' file <- system.file("example_data", 
 #'                     "README_md_example.md", 
 #'                     package = "delma")
 #' df <- read_md(file)
-#' 
-#' # write to disk
-#' write_md(df, "example.md")
 #' }
 #' @importFrom rlang abort
 #' @export
@@ -55,7 +47,7 @@ read_md <- function(file){
   }
   
   # set a working directory
-  temp_dir <- tempdir()
+  temp_dir <- safe_temp_directory()
   
   # create a temporary file and convert output format to markdown
   temp_source <- glue("{temp_dir}/temp_source.Rmd")
@@ -69,22 +61,105 @@ read_md <- function(file){
   rmarkdown::render(input = temp_source,
                     output_file = temp_md,
                     quiet = TRUE)
-    # suppressWarnings() |>
-    # suppressMessages()
-  add_standard_yaml(temp_md)
   # NOTE: we MUST call `render()` here, and not `knit()`.
   # Only `render()` uses `pandoc`, meaning it will extract and 
   # calculate metadata that is necessary to place the
   # title and date properly in the body of the markdown file
+  add_standard_yaml(temp_md)
   
-  # purrr::quietly doesn't work on `render()`
+  # import and clean the 'rendered' tibble
+  result <- lightparser::split_to_tbl(temp_md) |>
+    clean_rendered_tibble()
+
+  # import 'unrendered' tibble, extract hidden lists as attributes
+  eml_attributes <- lightparser::split_to_tbl(file) |>
+    parse_eml_attributes(tags = result$label)
   
-  # import both tibbles
-  tbl_rendered <- lightparser::split_to_tbl(temp_md)
-  tbl_source <- lightparser::split_to_tbl(file)
+  # clean up
+  unlink(temp_dir, recursive = TRUE)
   
-  # clean `tbl_rendered` into format expected by `delma`
-  result <- tbl_rendered |>
+  # join and return
+  if(is.null(eml_attributes)){
+    result
+  }else{
+    join_eml_attributes(result, eml_attributes)    
+  }
+}
+
+#' Internal function to create a temporary working directory.
+#' This is needed because wiping `tempdir()` breaks heaps of stuff in R,
+#' apparently including stored data from loaded packages.
+#' @noRd
+#' @keywords Internal
+safe_temp_directory <- function(){
+  safe_location <- glue::glue("{tempdir()}/delma-temp-working-directory") |>
+    as.character()
+  if(!dir.exists(safe_location)){
+    dir.create(safe_location)  
+  }
+  safe_location
+}
+
+#' Internal function to extract tagged code blocks, to parse as attributes
+#' @param df A tibble
+#' @param attr_list Named list of attributes to be appended to df
+#' @noRd
+#' @keywords Internal
+join_eml_attributes <- function(df, attr_list){
+  for(i in seq_along(attr_list)){
+    row <- which(df$label == names(attr_list)[i])
+    df$attributes[[row]] <- attr_list[[i]]
+  }
+  df
+}
+
+#' Internal function to extract tagged code blocks, to parse as attributes
+#' @param x A tibble to extract attributes from
+#' @param tags A vector of EML tags (`labels` col in source df) that are available for joining
+#' @noRd
+#' @keywords Internal
+parse_eml_attributes <- function(x, tags){
+  attr_chunks <- x |>
+      dplyr::filter(.data$type == "block" &
+                    .data$label %in% tags)
+  if(nrow(attr_chunks) < 1){
+    NULL
+  }else{
+    result <- purrr::map(attr_chunks$code,
+               \(a){
+                 contains_list_check <- any(grepl("^\\s?list\\(", a))
+                 if(contains_list_check){
+                   outcome <- glue::glue_collapse(a, sep = "\n") |>
+                     parse(text = _) |>
+                     eval() |>
+                     try()
+                   if(!inherits(outcome, "list")){ # try-error?
+                     bullets <- c("One of your named code blocks did not parse",
+                                  i = "These code blocks are used by `delma` to assign EML attributes",
+                                  i = glue::glue("Consider revising code block '{attr(a, 'chunk_opts')$label}' to return a `list()`"))
+                     rlang::abort(bullets, call = rlang::caller_env())
+                   }else{
+                     outcome
+                   }
+                 }else{
+                   bullets <- c("One of your named code blocks does not contain `list()`",
+                                i = "These code blocks are used by `delma` to assign EML attributes",
+                                i = glue::glue("Consider labelling code block '{attr(a, 'chunk_opts')$label}' to something else, or adding a `list()`"))
+                   rlang::abort(bullets, call = rlang::caller_env())
+                 }
+               })
+    names(result) <- attr_chunks$label
+    result
+  }
+}
+
+#' Internal function to clean a tibble after `rmarkdown::render` to 
+#' format expected by later functions
+#' @param x A tibble
+#' @noRd
+#' @keywords Internal
+clean_rendered_tibble <- function(x){
+  x |>
     clean_header_level() |> # downfill heading level
     dplyr::filter(.data$type != "yaml",
                   is.na(.data$heading),
@@ -94,17 +169,6 @@ read_md <- function(file){
     dplyr::rename("level" = "heading_level", 
                   "label" = "section") |>
     add_eml_header()
-  
-  # add code blocks with titles as eml attributes.
-  browser()
-  # tbl_source |>
-  #   dplyr::filter(.data$type == "block" &
-  #                 !is.na(.data$label)) 
-  # currently working here
-  
-  # clean up
-  unlink(temp_dir, recursive = TRUE)
-  return(result)
 }
 
 #' Internal function to clean text column
@@ -112,7 +176,7 @@ read_md <- function(file){
 #' @noRd
 #' @keywords Internal
 clean_text <- function(x){
-  x$text <- purrr::map(x$text,
+  result <- purrr::map(x$text,
              \(a){
                a <- trimws(a)
                if(length(a) < 2){
@@ -124,18 +188,25 @@ clean_text <- function(x){
                }else{
                  if(any(a == "")){
                    a[a == ""] <- "{BREAKPOINT}"
-                   b <- glue_collapse(a, sep = " ") |>
+                   b <- glue::glue_collapse(a, sep = " ") |>
                      strsplit(split = "\\{BREAKPOINT\\}") |>
                      purrr::pluck(!!!list(1)) |>
                      trimws() |>
-                     str_replace("\\s{2,}", "\\s") 
-                   as.list(b[b != ""])
+                     stringr::str_replace("\\s{2,}", "\\s")
+                   b <- b[b != ""] # remove empty spaces; typically a leading ""
+                   if(length(b) > 1){
+                     as.list(b) # lists are parsed as paragraphs
+                   }else{
+                     b # length-1 characters are not
+                   }
                  }else{
-                   glue_collapse(x, sep = " ") |>
+                   glue::glue_collapse(x, sep = " ") |>
                      as.character()
                  }                 
                }
              })
+  names(result) <- NULL
+  x$text <- result
   x
 }
 

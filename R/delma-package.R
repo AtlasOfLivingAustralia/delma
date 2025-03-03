@@ -18,11 +18,14 @@
 #'   * [render_metadata()] - Render metadata as an EML document
 #'   * [check_metadata()] - Run checks on an EML document
 #' 
-#' **Data manipulation** 
+#' **Reading and writing** 
 #'   * [read_eml()]/[write_eml()] - Read / write EML files to `tbl_df`
 #'   * [read_md()]/[write_md()] - Read / write Rmd or Qmd files to `tbl_df`
-#'   * [as_eml()] - Convert metadata from class `tbl_df` to class `xml_document`
-#'   * [as_tibble.xml_document()] - Convert metadata from class `xml_document` to class `tbl_df`
+#'   
+#' **Format manipulation**
+#'   * [as_eml_tibble()] - Convert metadata to class `tbl_df`
+#'   * [as_eml_list()] - Convert metadata to class `list`
+#'   * [as_eml_xml()]- Convert metadata to class `xml_document`
 #'   
 #' @keywords internal
 "_PACKAGE"

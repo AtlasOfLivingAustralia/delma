@@ -1,7 +1,16 @@
-test_that("`example_metadata` can be converted to md and back", {
-  write_md(metadata_example, "EXAMPLE.md")
-  x <- read_md("EXAMPLE.md")
-  expect_equal(metadata_example,  dplyr::slice(x, -1))
+test_that("`use_metadata()` can be imported, written to EML, and back", {
+  use_metadata("EXAMPLE.Rmd")
+  
+  df <- lightparser::split_to_tbl("EXAMPLE.Rmd")
+  
+  x <- read_md("EXAMPLE.Rmd")
+  x_df <- use_lightparser_format(x)
+  
+  
+  lightparser::combine_tbl_to_file(df, output_file = "TEST.Rmd")
+  
+  
+
   # paragraphs in tibble should be in list-entries, 
   # but are not nested; no `para` tag
   

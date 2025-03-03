@@ -13,7 +13,7 @@ This is a metadata template in .Rmd format, which has been formatted such that i
 You can delete this section if you want. See https:://delma.ala.org.au for further details.
 -->
 ```{r}
-#| label: 'eml'
+#| label: 'eml:eml'
 #| include: false
 # This sections sets metadata for the EML file itself
 list(

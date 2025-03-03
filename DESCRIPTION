@@ -26,6 +26,7 @@ Imports:
   purrr,
   quarto,
   rlang,
+  rmarkdown,
   snakecase,
   stringr,
   tibble,
