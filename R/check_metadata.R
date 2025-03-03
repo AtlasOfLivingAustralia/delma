@@ -8,6 +8,7 @@
 #' meaning a file could be structurally sound and still be lacking critical 
 #' information.
 #' @param file An EML file to check Can be either local or a URL.
+#' @param quiet (logical) Should messages be hidden? Defaults to FALSE
 #' @details
 #' This function uses local versions of `dc.xsd`, `eml-gbif-profile.xsd` and 
 #' `eml.xsd` downloaded
@@ -20,7 +21,8 @@
 #' check_eml(file = "https://collections.ala.org.au/ws/eml/dr368")
 #' }
 #' @export
-check_metadata <- function(file = NULL){
+check_metadata <- function(file = NULL,
+                           quiet = FALSE){
   # check inputs
   if(is.null(file)){
     rlang::abort("both `x` and `file` are missing, with no default")
@@ -37,82 +39,94 @@ check_metadata <- function(file = NULL){
                             mustWork = TRUE)
   
   # run validation
-  xml2::xml_validate(xmldoc, schema = schema_doc) |>
-    validator_to_tibble() |>
-    invisible()
+  result <- xml2::xml_validate(xmldoc, 
+                     # schema = xml2::read_xml("http://rs.gbif.org/schema/eml-gbif-profile/1.3/eml-gbif-profile.xsd")) # same outcome
+                     schema = xml2::read_xml(schema_doc)) |>
+    validator_to_tibble()
+  
+  if(!quiet){
+    print_xsd_messages(result)
+  }
+  
+  invisible(result)
 }
 
 #' Internal function to get validator to return a tibble
-#' @importFrom tibble tibble
 #' @noRd
 #' @keywords Internal
 validator_to_tibble <- function(x){
   if(!x){
-    attr(x, "errors") |>
+    result <- attr(x, "errors") |>
       parse_validator_errors()
+    if(result$title[1] == "Error in `import` from http://www.w3.org/2001/XMLSchema"){ # always appears for some reason
+      result[-1, ]
+    }else{
+      result
+    }
   }else{
-    tibble(term = character(),
-           messages = character(),
-           remedy = character())
+    tibble::tibble(title = character(),
+                   message = character())
   }
 }
 
 #' Internal function to extract information from `xml_validate()` error strings
-#' @importFrom dplyr bind_rows
-#' @importFrom dplyr mutate
-#' @importFrom purrr map
-#' @importFrom stringr str_extract
 #' @noRd
 #' @keywords Internal
 parse_validator_errors <- function(strings){
   # strings <- strings[!grepl("Skipping import of schema", x = strings)]
-  element <- str_extract(strings, "^Element '[[:graph:]]+'") |>
+  element <- format_elements(strings)
+  elements_list <- stringr::str_extract(strings, 
+                                        "':([[:graph:]]|\\s)+") |>
+    sub("':\\s", "", x = _)
+  tibble::tibble(
+    title = element,
+    message = elements_list)
+}
+
+#' Internal function 
+#' @noRd
+#' @keywords Internal
+format_elements <- function(strings){
+  result <- stringr::str_extract(strings, 
+                                 "^Element '[[:graph:]]+'") |>
     gsub("^Element '|'$", "", x = _)
-  elements_list <- str_extract(strings, "':([[:graph:]]|\\s)+") |>
-    sub("':\\s", "", x = _) |>
-    strsplit("\\.\\s") 
-  map(.x = elements_list,
-      .f = \(x){
-        if(length(x) < 2){
-          x[[2]] <- ""
-        }
-        names(x) <- c("messages", "remedy")
-        x
-      }) |>
-    bind_rows() |>
-    mutate(term = element, .before = "messages")
+  purrr::map(result, \(a){
+    if(grepl("^\\{", a)){
+      term <- a |>
+        stringr::str_extract("\\}[:graph:]+$") |>
+        stringr::str_remove("^\\}") 
+      term_url <- a |>
+        stringr::str_remove("^\\{") |>
+        stringr::str_remove("\\}[:graph:]+$")
+      glue::glue("Error in `{term}` from {term_url}")
+    }else{
+      glue::glue("Error in `{a}`")
+    }
+  }) |>
+    as.character()
 }
 
 #' Print outcomes from validation
-#' @importFrom cli cli_h2
-#' @importFrom purrr map
 #' @noRd
 #' @keywords Internal
 print_xsd_messages <- function(df){
+  cli::cli_h2("`check_metadata()` result:")
   if(nrow(df) > 0){
-    cli_h2("Check result:")
     split(df, seq_len(nrow(df))) |>
-      map(~ format_messages_from_checks(.x)) |>
+      purrr::map(~ format_messages_from_checks(.x)) |>
       invisible()
   }else{
-    cli_h2("No errors found!")
+    cli::cli_text("No errors found!")
   }
 }
 
 #' Format each saved message from `check_all()` nicely
-#' @importFrom cli cat_line
-#' @importFrom cli cli_rule
 #' @noRd
 #' @keywords Internal
 format_messages_from_checks <- function(df) {
-  # retrieve term & message
-  term <- df$term |> unique()
-  m <- paste0(df$messages)
-  
-  # format & print
-  cat_line()
-  cli_rule("Error in {term}")
-  cat_line()
-  cat_line(m)
-  cat_line()
+  title <- df$title |> unique()
+  m <- df$message
+  cli::cli_h3(title)
+  cli::cli_text(m)
+  cli::cat_line()
 }

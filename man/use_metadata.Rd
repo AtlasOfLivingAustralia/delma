@@ -4,13 +4,20 @@
 \alias{use_metadata}
 \title{Write an example metadata statement to disk}
 \usage{
-use_metadata(file = "metadata.Rmd", format = c("Rmd", "Qmd"))
+use_metadata(
+  file = "metadata.Rmd",
+  format = c("Rmd", "Qmd"),
+  overwrite = FALSE
+)
 }
 \arguments{
 \item{file}{(string) A name for the resulting file}
 
 \item{format}{(string) What format should the metadata statement take?
 Should be one of either "Rmd" (default) or "Qmd".}
+
+\item{overwrite}{(logical) Should any existing file be overwritten? Defaults
+to \code{FALSE}.}
 }
 \description{
 This function places a metadata template at the address specified by \code{"file"},

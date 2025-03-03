@@ -4,10 +4,12 @@
 \alias{check_metadata}
 \title{Check validity of a metadata statement}
 \usage{
-check_metadata(file = NULL)
+check_metadata(file = NULL, quiet = FALSE)
 }
 \arguments{
 \item{file}{An EML file to check Can be either local or a URL.}
+
+\item{quiet}{(logical) Should messages be hidden? Defaults to FALSE}
 }
 \value{
 Invisibly returns a tibble showing parsed errors; or an empty

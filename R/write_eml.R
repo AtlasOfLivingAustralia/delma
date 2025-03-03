@@ -11,7 +11,7 @@
 write_eml <- function(x, 
                       file){
   # check for correct format
-  if(inherits(x, c("character", "tbl_df", "list"))){
+  if(inherits(x, c("tbl_df", "list"))){
     x <- as_eml_xml(x)
   }
   

@@ -9,13 +9,11 @@
 #' # read from a url
 #' df <- read_eml("https://collections.ala.org.au/ws/eml/dr368")
 #' }
-#' @importFrom rlang abort
-#' @importFrom xml2 read_xml
 #' @export
 read_eml <- function(file){
   # abort if file missing
   if(missing(file)){
-    abort("`file` is missing, with no default.")
+    rlang::abort("`file` is missing, with no default.")
   }
   # check file is correctly specified
   check_is_single_character(file)
@@ -23,11 +21,11 @@ read_eml <- function(file){
   if(!grepl("(https?|ftp)://[^ /$.?#].[^\\s]*", file)){ # is not a url
     # check valid suffix
     if(!grepl("\\.xml$", file)){
-      abort("Argument `file` must end in the suffix `xml`")
+      rlang::abort("Argument `file` must end in the suffix `xml`")
     }
     # check file exists
     if(!file.exists(file)){
-      abort("Specified `file` does not exist.")
+      rlang::abort("Specified `file` does not exist.")
     }
   }
   # import & convert to tibble
@@ -36,15 +34,13 @@ read_eml <- function(file){
 }
 
 #' Internal function to check for characters
-#' @importFrom glue glue
-#' @importFrom rlang abort
 #' @noRd
 #' @keywords Internal
 check_is_single_character <- function(x){
   if(!inherits(x, "character")){
-    abort("Supplied object is not of type 'character'")
+    rlang::abort("Supplied object is not of type 'character'")
   }
   if(length(x) != 1L){
-    abort(glue("Object is of length {length(x)}, should be 1"))
+    rlang::abort(glue::glue("Object is of length {length(x)}, should be 1"))
   }
 }

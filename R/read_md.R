@@ -28,12 +28,11 @@
 #'                     package = "delma")
 #' df <- read_md(file)
 #' }
-#' @importFrom rlang abort
 #' @export
 read_md <- function(file){
   # abort if file missing
   if(missing(file)){
-    abort("`file` is missing, with no default.")
+    rlang::abort("`file` is missing, with no default.")
   }
   # check file is correctly specified
   check_is_single_character(file)
@@ -43,21 +42,21 @@ read_md <- function(file){
   # }
   # check file exists
   if(!file.exists(file)){
-    abort("Specified `file` does not exist.")
+    rlang::abort("Specified `file` does not exist.")
   }
   
   # set a working directory
   temp_dir <- safe_temp_directory()
   
   # create a temporary file and convert output format to markdown
-  temp_source <- glue("{temp_dir}/temp_source.Rmd")
+  temp_source <- glue::glue("{temp_dir}/temp_source.Rmd")
   file.copy(from = file, 
             to = temp_source) |>
     invisible()
   convert_to_markdown_output(temp_source)
   
   # create a rendered version of this doc
-  temp_md <- glue("{temp_dir}/temp_md.md")
+  temp_md <- glue::glue("{temp_dir}/temp_md.md")
   rmarkdown::render(input = temp_source,
                     output_file = temp_md,
                     quiet = TRUE)
@@ -82,8 +81,24 @@ read_md <- function(file){
   if(is.null(eml_attributes)){
     result
   }else{
-    join_eml_attributes(result, eml_attributes)    
+    join_eml_attributes(result, eml_attributes) |>
+      clean_eml_tags()
   }
+}
+
+#' Internal function to clean EML headings that behave oddly
+#' @noRd
+#' @keywords Internal
+clean_eml_tags <- function(df){
+  # browser()
+  # modify the tibble to the required conventions for list/xml
+  # `label` should be camel case
+  df |>
+    dplyr::mutate(label = snakecase::to_lower_camel_case(.data$label)) |>
+    dplyr::mutate(label = dplyr::case_when(label == "emlEml" ~ "eml:eml",
+                                           label == "surname" ~ "surName",
+                                           label == "pubdate" ~ "pubDate",
+                                           .default = label))
 }
 
 #' Internal function to create a temporary working directory.

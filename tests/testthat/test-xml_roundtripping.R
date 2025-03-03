@@ -4,12 +4,10 @@ test_that("`use_metadata()` can be imported, written to EML, and back", {
   df <- lightparser::split_to_tbl("EXAMPLE.Rmd")
   
   x <- read_md("EXAMPLE.Rmd")
-  x_df <- use_lightparser_format(x)
   
-  
-  lightparser::combine_tbl_to_file(df, output_file = "TEST.Rmd")
-  
-  
+  ## undo out own formatting
+  # x_df <- use_lightparser_format(x)
+  # lightparser::combine_tbl_to_file(df, output_file = "TEST.Rmd")
 
   # paragraphs in tibble should be in list-entries, 
   # but are not nested; no `para` tag
