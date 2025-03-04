@@ -1,6 +1,6 @@
 #' Convert metadata to a `tibble`
 #' 
-#' Takes objects of class `character`, `list` or `xml_document` and converts 
+#' Takes objects of class `list` or `xml_document` and converts 
 #' them to a tibble with a particular structure, designed for storing nested
 #' data. Tibbles are required because attributes are stored as list-columns, 
 #' which are not supported by class `data.frame`.
@@ -23,26 +23,19 @@ as_eml_tibble <- function(x, ...){
 #' @name as_eml_tibble
 #' @order 2
 #' @exportS3Method delma::as_eml_tibble
-as_eml_tibble.character <- function(x, ...){
-  parse_chr_to_tibble(x)
-}
-
-#' @name as_eml_tibble
-#' @order 3
-#' @exportS3Method delma::as_eml_tibble
 as_eml_tibble.tbl_df <- function(x, ...){
   x
 }
 
 #' @rdname as_eml_tibble
-#' @order 4
+#' @order 3
 #' @exportS3Method delma::as_eml_tibble
 as_eml_tibble.list <- function(x, ...){
   parse_list_to_tibble(x)
 }
 
 #' @rdname as_eml_tibble
-#' @order 5
+#' @order 4
 #' @exportS3Method delma::as_eml_tibble
 as_eml_tibble.xml_document <- function(x, ...){
   x |>

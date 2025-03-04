@@ -2,15 +2,12 @@
 % Please edit documentation in R/as_eml_tibble.R
 \name{as_eml_tibble}
 \alias{as_eml_tibble}
-\alias{as_eml_tibble.character}
 \alias{as_eml_tibble.tbl_df}
 \alias{as_eml_tibble.list}
 \alias{as_eml_tibble.xml_document}
 \title{Convert metadata to a \code{tibble}}
 \usage{
 as_eml_tibble(x, ...)
-
-\method{as_eml_tibble}{character}(x, ...)
 
 \method{as_eml_tibble}{tbl_df}(x, ...)
 
@@ -34,7 +31,7 @@ the following fields:
 }
 }
 \description{
-Takes objects of class \code{character}, \code{list} or \code{xml_document} and converts
+Takes objects of class \code{list} or \code{xml_document} and converts
 them to a tibble with a particular structure, designed for storing nested
 data. Tibbles are required because attributes are stored as list-columns,
 which are not supported by class \code{data.frame}.

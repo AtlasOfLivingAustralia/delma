@@ -15,14 +15,12 @@
 #' Global Biodiversity Information Facility (GBIF) and its' partner nodes. Other 
 #' applications of EML may require different attributes.
 #' @returns A tibble with a correctly formatted first row. 
-#' @importFrom dplyr mutate
 #' @importFrom rlang .data
-#' @importFrom tibble add_row
 #' @noRd
 #' @keywords Internal
 add_eml_header <- function(x){
   if(!inherits(x, "tbl_df")){
-    abort("add_eml_header() requires an object of class `tbl_df`")
+    rlang::abort("`add_eml_header()` requires an object of class `tbl_df`")
   }
   
   # if `attributes` list-column is missing, add it (with NA for each entry)
@@ -39,21 +37,20 @@ add_eml_header <- function(x){
   }else{
     if(min(x$level) == 1){
       x <- x |>
-        mutate(level = .data$level + 1)
+        dplyr::mutate(level = .data$level + 1)
     }
   }
   x |>
-    add_row(level = 1, 
-            label = "eml:eml", 
-            text = list(NA),
-            attributes = eml_attributes(),
-            .before = 1)
+    tibble::add_row(level = 1, 
+                    label = "eml:eml", 
+                    text = list(NA),
+                    attributes = list(NA),
+                    .before = 1)
 }
 
 #' Internal function to remove EML headers before rendering to markdown
 #' 
 #' Basically the inverse of add_eml_header().
-#' @importFrom dplyr slice
 #' @noRd
 #' @keywords Internal
 remove_eml_header <- function(x){
@@ -63,27 +60,9 @@ remove_eml_header <- function(x){
   # If first entry says "eml", overwrite with correct info
   if(grepl("eml|EML", x$label[[1]])){
     x |>
-      slice(-1) |>
-      mutate(level = .data$level - 1)
+      dplyr::slice(-1) |>
+      dplyr::mutate(level = .data$level - 1)
   }else{
     x
   }
-}
-
-#' Internal function to call standard EML attributes
-#' @noRd
-#' @keywords Internal
-eml_attributes <- function(){
-  list(
-    list(
-    `xmlns:d` = "eml://ecoinformatics.org/dataset-2.1.0",
-    `xmlns:eml` = "eml://ecoinformatics.org/eml-2.1.1",
-    `xmlns:xsi` = "http://www.w3.org/2001/XMLSchema-instance",
-    `xmlns:dc` = "http://purl.org/dc/terms/",
-    `xsi:schemaLocation` = "eml://ecoinformatics.org/eml-2.1.1 http://rs.gbif.org/schema/eml-gbif-profile/1.3/eml-gbif-profile.xsd",
-     system = "R-delma-package",
-     scope = "system",
-    `xml:lang` = "en"
-    )
-  )
 }

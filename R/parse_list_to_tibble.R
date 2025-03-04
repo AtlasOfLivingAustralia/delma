@@ -1,13 +1,11 @@
 #' @rdname parse_
 #' @order 5
-#' @importFrom purrr list_flatten
-#' @importFrom purrr pluck_depth
 #' @noRd
 #' @keywords Internal
 parse_list_to_tibble <- function(x){
   result <- list_to_tibble_recurse(x)
-  for(i in seq_len(pluck_depth(result))){
-    result <- list_flatten(result)
+  for(i in seq_len(purrr::pluck_depth(result))){
+    result <- purrr::list_flatten(result)
   }
   result_tibble <- result |>
     clean_tibble_text() |>
@@ -30,30 +28,29 @@ list_to_tibble_recurse <- function(x,
                                   level = 1,
                                   outcome = xml_tibble()){
   x_names <- names(x)
-  map(.x = seq_along(x),
-      .f = \(a){
-        result <- extract_list_to_tibble(a, x_names, x, level)
-        if(!is.null(result)){
-          if(nrow(result) > 0){
-            outcome <- dplyr::bind_rows(outcome, result)
-          }
-        }
-        if(is.list(x[[a]])){
-          if(length(x[[a]]) > 0){
-            list_to_tibble_recurse(x[[a]], 
-                                   level = level + 1, 
-                                   outcome = outcome) 
-          }
-          ## This is cancelled because it apparently never gets called
-          # else{
-          #   browser()
-          #   format_xml_tibble(outcome)
-          # }
-        }else{
-          format_xml_tibble(outcome) 
-            # dplyr::slice_tail()
-        }
-      }
+  purrr::map(.x = seq_along(x),
+             .f = \(a){
+               result <- extract_list_to_tibble(a, x_names, x, level)
+               if(!is.null(result)){
+                 if(nrow(result) > 0){
+                   outcome <- dplyr::bind_rows(outcome, result)
+                 }
+               }
+               if(is.list(x[[a]])){
+                 if(length(x[[a]]) > 0){
+                   list_to_tibble_recurse(x[[a]], 
+                                          level = level + 1, 
+                                          outcome = outcome) 
+                 }
+                 ## This is cancelled because it apparently never gets called
+                 # else{
+                 #   browser()
+                 #   format_xml_tibble(outcome)
+                 # }
+               }else{
+                 format_xml_tibble(outcome) 
+               }
+             }
   )
 }
 
@@ -91,7 +88,7 @@ extract_list_to_tibble <- function(index, list_names, list_data, level){
 #' @noRd
 #' @keywords Internal
 replace_xml_quotes <- function(x){
-  map(x,
+  purrr::map(x,
     \(a){
       if(a == "\""){
         "&quot;"
@@ -108,7 +105,7 @@ xml_tibble <- function(level = NA,
                        label = NA,
                        attributes = NA,
                        text = NA){
-  tibble(
+  tibble::tibble(
     level = as.integer(level),
     label = as.character(label),
     attributes = as.list(attributes),
@@ -120,8 +117,10 @@ xml_tibble <- function(level = NA,
 #' @keywords Internal
 format_xml_tibble <- function(df){
   df <- df[-1, ] # top row is empty
-  index <- map(.x = seq_len(nrow(df)), 
-               .f = \(a){paste(df$label[seq_len(a)], collapse = "_")}) |>
+  index <- purrr::map(.x = seq_len(nrow(df)), 
+                      .f = \(a){
+                        paste(df$label[seq_len(a)], collapse = "_")
+                      }) |>
     unlist()
   df$index <- index 
   df
@@ -132,7 +131,7 @@ format_xml_tibble <- function(df){
 #' @noRd
 #' @keywords Internal
 clean_tibble_text <- function(x){
-  map(x, \(a){
+  purrr::map(x, \(a){
     n <- nrow(a)
     if(!is.na(a$text[n]) & is.na(a$text[(n - 1)]) & is.na(a$label[n])){
       a$text[n - 1] <- a$text[n]
@@ -148,7 +147,7 @@ clean_tibble_text <- function(x){
 #' @noRd
 #' @keywords Internal
 clean_empty_lists <- function(x){
-  list_check <- map(x$attributes, \(a){inherits(a, "list")}) |>
+  list_check <- purrr::map(x$attributes, \(a){inherits(a, "list")}) |>
     unlist()
   list_entries <- x$attributes[list_check]
   x$attributes[list_check] <- map(list_entries, 
@@ -169,7 +168,7 @@ clean_paragraphs <- function(x){
     x_subset <- x |>
       dplyr::filter(.data$group > 0) 
     x_split <- split(x_subset, x_subset$group)
-    result_split <- map(x_split, \(a){
+    result_split <- purrr::map(x_split, \(a){
       tibble(
         level = a$level[1],
         label = a$label[1],

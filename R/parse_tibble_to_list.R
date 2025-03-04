@@ -4,25 +4,18 @@
 #' @noRd
 #' @keywords Internal
 parse_tibble_to_list <- function(x){
-  # modify the tibble to the required conventions for list/xml
-  # `label` should be camel case
-  x <- x |>
-    mutate(label = snakecase::to_lower_camel_case(.data$label))
-  # undo conversion of "eml:eml" to "emlEml"
-  if(x$label[1] == "emlEml"){
-    x$label[1] <- "eml:eml"
-  }
+
   # ensure lists in `text` column are parsed correctly
   # requires modification to add `para` tag within list-entries
   inherits(x$text, "list")
-  list_check <- map(x$text, 
-                    \(a){inherits(a, "list")}) |>
+  list_check <- purrr::map(x$text, 
+                           \(a){inherits(a, "list")}) |>
     unlist()
   if(any(list_check)){
     list_update <- x$text[list_check]
-    x$text[list_check] <- map(list_update,
+    x$text[list_check] <- purrr::map(list_update,
         \(a){
-          result <- map(a, \(b){list(b)})
+          result <- purrr::map(a, \(b){list(b)})
           names(result) <- rep("para", length(result))
           result
     })
@@ -35,7 +28,6 @@ parse_tibble_to_list <- function(x){
 
 #' Internal function to power `parse_tibble_to_list()`
 #' necessary to prevent problems if user sets `level` arg
-#' @importFrom purrr map
 #' @noRd
 #' @keywords Internal
 tibble_to_list_recurse <- function(x, level = 1){
@@ -56,11 +48,9 @@ tibble_to_list_recurse <- function(x, level = 1){
       x_list <- x_list[-1]
     }
     current_label <- x$label[this_level]
-    # if(!is.na(current_label)){
-      names(x_list) <- current_label
-    # }
-    map(.x = x_list, 
-        .f = \(a){tibble_to_list_recurse(a, level = level + 1)})    
+    names(x_list) <- current_label
+    purrr::map(.x = x_list, 
+               .f = \(a){tibble_to_list_recurse(a, level = level + 1)})    
   }
 }
 
@@ -126,6 +116,5 @@ get_list_addresses <- function(level){
     }
     address_list[[i]] <- level_index[seq_len(current_level)]
   }
-  
   address_list
 }

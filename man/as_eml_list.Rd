@@ -2,15 +2,12 @@
 % Please edit documentation in R/as_eml_list.R
 \name{as_eml_list}
 \alias{as_eml_list}
-\alias{as_eml_list.character}
 \alias{as_eml_list.tbl_df}
 \alias{as_eml_list.list}
 \alias{as_eml_list.xml_document}
 \title{Convert metadata to a \code{list}}
 \usage{
 as_eml_list(x, ...)
-
-\method{as_eml_list}{character}(x, ...)
 
 \method{as_eml_list}{tbl_df}(x, ...)
 
@@ -28,7 +25,7 @@ A list, where both the nested structure of the XML/md and the
 attributes of XML nodes, are preserved.
 }
 \description{
-Takes an object of class \code{character}, \code{xml_document} or \code{tibble}, and
+Takes an object of class \code{xml_document} or \code{tibble}, and
 converts it to a \code{list}. When converting from an \code{xml_document}, this is
 simply a wrapper for \code{xml2::as_list()}
 }

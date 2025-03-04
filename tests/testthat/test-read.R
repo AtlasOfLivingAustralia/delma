@@ -49,3 +49,12 @@ test_that("read_md() works on a valid markdown file", {
   expect_s3_class(x, c("tbl_df", "tbl", "data.frame"))
   expect_gte(nrow(x), 10)
 })
+
+test_that("read_md() works on boilerplate file", {
+  file <- system.file("extdata",
+                      "metadata_example.Rmd",
+                      package = "delma")
+  x <- read_md(file)
+  expect_s3_class(x, c("tbl_df", "tbl", "data.frame"))
+  expect_gte(nrow(x), 10)
+})
