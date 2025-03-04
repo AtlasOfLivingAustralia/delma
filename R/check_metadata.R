@@ -78,6 +78,8 @@ parse_validator_errors <- function(strings){
   elements_list <- stringr::str_extract(strings, 
                                         "':([[:graph:]]|\\s)+") |>
     sub("':\\s", "", x = _)
+  ## NOTE: Could add code here to pull out `expected` values into dot points
+  ## using cli::cli_bullets()
   tibble::tibble(
     title = element,
     message = elements_list)

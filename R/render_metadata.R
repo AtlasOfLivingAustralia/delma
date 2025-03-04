@@ -10,13 +10,15 @@
 #' @param output_dir The output directory for the rendered `output_file`
 #' @param overwrite (logical) Should any existing file be overwritten? Defaults
 #' to `TRUE`.
+#' @param quiet (logical) Should messages be suppressed? Defaults to `FALSE`.
 #' @returns Does not return an object; called for the side-effect of rendering
 #' a file to EML.
 #' @export
 render_metadata <- function(input,
                             output_file = NULL,
                             output_dir = NULL,
-                            overwrite = TRUE){
+                            overwrite = TRUE,
+                            quiet = FALSE){
   if(missing(input)){
     bullets <- c("No `input` provided",
                  i = "Please provide a metadata file",
@@ -36,15 +38,27 @@ render_metadata <- function(input,
   }else{
     output_string <- glue::glue("{output_dir}/{output_file}")  
   }
-  
-  if(file.exists(output_string) & !overwrite){
-    bullets <- c(glue::glue("file `{file}` already exists and has not been overwritten"),
-                 i = "set `overwrite = TRUE` to change this behaviour")
-    rlang::inform(bullets)
-  }else{
-    # render  
-    read_md(input) |>
-      write_eml(file = output_string)  
-  }
 
+  # write or not, depending on `overwrite`
+  if(file.exists(output_string)){
+    if(overwrite){
+      if(!quiet){
+        bullets <- c(glue::glue("file `{output_string}` has been overwritten"),
+                     i = "set `overwrite = FALSE` to change this behaviour")
+        rlang::inform(bullets)
+      }
+      read_md(input) |> write_eml(file = output_string) 
+    }else{
+      if(!quiet){
+        bullets <- c(glue::glue("file `{output_string}` already exists and has not been overwritten"),
+                     i = "set `overwrite = TRUE` to change this behaviour")
+        rlang::inform(bullets)
+      }
+    }
+  }else{
+    if(!quiet){
+      rlang::inform(glue::glue("Writing to file `{output_string}`"))
+    }
+    read_md(input) |> write_eml(file = output_string)
+  }
 }

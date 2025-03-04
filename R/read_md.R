@@ -81,24 +81,8 @@ read_md <- function(file){
   if(is.null(eml_attributes)){
     result
   }else{
-    join_eml_attributes(result, eml_attributes) |>
-      clean_eml_tags()
+    join_eml_attributes(result, eml_attributes)
   }
-}
-
-#' Internal function to clean EML headings that behave oddly
-#' @noRd
-#' @keywords Internal
-clean_eml_tags <- function(df){
-  # browser()
-  # modify the tibble to the required conventions for list/xml
-  # `label` should be camel case
-  df |>
-    dplyr::mutate(label = snakecase::to_lower_camel_case(.data$label)) |>
-    dplyr::mutate(label = dplyr::case_when(label == "emlEml" ~ "eml:eml",
-                                           label == "surname" ~ "surName",
-                                           label == "pubdate" ~ "pubDate",
-                                           .default = label))
 }
 
 #' Internal function to create a temporary working directory.
@@ -180,10 +164,28 @@ clean_rendered_tibble <- function(x){
                   is.na(.data$heading),
                   .data$heading_level > 0) |>
     clean_text() |>
+    clean_urls() |>
     dplyr::select("heading_level", "section", "text") |>
     dplyr::rename("level" = "heading_level", 
                   "label" = "section") |>
-    add_eml_header()
+    add_eml_header() |>
+    clean_eml_tags()
+}
+
+#' Internal function to clean header levels
+#' @param x a tibble with the column heading level
+#' @noRd
+#' @keywords Internal
+clean_header_level <- function(x){
+  heading_value <- 0
+  for(i in c(2:nrow(x))){
+    if(!is.na(x$heading_level[i])){
+      heading_value <- x$heading_level[i]
+    }else{
+      x$heading_level[i] <- heading_value
+    }
+  }
+  x
 }
 
 #' Internal function to clean text column
@@ -225,20 +227,56 @@ clean_text <- function(x){
   x
 }
 
-#' Internal function to clean header levels
-#' @param x a tibble with the column heading level
+#' Internal function to clean urls in a text column (remove leading and trailing <>)
+#' @param x A tibble
 #' @noRd
 #' @keywords Internal
-clean_header_level <- function(x){
-  heading_value <- 0
-  for(i in c(2:nrow(x))){
-    if(!is.na(x$heading_level[i])){
-      heading_value <- x$heading_level[i]
+clean_urls <- function(x){
+  result <- purrr::map(x$text, \(a){
+    if(inherits(a, "list")){
+      purrr::map(a, clean_url)  
     }else{
-      x$heading_level[i] <- heading_value
+      clean_url(a)
     }
-  }
+  })
+  x$text <- result
   x
+}
+
+#' Internal function to clean_urls() for a single string
+#' @param x A length-1 string
+#' @noRd
+#' @keywords Internal
+clean_url <- function(x){
+  if(is.na(x)){
+    x
+  }else{
+    if(grepl("^<", x) & grepl(">$", x)){ # includes urls and html comments
+      if(grepl("^<!--", x) & grepl("-->$", x)){ # html comments only
+        NA
+      }else{ # urls and emails only
+        x |>
+          stringr::str_replace("^<", "") |>
+          stringr::str_replace(">$", "")
+      }
+    }else{
+      x
+    }      
+  }
+}
+
+#' Internal function to clean EML headings that behave oddly
+#' @noRd
+#' @keywords Internal
+clean_eml_tags <- function(df){
+  # modify the tibble to the required conventions for list/xml
+  # `label` should be camel case
+  df |>
+    dplyr::mutate(label = snakecase::to_lower_camel_case(.data$label)) |>
+    dplyr::mutate(label = dplyr::case_when(label == "emlEml" ~ "eml:eml",
+                                           label == "surname" ~ "surName",
+                                           label == "pubdate" ~ "pubDate",
+                                           .default = label))
 }
 
 #' Internal function to add yaml to a file that is missing one

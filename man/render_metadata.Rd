@@ -4,7 +4,13 @@
 \alias{render_metadata}
 \title{Render a metadata statement to EML}
 \usage{
-render_metadata(input, output_file = NULL, output_dir = NULL, overwrite = TRUE)
+render_metadata(
+  input,
+  output_file = NULL,
+  output_dir = NULL,
+  overwrite = TRUE,
+  quiet = FALSE
+)
 }
 \arguments{
 \item{input}{A file to be rendered to EML}
@@ -15,6 +21,8 @@ render_metadata(input, output_file = NULL, output_dir = NULL, overwrite = TRUE)
 
 \item{overwrite}{(logical) Should any existing file be overwritten? Defaults
 to \code{TRUE}.}
+
+\item{quiet}{(logical) Should messages be suppressed? Defaults to \code{FALSE}.}
 }
 \value{
 Does not return an object; called for the side-effect of rendering
