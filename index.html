@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>Convert markdown to ecological meta language (EML) and back • delma</title>
+<title>Convert markdown to ecological metadata language (EML) and back • delma</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
 <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="apple-touch-icon.png">
@@ -18,7 +18,7 @@
 <link href="deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="deps/headroom-0.11.0/headroom.min.js"></script><script src="deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="deps/search-1.0.0/fuse.min.js"></script><script src="deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="pkgdown.js"></script><link href="extra.css" rel="stylesheet">
-<meta property="og:title" content="Convert markdown to ecological meta language (EML) and back">
+<meta property="og:title" content="Convert markdown to ecological metadata language (EML) and back">
 <meta name="description" content="Simple tools for converting metadata between R formats.">
 <meta property="og:description" content="Simple tools for converting metadata between R formats.">
 <meta property="og:image" content="https://delma.ala.org.au/logo.png">
@@ -63,7 +63,7 @@
 <div class="section level2">
 <h2 id="overview">Overview<a class="anchor" aria-label="anchor" href="#overview"></a>
 </h2>
-<p><code>delma</code> is a package for converting metadata statements written in markdown, RMarkdown or Quarto markdown to Ecological Meta-language (EML). It is named for a genus of legless lizards that are endemic to Australia, whose name happens to contain the letters ‘e’, ‘m’ and ‘l’.</p>
+<p><code>delma</code> is a package for converting metadata statements written in markdown, RMarkdown or Quarto markdown to <a href="https://eml.ecoinformatics.org" class="external-link">Ecological Metadata Language</a> (EML). It is named for a genus of legless lizards that are endemic to Australia, whose name happens to contain the letters ‘e’, ‘m’ and ‘l’.</p>
 <p>The logo depicts a striped legless lizard (<em>Delma impar</em>) in the style of the classic mobile game ‘snake’, a play on the observation that <em>Delma</em> are often mistaken for snakes. It was drawn by Martin Westgate.</p>
 <p>If you have any comments, questions or suggestions, please <a href="mailto:support@ala.org.au">contact us</a>.</p>
 </div>
@@ -76,7 +76,7 @@
 <span><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"AtlasOfLivingAustralia/delma"</span><span class="op">)</span></span></code></pre></div>
 <p>Load the package:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://paperbark.ala.org.au" class="external-link">delma</a></span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://delma.ala.org.au">delma</a></span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="basic-usage">Basic usage<a class="anchor" aria-label="anchor" href="#basic-usage"></a>
@@ -84,18 +84,17 @@
 <p>The primary use case for <code>delma</code> is to manipulate the format of metadata statements for sharing biodiversity data. The first step is to create a markdown file, and add any headings that you like that conform to the EML standard. The header ‘level’ (i.e. number of <code>#</code>) is used to designate the degree of nesting. If you don’t want to start from scratch, you can use the example dataset provided:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
-<span><span class="fu"><a href="reference/use_metadata.html">use_metadata</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] FALSE</span></span></code></pre></div>
-<p>It is straightforward to export this to your working directory using <code><a href="reference/read_md.html">write_md()</a></code>:</p>
+<span><span class="fu"><a href="reference/use_metadata.html">use_metadata</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<p>It is straightforward to export this to your working directory using <code><a href="reference/write_md.html">write_md()</a></code>:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="reference/read_md.html">write_md</a></span><span class="op">(</span><span class="va">metadata_example</span>, <span class="st">"metadata.md"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="reference/write_md.html">write_md</a></span><span class="op">(</span><span class="va">metadata_example</span>, <span class="st">"metadata.md"</span><span class="op">)</span></span></code></pre></div>
 <p>Once you are done, import it to R using <code><a href="reference/read_md.html">read_md()</a></code>. It will be stored as a <code>tibble</code>:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/read_md.html">read_md</a></span><span class="op">(</span><span class="st">"metadata.md"</span><span class="op">)</span></span>
 <span><span class="va">x</span> </span></code></pre></div>
 <p>You can then export it as an xml file without any intermediate steps:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="reference/read_eml.html">write_eml</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"metadata.xml"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="reference/write_eml.html">write_eml</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"metadata.xml"</span><span class="op">)</span></span></code></pre></div>
 <p>For a more detailed description of delma’s capabilities and methods, see the ‘Quick start guide’ vignette.</p>
 </div>
 <div class="section level2">

@@ -106,7 +106,7 @@ convert data in this sequence:</p>
 provides a set of transformers with the <code>as_eml_</code> prefix,
 e.g.:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://paperbark.ala.org.au" class="external-link">delma</a></span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://delma.ala.org.au">delma</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"# Heading 1"</span>, </span>
 <span>  <span class="st">"## Heading 2"</span>,</span>
@@ -136,8 +136,8 @@ one for reading data from markdown:</p>
 <p>And a second for reading data from EML:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/read_eml.html">read_eml</a></span><span class="op">(</span><span class="st">"https://collections.ala.org.au/ws/eml/dr368"</span><span class="op">)</span></span></code></pre></div>
-<p>The corresponding write functions are <code><a href="../reference/read_md.html">write_md()</a></code> and
-<code><a href="../reference/read_eml.html">write_eml()</a></code>. Both functions accept objects of all classes
+<p>The corresponding write functions are <code><a href="../reference/write_md.html">write_md()</a></code> and
+<code><a href="../reference/write_eml.html">write_eml()</a></code>. Both functions accept objects of all classes
 supported by <code>delma</code>, so it is possible to pipe read and
 write functions together without any intermediate stages:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
@@ -145,13 +145,13 @@ write functions together without any intermediate stages:</p>
 <span>            <span class="st">"README_md_example.md"</span>, </span>
 <span>            package <span class="op">=</span> <span class="st">"delma"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/read_md.html">read_md</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="../reference/read_eml.html">write_eml</a></span><span class="op">(</span><span class="st">"output.xml"</span><span class="op">)</span></span></code></pre></div>
+<span>  <span class="fu"><a href="../reference/write_eml.html">write_eml</a></span><span class="op">(</span><span class="st">"output.xml"</span><span class="op">)</span></span></code></pre></div>
 <p>It is worth noting, though, that these are quite simple wrapper
 functions to existing import and transformation functions. For example,
 the code block above can be rewritten using only one <code>delma</code>
 function, as follows:</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://xml2.r-lib.org/" class="external-link">xml2</a></span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://xml2.r-lib.org" class="external-link">xml2</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"example_data"</span>, </span>
 <span>            <span class="st">"README_md_example.md"</span>, </span>

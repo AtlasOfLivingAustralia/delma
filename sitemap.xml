@@ -5,15 +5,17 @@
 <url><loc>https://delma.ala.org.au/authors.html</loc></url>
 <url><loc>https://delma.ala.org.au/index.html</loc></url>
 <url><loc>https://delma.ala.org.au/news/index.html</loc></url>
-<url><loc>https://delma.ala.org.au/reference/as_eml_chr.html</loc></url>
 <url><loc>https://delma.ala.org.au/reference/as_eml_list.html</loc></url>
 <url><loc>https://delma.ala.org.au/reference/as_eml_tibble.html</loc></url>
 <url><loc>https://delma.ala.org.au/reference/as_eml_xml.html</loc></url>
-<url><loc>https://delma.ala.org.au/reference/check_eml.html</loc></url>
+<url><loc>https://delma.ala.org.au/reference/check_metadata.html</loc></url>
 <url><loc>https://delma.ala.org.au/reference/delma-package.html</loc></url>
 <url><loc>https://delma.ala.org.au/reference/index.html</loc></url>
 <url><loc>https://delma.ala.org.au/reference/read_eml.html</loc></url>
 <url><loc>https://delma.ala.org.au/reference/read_md.html</loc></url>
+<url><loc>https://delma.ala.org.au/reference/render_metadata.html</loc></url>
 <url><loc>https://delma.ala.org.au/reference/use_metadata.html</loc></url>
+<url><loc>https://delma.ala.org.au/reference/write_eml.html</loc></url>
+<url><loc>https://delma.ala.org.au/reference/write_md.html</loc></url>
 </urlset>
 

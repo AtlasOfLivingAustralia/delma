@@ -31,7 +31,7 @@
     </div>
 
     <div class="section level2">
-      <h2 id="basic-usage">Basic usage<a class="anchor" aria-label="anchor" href="#basic-usage"></a></h2>
+      <h2 id="main-functions">Main functions<a class="anchor" aria-label="anchor" href="#main-functions"></a></h2>
 
 
 
@@ -42,31 +42,25 @@
 
 
       <dl><dt>
-
-          <code><a href="read_eml.html">read_eml()</a></code> <code><a href="read_eml.html">write_eml()</a></code>
-
-        </dt>
-        <dd>Read or write EML-formatted metadata</dd>
-      </dl><dl><dt>
-
-          <code><a href="read_md.html">read_md()</a></code> <code><a href="read_md.html">write_md()</a></code>
-
-        </dt>
-        <dd>Read or write markdown-formatted metadata</dd>
-      </dl><dl><dt>
-
-          <code><a href="check_eml.html">check_eml()</a></code>
-
-        </dt>
-        <dd>Check validity of a metadata statement</dd>
-      </dl><dl><dt>
 
           <code><a href="use_metadata.html">use_metadata()</a></code>
 
         </dt>
-        <dd>Write an example metadata template to the working directory</dd>
+        <dd>Write an example metadata statement to disk</dd>
+      </dl><dl><dt>
+
+          <code><a href="render_metadata.html">render_metadata()</a></code>
+
+        </dt>
+        <dd>Render a metadata statement to EML</dd>
+      </dl><dl><dt>
+
+          <code><a href="check_metadata.html">check_metadata()</a></code>
+
+        </dt>
+        <dd>Check validity of a metadata statement</dd>
       </dl></div><div class="section level2">
-      <h2 id="type-conversion">Type conversion<a class="anchor" aria-label="anchor" href="#type-conversion"></a></h2>
+      <h2 id="reading-and-writing">Reading and writing<a class="anchor" aria-label="anchor" href="#reading-and-writing"></a></h2>
 
 
 
@@ -78,22 +72,51 @@
 
       <dl><dt>
 
-          <code><a href="as_eml_chr.html">as_eml_chr()</a></code>
+          <code><a href="read_md.html">read_md()</a></code>
 
         </dt>
-        <dd>Convert metadata to a <code>character</code> vector</dd>
+        <dd>Read markdown-formatted metadata</dd>
+      </dl><dl><dt>
+
+          <code><a href="write_md.html">write_md()</a></code>
+
+        </dt>
+        <dd>Write a markdown-formatted metadata document</dd>
+      </dl><dl><dt>
+
+          <code><a href="read_eml.html">read_eml()</a></code>
+
+        </dt>
+        <dd>Read an EML-formatted metadata document</dd>
+      </dl><dl><dt>
+
+          <code><a href="write_eml.html">write_eml()</a></code>
+
+        </dt>
+        <dd>Write an EML-formatted metadata document</dd>
+      </dl></div><div class="section level2">
+      <h2 id="format-manipulation">Format manipulation<a class="anchor" aria-label="anchor" href="#format-manipulation"></a></h2>
+
+
+
+
+    </div><div class="section level2">
+
+
+
+
+      <dl><dt>
+
+          <code><a href="as_eml_tibble.html">as_eml_tibble()</a></code>
+
+        </dt>
+        <dd>Convert metadata to a <code>tibble</code></dd>
       </dl><dl><dt>
 
           <code><a href="as_eml_list.html">as_eml_list()</a></code>
 
         </dt>
         <dd>Convert metadata to a <code>list</code></dd>
-      </dl><dl><dt>
-
-          <code><a href="as_eml_tibble.html">as_eml_tibble()</a></code>
-
-        </dt>
-        <dd>Convert metadata to a <code>tibble</code></dd>
       </dl><dl><dt>
 
           <code><a href="as_eml_xml.html">as_eml_xml()</a></code>
