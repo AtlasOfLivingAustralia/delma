@@ -48,45 +48,34 @@ library(dplyr)
 
 ## Basic usage
 
-The primary use case for `delma` is to manipulate the format of metadata 
-statements for sharing biodiversity data. The first step is to create a markdown
-file, and add any headings that you like that conform to the EML standard. The 
-header 'level' (i.e. number of `#`) is used to designate the degree of nesting.
-If you don't want to start from scratch, you can use the example dataset 
-provided:
-
-```{r}
-library(dplyr)
-use_metadata()
-```
-
-It is straightforward to export this to your working directory using `write_md()`:
+The primary use case for `delma` is to build metadata statements for sharing 
+biodiversity data. The first step is to create a markdown file, and add any 
+headings that you like that conform to the EML standard. The header 'level' 
+(i.e. number of `#`) is used to designate the degree of nesting. If you don't 
+want to start from scratch, you can use the example statement provided:
 
 ```{r, eval=FALSE}
-write_md(metadata_example, "metadata.md")
+use_metadata("my_metadata_statement.Rmd")
 ```
 
-Once you are done, import it to R using `read_md()`. It will be stored as a 
-`tibble`:
+This document can be knit like any other Rmarkdown document, using either the 
+'knit' button in RStudio, or the function `rmarkdown::knit()`. In both cases it 
+will render to the format defined in the yaml section, which defaults to 
+`html_document`, but can easily be changed. To convert this document to EML,
+use:
 
 ```{r, eval=FALSE}
-x <- read_md("metadata.md")
-x 
+render_metadata("my_metadata_statement.Rmd", 
+                "metadata.xml")
 ```
 
-
-```{r, eval=FALSE, echo=FALSE}
-system.file("extdata", 
-            "README_md_example.md", 
-            package = "delma") |>
-  read_md()
-```
-
-You can then export it as an xml file without any intermediate steps:
+Note that EML documents use the extension `.xml`. To check that your document
+is formatted in accordance with the EML standard, use:
 
 ```{r, eval=FALSE}
-write_eml(x, "metadata.xml")
+check_metadata("metadata.xml")
 ```
+
 
 For a more detailed description of delma's capabilities and methods, see the 
 'Quick start guide' vignette.
@@ -94,11 +83,10 @@ For a more detailed description of delma's capabilities and methods, see the
 ## Citing `delma`
 To generate a citation for the package version you are using, you can run:
 
-```r
+```{r}
 citation(package = "delma")
 ```
 
 The current recommended citation is:
 
-> Westgate MJ, Balasubramaniam S & Kellie D (2024) delma: Convert markdown files
-to EML. R Package version 0.1.0.
+> Westgate MJ, Balasubramaniam S & Kellie D (2024) Convert Rmarkdown and Quarto documents to Ecological Metadata Language. R Package version 0.1.0.
