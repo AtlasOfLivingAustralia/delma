@@ -4,10 +4,13 @@
 \alias{check_metadata}
 \title{Check validity of a metadata statement}
 \usage{
-check_metadata(file = NULL, quiet = FALSE)
+check_metadata(file = NULL, schema = NULL, quiet = FALSE)
 }
 \arguments{
 \item{file}{An EML file to check Can be either local or a URL.}
+
+\item{schema}{Either \code{NULL} (the default) to compare to the GBIF profile;
+or a URL to a valid schema (passed internally to \link[xml2:read_xml]{xml2::read_xml}).}
 
 \item{quiet}{(logical) Should messages be hidden? Defaults to FALSE}
 }

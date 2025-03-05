@@ -8,6 +8,8 @@
 #' meaning a file could be structurally sound and still be lacking critical 
 #' information.
 #' @param file An EML file to check Can be either local or a URL.
+#' @param schema Either `NULL` (the default) to compare to the GBIF profile;
+#' or a URL to a valid schema (passed internally to [xml2::read_xml]).
 #' @param quiet (logical) Should messages be hidden? Defaults to FALSE
 #' @details
 #' This function uses local versions of `dc.xsd`, `eml-gbif-profile.xsd` and 
@@ -22,6 +24,7 @@
 #' }
 #' @export
 check_metadata <- function(file = NULL,
+                           schema = NULL,
                            quiet = FALSE){
   # check inputs
   if(is.null(file)){
@@ -31,12 +34,17 @@ check_metadata <- function(file = NULL,
   }
 
   # look up schema doc
-  schema_doc <- system.file("extdata", 
-                            "eml-gbif-profile",
-                            "1.3",
-                            "eml-gbif-profile.xsd", 
-                            package = "delma",
-                            mustWork = TRUE)
+  if(is.null(schema)){
+    schema_doc <- system.file("extdata", 
+                              "eml-gbif-profile",
+                              "1.3",
+                              "eml-gbif-profile.xsd", 
+                              package = "delma",
+                              mustWork = TRUE)    
+  }else{
+    schema_doc <- schema
+  }
+
   
   # run validation
   result <- xml2::xml_validate(xmldoc, 

@@ -4,10 +4,10 @@ note <- sprintf("R package version %s", meta$Version)
 citHeader("To cite delma in publications use:")
 
 bibentry(bibtype = "Manual",
-    "title" = "delma: Convert Markdown to Ecological Metalanguage (EML) and Back",
+    "title" = "delma: Convert Rmarkdown and Quarto documents to Ecological Metadata Language",
     author = c(person("Martin", "Westgate"),
-             person("Dax", "Kellie"),
-             person("Shandiya", "Balasubramaniam")),
+               person("Shandiya", "Balasubramaniam"),
+               person("Dax", "Kellie")),
      year = year,
      note = note,
-     url = "https://paperbark.ala.org.au")
+     url = "https://delma.ala.org.au")

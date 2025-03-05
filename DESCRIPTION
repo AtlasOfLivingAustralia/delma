@@ -1,6 +1,6 @@
 Package: delma
 Type: Package
-Title: Convert markdown to ecological metadata language (EML) and back
+Title: Convert Rmarkdown and Quarto documents to Ecological Metadata Language
 Version: 0.1.0
 Authors@R:
     c(person(given = "Martin",
