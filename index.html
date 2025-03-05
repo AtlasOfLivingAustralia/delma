@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>Convert markdown to ecological metadata language (EML) and back • delma</title>
+<title>Convert Rmarkdown and Quarto documents to Ecological Metadata Language • delma</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
 <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="apple-touch-icon.png">
@@ -18,7 +18,7 @@
 <link href="deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="deps/headroom-0.11.0/headroom.min.js"></script><script src="deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="deps/search-1.0.0/fuse.min.js"></script><script src="deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="pkgdown.js"></script><link href="extra.css" rel="stylesheet">
-<meta property="og:title" content="Convert markdown to ecological metadata language (EML) and back">
+<meta property="og:title" content="Convert Rmarkdown and Quarto documents to Ecological Metadata Language">
 <meta name="description" content="Simple tools for converting metadata between R formats.">
 <meta property="og:description" content="Simple tools for converting metadata between R formats.">
 <meta property="og:image" content="https://delma.ala.org.au/logo.png">
@@ -81,20 +81,16 @@
 <div class="section level2">
 <h2 id="basic-usage">Basic usage<a class="anchor" aria-label="anchor" href="#basic-usage"></a>
 </h2>
-<p>The primary use case for <code>delma</code> is to manipulate the format of metadata statements for sharing biodiversity data. The first step is to create a markdown file, and add any headings that you like that conform to the EML standard. The header ‘level’ (i.e. number of <code>#</code>) is used to designate the degree of nesting. If you don’t want to start from scratch, you can use the example dataset provided:</p>
+<p>The primary use case for <code>delma</code> is to build metadata statements for sharing biodiversity data. The first step is to create a markdown file, and add any headings that you like that conform to the EML standard. The header ‘level’ (i.e. number of <code>#</code>) is used to designate the degree of nesting. If you don’t want to start from scratch, you can use the example statement provided:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
-<span><span class="fu"><a href="reference/use_metadata.html">use_metadata</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<p>It is straightforward to export this to your working directory using <code><a href="reference/write_md.html">write_md()</a></code>:</p>
+<code class="sourceCode R"><span><span class="fu"><a href="reference/use_metadata.html">use_metadata</a></span><span class="op">(</span><span class="st">"my_metadata_statement.Rmd"</span><span class="op">)</span></span></code></pre></div>
+<p>This document can be knit like any other Rmarkdown document, using either the ‘knit’ button in RStudio, or the function <code>rmarkdown::knit()</code>. In both cases it will render to the format defined in the yaml section, which defaults to <code>html_document</code>, but can easily be changed. To convert this document to EML, use:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="reference/write_md.html">write_md</a></span><span class="op">(</span><span class="va">metadata_example</span>, <span class="st">"metadata.md"</span><span class="op">)</span></span></code></pre></div>
-<p>Once you are done, import it to R using <code><a href="reference/read_md.html">read_md()</a></code>. It will be stored as a <code>tibble</code>:</p>
+<code class="sourceCode R"><span><span class="fu"><a href="reference/render_metadata.html">render_metadata</a></span><span class="op">(</span><span class="st">"my_metadata_statement.Rmd"</span>, </span>
+<span>                <span class="st">"metadata.xml"</span><span class="op">)</span></span></code></pre></div>
+<p>Note that EML documents use the extension <code>.xml</code>. To check that your document is formatted in accordance with the EML standard, use:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/read_md.html">read_md</a></span><span class="op">(</span><span class="st">"metadata.md"</span><span class="op">)</span></span>
-<span><span class="va">x</span> </span></code></pre></div>
-<p>You can then export it as an xml file without any intermediate steps:</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="reference/write_eml.html">write_eml</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"metadata.xml"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="reference/check_metadata.html">check_metadata</a></span><span class="op">(</span><span class="st">"metadata.xml"</span><span class="op">)</span></span></code></pre></div>
 <p>For a more detailed description of delma’s capabilities and methods, see the ‘Quick start guide’ vignette.</p>
 </div>
 <div class="section level2">
@@ -102,11 +98,26 @@
 <a class="anchor" aria-label="anchor" href="#citing-delma"></a>
 </h2>
 <p>To generate a citation for the package version you are using, you can run:</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/citation.html" class="external-link">citation</a></span><span class="op">(</span>package <span class="op">=</span> <span class="st">"delma"</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/citation.html" class="external-link">citation</a></span><span class="op">(</span>package <span class="op">=</span> <span class="st">"delma"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; To cite delma in publications use:</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;   Westgate M, Balasubramaniam S, Kellie D (2025). _delma: Convert</span></span>
+<span><span class="co">#&gt;   Rmarkdown and Quarto documents to Ecological Metadata Language_. R</span></span>
+<span><span class="co">#&gt;   package version 0.1.0, &lt;https://delma.ala.org.au&gt;.</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; A BibTeX entry for LaTeX users is</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;   @Manual{,</span></span>
+<span><span class="co">#&gt;     title = {delma: Convert Rmarkdown and Quarto documents to Ecological Metadata Language},</span></span>
+<span><span class="co">#&gt;     author = {Martin Westgate and Shandiya Balasubramaniam and Dax Kellie},</span></span>
+<span><span class="co">#&gt;     year = {2025},</span></span>
+<span><span class="co">#&gt;     note = {R package version 0.1.0},</span></span>
+<span><span class="co">#&gt;     url = {https://delma.ala.org.au},</span></span>
+<span><span class="co">#&gt;   }</span></span></code></pre></div>
 <p>The current recommended citation is:</p>
 <blockquote>
-<p>Westgate MJ, Balasubramaniam S &amp; Kellie D (2024) delma: Convert markdown files to EML. R Package version 0.1.0.</p>
+<p>Westgate MJ, Balasubramaniam S &amp; Kellie D (2024) Convert Rmarkdown and Quarto documents to Ecological Metadata Language. R Package version 0.1.0.</p>
 </blockquote>
 </div>
 </div>
