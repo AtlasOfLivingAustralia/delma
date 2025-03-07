@@ -23,7 +23,8 @@
 #'   * [read_md()]/[write_md()] - Read / write Rmd or Qmd files to `tbl_df`
 #'   
 #' **Format manipulation**
-#'   * [as_eml_tibble()] - Convert metadata to class `tbl_df`
+#'   * [as_lp_tbl()] - Convert metadata to class `tbl_lp`
+#'   * [as_eml_tbl()] - Convert metadata to class `tbl_df`
 #'   * [as_eml_list()] - Convert metadata to class `list`
 #'   * [as_eml_xml()]- Convert metadata to class `xml_document`
 #'   

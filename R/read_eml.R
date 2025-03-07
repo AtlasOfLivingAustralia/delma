@@ -30,7 +30,7 @@ read_eml <- function(file){
   }
   # import & convert to tibble
   xml2::read_xml(file) |> 
-    as_eml_tibble()
+    as_eml_tbl()
 }
 
 #' Internal function to check for characters

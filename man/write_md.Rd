@@ -7,9 +7,10 @@
 write_md(x, file)
 }
 \arguments{
-\item{x}{Object of any class handled by \code{delma}; i.e. \code{tbl_df}, \code{list} or
-\code{xml_document}.
-#' @param file Filename to write to. Must be either \code{.md}, \code{.Rmd}
+\item{x}{Object of any class handled by \code{delma}; i.e. \verb{tbl_lp,} \code{tbl_df},
+\code{list} or \code{xml_document}.}
+
+\item{file}{Filename to write to. Must be either \code{.md}, \code{.Rmd}
 or \code{.Qmd} file.}
 }
 \description{
@@ -18,8 +19,7 @@ Write a markdown-formatted metadata document
 \details{
 Similar to \code{\link[=read_md]{read_md()}}, \code{\link[=write_md]{write_md()}} is considerably less generic than most
 \code{write_} functions. If \code{x} is an \code{xml_document} this should convert seamlessly;
-but lists or tibbles that have been manually formatted require care. To parse
-correctly, the supplied \code{tibble} \strong{must} contain the columns supplied by \code{\link[=read_md]{read_md()}}.
+but lists or tibbles that have been manually formatted require care.
 
 Internally, \code{write_md()} calls \link[lightparser:combine_tbl_to_file]{lightparser::combine_tbl_to_file}.
 }

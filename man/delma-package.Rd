@@ -29,7 +29,8 @@ transparency and ease-of-use, then convert them to EML for efficient transfer.
 
 \strong{Format manipulation}
 \itemize{
-\item \code{\link[=as_eml_tibble]{as_eml_tibble()}} - Convert metadata to class \code{tbl_df}
+\item \code{\link[=as_lp_tbl]{as_lp_tbl()}} - Convert metadata to class \code{tbl_lp}
+\item \code{\link[=as_eml_tbl]{as_eml_tbl()}} - Convert metadata to class \code{tbl_df}
 \item \code{\link[=as_eml_list]{as_eml_list()}} - Convert metadata to class \code{list}
 \item \code{\link[=as_eml_xml]{as_eml_xml()}}- Convert metadata to class \code{xml_document}
 }
