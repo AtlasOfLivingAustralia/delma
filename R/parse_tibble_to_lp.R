@@ -2,8 +2,7 @@
 #' @noRd
 #' @keywords Internal
 parse_tibble_to_lp <- function(x){
-  empty_character <- rep(NA, nrow(x)) |>
-    as.character()
+  empty_character <- rep(NA, nrow(x)) |> as.character()
   x |>
     dplyr::rename("heading" = "label",
                   "heading_level" = "level") |>
@@ -11,17 +10,12 @@ parse_tibble_to_lp <- function(x){
                   "params" = list(NA),
                   "code" = list(NA), 
                   "label" = empty_character,
-                  "type" = empty_character,
-                  heading_level = heading_level - 1) |>
-    
-    # add `eml:eml` attributes as code block (or just `eml`??)
-    
+                  "type" = empty_character) |>
     collapse_text() |> # convert list-entries in text to single vectors
     expand_text_rows() |> # expand out text to put heading and text on sequential rows
     dplyr::select("type", "label", "params", "text", "code", 
                   "heading", "heading_level", "section") |>
-    rebuild_yaml() |> # add yaml from title, date
-    format_eml_block()
+    rebuild_yaml() # add yaml from title, date
   # browser()
   # Set code block content
   # convert `attributes` to list-code in `code` column
@@ -111,12 +105,4 @@ rebuild_yaml <- function(x){
   result$text[1] <- NA # doesn't work with `add_row()` for some reason
   result$code[1] <- NA # ditto
   result
-}
-
-#' Internal function to build a `yaml` row from existing data
-#' @noRd
-#' @keywords Internal
-format_eml_block <- function(x){
-  # browser()
-  x[-which(x$heading == "eml:eml"), ] # temporary
 }

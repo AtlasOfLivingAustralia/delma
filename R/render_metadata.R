@@ -20,10 +20,10 @@ render_metadata <- function(input,
                             overwrite = TRUE,
                             quiet = FALSE){
   if(missing(input)){
-    bullets <- c("No `input` provided",
-                 i = "Please provide a metadata file",
-                 i = "You can call`use_metadata()` to create one")
-    rlang::abort(bullets)
+    c("No `input` provided",
+      i = "Please provide a metadata file",
+      i = "You can call`use_metadata()` to create one") |>
+      cli::cli_abort()
   }
 
   # create file name
@@ -43,22 +43,25 @@ render_metadata <- function(input,
   if(file.exists(output_string)){
     if(overwrite){
       if(!quiet){
-        bullets <- c(glue::glue("file `{output_string}` has been overwritten"),
-                     i = "set `overwrite = FALSE` to change this behaviour")
-        rlang::inform(bullets)
+        c(glue::glue("file `{output_string}` has been overwritten"),
+          i = "set `overwrite = FALSE` to change this behaviour") |>
+        cli::cli_inform()
       }
-      read_md(input) |> write_eml(file = output_string) 
+      read_md(input) |> 
+        write_eml(file = output_string) 
     }else{
       if(!quiet){
-        bullets <- c(glue::glue("file `{output_string}` already exists and has not been overwritten"),
-                     i = "set `overwrite = TRUE` to change this behaviour")
-        rlang::inform(bullets)
+        c(glue::glue("file `{output_string}` already exists and has not been overwritten"),
+          i = "set `overwrite = TRUE` to change this behaviour") |>
+        cli::cli_inform()
       }
     }
   }else{
     if(!quiet){
-      rlang::inform(glue::glue("Writing to file `{output_string}`"))
+      glue::glue("Writing to file `{output_string}`") |>
+        cli::cli_inform()
     }
-    read_md(input) |> write_eml(file = output_string)
+    read_md(input) |> 
+      write_eml(file = output_string)
   }
 }

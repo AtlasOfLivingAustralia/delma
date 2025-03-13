@@ -5,15 +5,15 @@
 parse_lp_to_tibble <- function(x){
   x |>
     clean_header_level() |> # downfill heading level
+    dplyr::mutate(attributes = as.list(rep(NA, nrow(x)))) |>
     dplyr::filter(.data$type != "yaml",
                   is.na(.data$heading),
                   .data$heading_level > 0) |>
     clean_text() |>
     clean_urls() |>
-    dplyr::select("heading_level", "section", "text") |>
+    dplyr::select("heading_level", "section", "text", "attributes") |>
     dplyr::rename("level" = "heading_level", 
                   "label" = "section") |>
-    add_eml_header() |>
     clean_eml_tags()
 }
 
@@ -118,7 +118,7 @@ clean_eml_tags <- function(df){
   # `label` should be camel case
   df |>
     dplyr::mutate(label = snakecase::to_lower_camel_case(.data$label)) |>
-    dplyr::mutate(label = dplyr::case_when(label == "emlEml" ~ "eml:eml",
+    dplyr::mutate(label = dplyr::case_when(label == "Eml" ~ "eml",
                                            label == "surname" ~ "surName",
                                            label == "pubdate" ~ "pubDate",
                                            .default = label))

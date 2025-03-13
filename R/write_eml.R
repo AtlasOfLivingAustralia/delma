@@ -17,14 +17,15 @@ write_eml <- function(x,
   
   # stop if not converted
   if(!inherits(x, "xml_document")){
-    abort(c("`write_eml()` only accepts objects of class `xml_document`.",
-            i = "Use `as_eml_xml()` to convert it."))
+    c("`write_eml()` only accepts objects of class `xml_document`.",
+      i = "Use `as_eml_xml()` to convert it.") |>
+    cli::cli_abort()
   }
   
   # stop if file suffix is incorrect
   check_is_single_character(file)
   if(!grepl(".xml$", file)){
-    abort("`write_eml()` only writes files with a `.xml` suffix.")
+    cli::cli_abort("`write_eml()` only writes files with a `.xml` suffix.")
   }
   # browser()
   # xml_find_all(x, ".//title") # works

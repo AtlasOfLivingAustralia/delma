@@ -132,12 +132,16 @@ format_xml_tibble <- function(df){
 #' @keywords Internal
 clean_tibble_text <- function(x){
   purrr::map(x, \(a){
-    n <- nrow(a)
-    if(!is.na(a$text[n]) & is.na(a$text[(n - 1)]) & is.na(a$label[n])){
-      a$text[n - 1] <- a$text[n]
-      dplyr::slice_head(a, n = (n - 1))
-    }else{
+    if(is.null(a)){
       a
+    }else{
+      n <- nrow(a)
+      if(!is.na(a$text[n]) & is.na(a$text[(n - 1)]) & is.na(a$label[n])){
+        a$text[n - 1] <- a$text[n]
+        dplyr::slice_head(a, n = (n - 1))
+      }else{
+        a
+      }      
     }
   })
 }
@@ -150,8 +154,8 @@ clean_empty_lists <- function(x){
   list_check <- purrr::map(x$attributes, \(a){inherits(a, "list")}) |>
     unlist()
   list_entries <- x$attributes[list_check]
-  x$attributes[list_check] <- map(list_entries, 
-                                  \(a){if(length(a) < 1){NA}else{a}})
+  x$attributes[list_check] <- purrr::map(list_entries, 
+                                         \(a){if(length(a) < 1){NA}else{a}})
   x
 }
 
@@ -160,16 +164,16 @@ clean_empty_lists <- function(x){
 #' @noRd
 #' @keywords Internal
 clean_paragraphs <- function(x){
-  x <- x |> mutate(
-    text = as.list(.data$text),
-    index = seq_len(nrow(x)),
-    group = detect_paras(.data$label))
+  x <- x |> 
+    dplyr::mutate(text = as.list(.data$text),
+                  index = seq_len(nrow(x)),
+                  group = detect_paras(.data$label))
   if(any(x$group > 0)){
     x_subset <- x |>
       dplyr::filter(.data$group > 0) 
     x_split <- split(x_subset, x_subset$group)
     result_split <- purrr::map(x_split, \(a){
-      tibble(
+      tibble::tibble(
         level = a$level[1],
         label = a$label[1],
         text =  list(as.list(a$text[seq(from = 2, to = nrow(a), by = 1)])),

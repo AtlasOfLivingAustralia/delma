@@ -33,11 +33,11 @@ read_md <- function(file){
   
   # check file is specified
   if(missing(file)){
-    rlang::abort("`file` is missing, with no default.")
+    cli::cli_abort("`file` is missing, with no default.")
   }
   # check file exists
   if(!file.exists(file)){
-    rlang::abort("Specified `file` does not exist.")
+    cli::cli_abort("Specified `file` does not exist.")
   }
   # check file is correctly specified
   check_is_single_character(file)
@@ -89,9 +89,9 @@ read_md <- function(file){
 check_valid_suffix <- function(file){
   suffix <- stringr::str_extract(file, "\\.[:alnum:]+$")
   if(!(suffix %in% c(".md", ".Rmd", ".Qmd"))){
-    bullets <- c("Invalid file suffix", 
-                 glue::glue("Please rename `{file}` to end in `.md`, `.Rmd` or `.Qmd`"))
-    rlang::abort(bullets, call = rlang::caller_env())
+    c("Invalid file suffix", 
+      "Please rename `{file}` to end in `.md`, `.Rmd` or `.Qmd`") |>
+    cli::cli_abort(call = rlang::caller_env())
   }
 }
 
@@ -122,7 +122,7 @@ convert_to_markdown_output <- function(input){
   # find yaml in plain text
   yaml_finder <- grepl("^---", x)
   if(length(which(yaml_finder)) < 2){
-    rlang::abort("yaml not found",
+    cli::cli_abort("yaml not found",
                  call = rlang::caller_env())
   }
   yaml_end <- which(yaml_finder)[2]
@@ -185,18 +185,18 @@ parse_eml_attributes <- function(x, tags){
                      eval() |>
                      try()
                    if(!inherits(outcome, "list")){ # try-error?
-                     bullets <- c("One of your named code blocks did not parse",
-                                  i = "These code blocks are used by `delma` to assign EML attributes",
-                                  i = glue::glue("Consider revising code block '{attr(a, 'chunk_opts')$label}' to return a `list()`"))
-                     rlang::abort(bullets, call = rlang::caller_env())
+                     c("One of your named code blocks did not parse",
+                       i = "These code blocks are used by `delma` to assign EML attributes",
+                       i = "Consider revising code block '{attr(a, 'chunk_opts')$label}' to return a `list()`") |>
+                     cli::cli_abort(call = rlang::caller_env())
                    }else{
                      outcome
                    }
                  }else{
-                   bullets <- c("One of your named code blocks does not contain `list()`",
-                                i = "These code blocks are used by `delma` to assign EML attributes",
-                                i = glue::glue("Consider labelling code block '{attr(a, 'chunk_opts')$label}' to something else, or adding a `list()`"))
-                   rlang::abort(bullets, call = rlang::caller_env())
+                   c("One of your named code blocks does not contain `list()`",
+                     i = "These code blocks are used by `delma` to assign EML attributes",
+                     i = "Consider labelling code block '{attr(a, 'chunk_opts')$label}' to something else, or adding a `list()`") |>
+                   cli::cli_abort(call = rlang::caller_env())
                  }
                })
     names(result) <- attr_chunks$label
