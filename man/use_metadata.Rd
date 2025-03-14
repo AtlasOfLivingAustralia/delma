@@ -8,7 +8,7 @@ use_metadata(file = NULL, overwrite = FALSE, quiet = FALSE)
 }
 \arguments{
 \item{file}{(string) A name for the resulting file, with either \code{.Rmd} or
-\code{.Qmd} as a suffix.}
+\code{.Qmd} as a suffix. If \code{NULL} will default to \code{metadata.md}.}
 
 \item{overwrite}{(logical) Should any existing file be overwritten? Defaults
 to \code{FALSE}.}

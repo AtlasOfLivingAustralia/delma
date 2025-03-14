@@ -6,7 +6,7 @@
 #' HTML or PDF will function; but also that it renders to valid EML using
 #' [render_metadata()]. 
 #' @param file (string) A name for the resulting file, with either `.Rmd` or
-#' `.Qmd` as a suffix.
+#' `.Qmd` as a suffix. If `NULL` will default to `metadata.md`.
 #' @param overwrite (logical) Should any existing file be overwritten? Defaults
 #' to `FALSE`.
 #' @param quiet (logical) Should messages be suppressed? Defaults to `FALSE`.

@@ -3,7 +3,7 @@
 #' @noRd
 #' @keywords Internal
 parse_lp_to_tibble <- function(x){
-  x |>
+  result <- x |>
     clean_header_level() |> # downfill heading level
     dplyr::mutate(attributes = as.list(rep(NA, nrow(x)))) |>
     dplyr::filter(.data$type != "yaml",
@@ -15,6 +15,8 @@ parse_lp_to_tibble <- function(x){
     dplyr::rename("level" = "heading_level", 
                   "label" = "section") |>
     clean_eml_tags()
+  class(result) <- c("tbl_df", "tbl", "data.frame")
+  result
 }
 
 #' Internal function to clean header levels

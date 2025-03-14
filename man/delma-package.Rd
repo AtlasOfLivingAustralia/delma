@@ -44,6 +44,7 @@ If you have any questions, comments or suggestions, please email
 Useful links:
 \itemize{
   \item \url{https://delma.ala.org.au}
+  \item Report bugs at \url{https://github.com/AtlasOfLivingAustralia/delma/issues}
 }
 
 }

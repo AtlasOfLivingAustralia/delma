@@ -1,10 +1,10 @@
 test_that("`as_eml_list()` works for class `tbl_df` imported from md", {
-  x <- read_md("testdata/bionet_metadata.md")
+  x <- read_md("testdata/bionet_metadata.Rmd")
   result <- as_eml_list(x)
   expect_true(inherits(result, "list"))
   expect_equal(
     purrr::pluck_depth(result),
-    max(x$level) + 1)
+    max(x$level))
   expect_lte(
     length(unlist(result)),
     nrow(x))

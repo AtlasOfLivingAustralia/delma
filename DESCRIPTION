@@ -37,6 +37,7 @@ Suggests:
   testthat (>= 3.0.0)
 License: GPL-3
 URL: https://delma.ala.org.au
+BugReports: https://github.com/AtlasOfLivingAustralia/delma/issues
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
