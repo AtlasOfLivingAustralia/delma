@@ -44,7 +44,6 @@ check_metadata <- function(file = NULL,
   }else{
     schema_doc <- schema
   }
-
   
   # run validation
   result <- xml2::xml_validate(xmldoc, 

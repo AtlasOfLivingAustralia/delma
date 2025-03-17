@@ -170,6 +170,11 @@ add_standard_yaml <- function(input){
 #' @noRd
 #' @keywords Internal
 parse_eml_attributes <- function(x, tags){
+  eml_check <- x$label == "eml"
+  eml_check[is.na(eml_check)] <- FALSE
+  if(any(eml_check)){
+    x$label[which(eml_check)[1]] <- "eml:eml"
+  }
   attr_chunks <- x |>
       dplyr::filter(.data$type == "block" &
                     .data$label %in% tags)

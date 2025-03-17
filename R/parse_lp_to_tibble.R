@@ -25,7 +25,8 @@ parse_lp_to_tibble <- function(x){
 #' @keywords Internal
 clean_header_level <- function(x){
   heading_value <- 0
-  for(i in c(2:nrow(x))){
+  all_rows <- seq_len(nrow(x))[-1]
+  for(i in all_rows){
     if(!is.na(x$heading_level[i])){
       heading_value <- x$heading_level[i]
     }else{
@@ -58,10 +59,13 @@ clean_text <- function(x){
                                trimws() |>
                                stringr::str_replace("\\s{2,}", "\\s")
                              b <- b[b != ""] # remove empty spaces; typically a leading ""
-                             if(length(b) > 1){
-                               as.list(b) # lists are parsed as paragraphs
+                             n <- length(b)
+                             if(n < 1){
+                               NA # multiple "" are replaced with NA
+                             }else if(n == 1L){
+                               b # single text pasted as is
                              }else{
-                               b # length-1 characters are not
+                               as.list(b) # lists are parsed as paragraphs
                              }
                            }else{
                              glue::glue_collapse(x, sep = " ") |>
@@ -120,7 +124,7 @@ clean_eml_tags <- function(df){
   # `label` should be camel case
   df |>
     dplyr::mutate(label = snakecase::to_lower_camel_case(.data$label)) |>
-    dplyr::mutate(label = dplyr::case_when(label == "Eml" ~ "eml",
+    dplyr::mutate(label = dplyr::case_when(label == "eml" ~ "eml:eml",
                                            label == "surname" ~ "surName",
                                            label == "pubdate" ~ "pubDate",
                                            .default = label))
