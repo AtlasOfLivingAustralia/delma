@@ -9,11 +9,20 @@ parse_list_to_tibble <- function(x){
   }
   result_tibble <- result |>
     clean_tibble_text() |>
-    dplyr::bind_rows() |>
-    dplyr::select(dplyr::any_of(
-      c("level", "label", "text", "attributes")))
+    dplyr::bind_rows()
+
+  # break pipe here to remove duplicates
   result_tibble <- result_tibble[!duplicated(result_tibble), ] # duplicated in any column
+  # removal of duplicates is causing later issues with `ulink`
+  # more broadly, though, you should be allowed to have duplicated
+  # content if you want. This is a very coarse way to detect bugs
+  # perhaps detecting duplicated index values?! rather than names?
+  # that could work\
+  
+  # restart pipe
   result_tibble |>
+    dplyr::select(
+      dplyr::any_of(c("level", "label", "text", "attributes"))) |>
     clean_empty_lists() |>
     clean_paragraphs()
 }
@@ -30,10 +39,15 @@ list_to_tibble_recurse <- function(x,
   x_names <- names(x)
   purrr::map(.x = seq_along(x),
              .f = \(a){
+               # browser()
                result <- extract_list_to_tibble(a, x_names, x, level)
                if(!is.null(result)){
                  if(nrow(result) > 0){
+                   current_index <- c(
+                     outcome$index[[nrow(outcome)]],
+                     result$index[[1]])
                    outcome <- dplyr::bind_rows(outcome, result)
+                   outcome$index[[nrow(outcome)]] <- current_index[!is.na(current_index)]
                  }
                }
                if(is.list(x[[a]])){
@@ -42,11 +56,30 @@ list_to_tibble_recurse <- function(x,
                                           level = level + 1, 
                                           outcome = outcome) 
                  }
-                 ## This is cancelled because it apparently never gets called
-                 # else{
-                 #   browser()
-                 #   format_xml_tibble(outcome)
+                 else{
+                   # browser() # trying to find indexing info here
+                   format_xml_tibble(outcome)
+                 }
+               }else if(is.character(x[[a]])){
+                 # if(grepl("^Creative Commons Attribution", x[[a]])){
+                 #    browser()
                  # }
+                 result <- format_xml_tibble(outcome)
+                 # This code is rather convoluted.
+                 # Where a `para` tag includes text FOLLOWED by other tags,
+                 # indexing was failing to detect it. This 're-adds' 
+                 # text missing for this reason.
+                 match_check <- result$text[nrow(result)] == x[[a]]
+                 if(is.na(match_check) | isFALSE(match_check)){
+                   result <- result |>
+                     tibble::add_row(
+                       level = level,
+                       label = NA,
+                       attributes = list(NA),
+                       text = x[[a]]
+                     )
+                 }
+                 result 
                }else{
                  format_xml_tibble(outcome) 
                }
@@ -60,13 +93,15 @@ list_to_tibble_recurse <- function(x,
 extract_list_to_tibble <- function(index, list_names, list_data, level){
   if(is.null(list_names[index])){
     xml_tibble(level = level, 
-               text = list_data[[1]])
+               text = list_data[[1]],
+               index = index)
   }else if(list_names[index] != ""){
     current_contents <- list_data[[index]]
     current_attr <- attributes(current_contents)
-    current_title <- snakecase::to_title_case(list_names[index])
+    # current_title <- snakecase::to_title_case(list_names[index])
     result <- xml_tibble(level = level,
-                         label = current_title)
+                         label = list_names[index],
+                         index = index)
     if(length(current_attr) >= 1){
       non_name_attributes <- current_attr[names(current_attr) != "names"] |>
         replace_xml_quotes()
@@ -104,12 +139,14 @@ replace_xml_quotes <- function(x){
 xml_tibble <- function(level = NA,
                        label = NA,
                        attributes = NA,
-                       text = NA){
+                       text = NA,
+                       index = NA){
   tibble::tibble(
     level = as.integer(level),
     label = as.character(label),
     attributes = as.list(attributes),
-    text = as.character(text))
+    text = as.character(text),
+    index = as.list(index))
 }
 
 #' Internal function to format a tibble from list
@@ -117,12 +154,12 @@ xml_tibble <- function(level = NA,
 #' @keywords Internal
 format_xml_tibble <- function(df){
   df <- df[-1, ] # top row is empty
-  index <- purrr::map(.x = seq_len(nrow(df)), 
+  index_names <- purrr::map(.x = seq_len(nrow(df)), 
                       .f = \(a){
                         paste(df$label[seq_len(a)], collapse = "_")
                       }) |>
     unlist()
-  df$index <- index 
+  df$index_names <- index_names 
   df
 }
 
@@ -132,12 +169,16 @@ format_xml_tibble <- function(df){
 #' @keywords Internal
 clean_tibble_text <- function(x){
   purrr::map(x, \(a){
-    n <- nrow(a)
-    if(!is.na(a$text[n]) & is.na(a$text[(n - 1)]) & is.na(a$label[n])){
-      a$text[n - 1] <- a$text[n]
-      dplyr::slice_head(a, n = (n - 1))
-    }else{
+    if(is.null(a)){
       a
+    }else{
+      n <- nrow(a)
+      if(!is.na(a$text[n]) & is.na(a$text[(n - 1)]) & is.na(a$label[n])){
+        a$text[n - 1] <- a$text[n]
+        dplyr::slice_head(a, n = (n - 1))
+      }else{
+        a
+      }      
     }
   })
 }
@@ -150,8 +191,8 @@ clean_empty_lists <- function(x){
   list_check <- purrr::map(x$attributes, \(a){inherits(a, "list")}) |>
     unlist()
   list_entries <- x$attributes[list_check]
-  x$attributes[list_check] <- map(list_entries, 
-                                  \(a){if(length(a) < 1){NA}else{a}})
+  x$attributes[list_check] <- purrr::map(list_entries, 
+                                         \(a){if(length(a) < 1){NA}else{a}})
   x
 }
 
@@ -160,16 +201,16 @@ clean_empty_lists <- function(x){
 #' @noRd
 #' @keywords Internal
 clean_paragraphs <- function(x){
-  x <- x |> mutate(
-    text = as.list(.data$text),
-    index = seq_len(nrow(x)),
-    group = detect_paras(.data$label))
+  x <- x |> 
+    dplyr::mutate(text = as.list(.data$text),
+                  index = seq_len(nrow(x)),
+                  group = detect_paras(.data$label))
   if(any(x$group > 0)){
     x_subset <- x |>
       dplyr::filter(.data$group > 0) 
     x_split <- split(x_subset, x_subset$group)
     result_split <- purrr::map(x_split, \(a){
-      tibble(
+      tibble::tibble(
         level = a$level[1],
         label = a$label[1],
         text =  list(as.list(a$text[seq(from = 2, to = nrow(a), by = 1)])),

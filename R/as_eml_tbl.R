@@ -4,7 +4,7 @@
 #' them to a tibble with a particular structure, designed for storing nested
 #' data. Tibbles are required because attributes are stored as list-columns, 
 #' which are not supported by class `data.frame`.
-#' @name as_eml_tibble
+#' @name as_eml_tbl
 #' @order 1
 #' @param x Object to be converted
 #' @param ... Other arguments, currently ignored
@@ -16,28 +16,35 @@
 #'   * `text` (chr) Any text stored within that tag
 #'   * `attributes` (list) Any attributes for that tag
 #' @export
-as_eml_tibble <- function(x, ...){
-  UseMethod("as_eml_tibble")
+as_eml_tbl <- function(x, ...){
+  UseMethod("as_eml_tbl")
 }
 
-#' @name as_eml_tibble
+#' @name as_eml_tbl
 #' @order 2
-#' @exportS3Method delma::as_eml_tibble
-as_eml_tibble.tbl_df <- function(x, ...){
+#' @exportS3Method delma::as_eml_tbl
+as_eml_tbl.tbl_df <- function(x, ...){
   x
 }
 
-#' @rdname as_eml_tibble
+#' @rdname as_eml_tbl
 #' @order 3
-#' @exportS3Method delma::as_eml_tibble
-as_eml_tibble.list <- function(x, ...){
+#' @exportS3Method delma::as_eml_tbl
+as_eml_tbl.tbl_lp <- function(x, ...){
+  parse_lp_to_tibble(x)
+}
+
+#' @rdname as_eml_tbl
+#' @order 4
+#' @exportS3Method delma::as_eml_tbl
+as_eml_tbl.list <- function(x, ...){
   parse_list_to_tibble(x)
 }
 
-#' @rdname as_eml_tibble
-#' @order 4
-#' @exportS3Method delma::as_eml_tibble
-as_eml_tibble.xml_document <- function(x, ...){
+#' @rdname as_eml_tbl
+#' @order 5
+#' @exportS3Method delma::as_eml_tbl
+as_eml_tbl.xml_document <- function(x, ...){
   x |>
     xml2::as_list() |>
     parse_list_to_tibble()

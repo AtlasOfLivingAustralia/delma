@@ -10,25 +10,43 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-The `delma` package converts markdown files to Ecological Metadata Language (EML),
-which is a "comprehensive vocabulary and a readable XML markup syntax for 
-documenting research data" 
-([Jones et al. 2019](https://doi.org/10.5063/F11834T2)). EML has been widely
-adopted as a community-maintained standard for metadata exchange, to the point 
-that supplying metadata in this format is a requirement of several data-sharing
-institutions, such as the Global Biodiversity Information Facility
-([GBIF](https://gbif.org])) and its partner nodes. Unfortunately, however, the 
-nested structure and xml formatting of EML make it difficult for people to use
-without drawing on bespoke programming tools. In contrast, markdown is 
-considerably more generic, especially for those who are familiar with tools such 
-as RMarkdown or Quarto; but no general-purpose parser exists to transform 
-markdown into EML. `delma` fills this gap.
+Ecological Metadata Language (EML) is a "comprehensive vocabulary and a readable 
+XML markup syntax for documenting research data" 
+([Jones et al. 2019](https://doi.org/10.5063/F11834T2)). Supplying metadata in 
+this format is a requirement of several data-sharing institutions, notably 
+including the Global Biodiversity Information Facility
+([GBIF](https://gbif.org)) and its partner nodes. While the 
+[EML package](https://cran.r-project.org/package=EML) already exists 
+to support building and manipulating EML within the workspace, there is no 
+comparable system for writing these documents in a more human-readable format,
+such as Rmarkdown or Quarto. `delma` provides this capability.
 
-## Methodological approach
+The default method for using `delma` is to first generate a boilerplate metadata 
+statement; edit it in your chosen IDE; then render it to EML:
 
-To convert between markdown and EML, `delma` relies on the assumption that 
-header levels in markdown reflect the nested structure of the resulting xml. For
-example, the markdown file might contain this text:
+```{r, eval=FALSE}
+# create a boilerplate statement
+use_metadata("my_metadata_statement.Rmd")
+# edit this document in IDE before calling:
+render_metadata(input = "my_metadata_statement.Rmd", 
+                output_file = "metadata.xml")
+```
+
+EML is quite stringent in the types of data that are allowed, as well 
+as their order and placement in the hierarchy. Getting these points right can be 
+challenging, and we suggest using `check_metadata()` in combination with the 
+[EML schema documentation](https://eml.ecoinformatics.org) to get it right.
+
+## Formatting your metadata statement
+
+There are several points that are unusual about Rmarkdown documents formatted
+using `delma`, which we discuss below
+
+### Document structure
+
+Header levels in markdown-formatted metadata statements 
+determine the nested structure of the resulting xml. For example, the markdown 
+file might contain this text:
 
 ```
 # EML
@@ -46,75 +64,96 @@ Which would parse to this in xml:
 <EML>
 ```
 
-To accomplish this conversion, we have built a set of parsers that convert
-data in this sequence:
+### Attributes
 
-```
-.md file -> character -> tibble -> list -> xml -> .xml file
-```
+Attributes can be added to a particular EML tag by including them in a
+`list` within a code block, the `label` of which is used by `delma` to link 
+tags to their attributes. To add attributes to the `userId` field, for example,
+you would add the following code under the `## userId` heading:
 
-Rather than export all these individual parsers, `delma` provides a set of
-transformers with the `as_eml_` prefix, e.g.:
+````markdown
+`r ''````{r}
+#| label: 'userId'
+#| include: false
+list(directory = "https://orcid.org")
+```
+````
+
+The `include: false` tag is added so that this content isn't displayed when
+the document is knit.
+
+### Setting a unique ID
+
+Every EML document must open with the tag `eml`, and the attributes of that 
+element **must** contain a unique identifier in the `packageId` field, as well 
+as a link to the system within which that key is unique. A logical example might 
+be a DOI:
+
+````markdown
+`r ''````{r}
+#| label: 'eml'
+#| include: false
+list(packageId = "https://doi.org/10.32614/CRAN.package.galah",
+     system = "https://doi.org")
+```
+````
+
+A valid alternative might be a GitHub release:
+
+````markdown
+`r ''````{r}
+#| label: 'eml'
+#| include: false
+list(packageId = "https://github.com/AtlasOfLivingAustralia/galah-R/releases/download/v2.1.0/galah_2.1.0.tar.gz",
+     system = "https://github.com")
+```
+````
+
+Note that the `eml` tag is unusual in `delma` in that it is added automatically
+if not supplied. Where this occurs, all tag levels are also incremented by one 
+to account for this change.
+
+
+### Dynamic content
+
+`delma` will call `rmarkdown::render()` internally whenever `read_md()`
+or `render_metadata()` is used, meaning that it is possible to add dynamic 
+content to your metadata statements. The boilerplate statement that ships with
+delma uses this feature to automatically populate the `Title` and `Pubdate`
+fields from the `YAML` section, for example:
+
+````markdown
+`r ''````{r}
+#| echo: false
+#| results: 'asis'
+# NOTE: This is set using the yaml above; do not edit by hand
+cat(rmarkdown::metadata$date)
+```
+````
+
+You could also implement dynamic content using inline code:
 
 ```{r, eval=FALSE}
-library(delma)
-
-c("# Heading 1", 
-  "## Heading 2",
-  "text content") |>
-  as_eml_tibble()
-
-c("# Heading 1", 
-  "## Heading 2",
-  "text content") |>
-  as_eml_xml()
+This data contains `r readr::read_csv("my_data.csv") |> nrow()` rows.
 ```
 
-Every permutation of `as_eml_` functions is provided in `delma`, meaning you can 
-simply choose the outcome you are looking for, and let `delma` handle the 
-parsing chain needed to return the object class you require.
+## Reading, writing, and format conversion
 
-## Reading and writing
+Internally, `delma` uses the
+[lightparser](https://cran.r-project.org/package=lightparser) package to convert
+markdown files to `tibble`s, and the 
+[xml2](https://cran.r-project.org/package=xml2) package to convert `list`s to xml 
+and write them to file. Between these two packages, we have written functions 
+to convert between tibble and list versions of EML-formatted markdown.
 
-As is standard for ALA R packages, `read_` functions in `delma` return a `tibble`.
-There are two variants, one for reading data from markdown:
+Under the hood, `render_metadata()` calls `read_md()`, which does a few things:
 
-```{r, eval=FALSE}
-file <- system.file("example_data", 
-                    "README_md_example.md", 
-                    package = "delma")
-read_md(file)
-```
+- calls `rmarkdown::render()` on your chosen file, meaning any code blocks or
+  inline code is executed properly.
+- appends code blocks whose `label` matches an EML tag to the `attributes` of 
+  that EML tag; this allows quite complex attribute addition without affecting 
+  rendered text.
+- 'cleans' the imported tibble to a small number of required columns.
 
-And a second for reading data from EML:
-
-```{r, eval=FALSE}
-read_eml("https://collections.ala.org.au/ws/eml/dr368")
-```
-
-The corresponding write functions are `write_md()` and `write_eml()`. Both
-functions accept objects of all classes supported by `delma`, so it is possible 
-to pipe read and write functions together without any intermediate stages:
-
-```{r, eval=FALSE}
-system.file("example_data", 
-            "README_md_example.md", 
-            package = "delma") |>
-  read_md() |>
-  write_eml("output.xml")
-```
-
-It is worth noting, though, that these are quite simple wrapper functions to 
-existing import and transformation functions. For example, the code block above
-can be rewritten using only one `delma` function, as follows:
-
-```{r, eval=FALSE}
-library(xml2)
-
-system.file("example_data", 
-            "README_md_example.md", 
-            package = "delma") |>
-  base::readLines() |>
-  delma::as_eml_xml() |>
-  xml2::write_xml("output.xml")
-```
+This tibble is then rendered to EML using `write_eml()`. The inverse operation
+is accomplished by calling `read_eml()` followed by `write_md()`.

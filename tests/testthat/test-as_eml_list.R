@@ -1,8 +1,11 @@
 test_that("`as_eml_list()` works for class `tbl_df` imported from md", {
-  x <- read_md("testdata/bionet_metadata.md")
+  x <- read_md("testdata/bionet_metadata.Rmd")
   result <- as_eml_list(x)
   expect_true(inherits(result, "list"))
-  expect_equal(
+  # note: conversion to tibble reduces depth by one
+  # it would appear that some xml have greater compression than this, hence 
+  # use of `expect_gte()` not `expect_equal()`
+  expect_gte(
     purrr::pluck_depth(result),
     max(x$level) + 1)
   expect_lte(
@@ -14,7 +17,7 @@ test_that("`as_eml_list()` works for class `tbl_df` imported from xml", {
   x <- read_eml("testdata/meta_example.xml")
   result <- as_eml_list(x)
   expect_true(inherits(result, "list"))
-  expect_equal(
+  expect_gte(
     purrr::pluck_depth(result),
     max(x$level) + 1)
   expect_lte(

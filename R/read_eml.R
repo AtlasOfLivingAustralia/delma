@@ -13,7 +13,7 @@
 read_eml <- function(file){
   # abort if file missing
   if(missing(file)){
-    rlang::abort("`file` is missing, with no default.")
+    cli::cli_abort("`file` is missing, with no default.")
   }
   # check file is correctly specified
   check_is_single_character(file)
@@ -21,16 +21,16 @@ read_eml <- function(file){
   if(!grepl("(https?|ftp)://[^ /$.?#].[^\\s]*", file)){ # is not a url
     # check valid suffix
     if(!grepl("\\.xml$", file)){
-      rlang::abort("Argument `file` must end in the suffix `xml`")
+      cli::cli_abort("Argument `file` must end in the suffix `xml`")
     }
     # check file exists
     if(!file.exists(file)){
-      rlang::abort("Specified `file` does not exist.")
+      cli::cli_abort("Specified `file` does not exist.")
     }
   }
   # import & convert to tibble
   xml2::read_xml(file) |> 
-    as_eml_tibble()
+    as_eml_tbl()
 }
 
 #' Internal function to check for characters
@@ -38,9 +38,9 @@ read_eml <- function(file){
 #' @keywords Internal
 check_is_single_character <- function(x){
   if(!inherits(x, "character")){
-    rlang::abort("Supplied object is not of type 'character'")
+    cli::cli_abort("Supplied object is not of type 'character'")
   }
   if(length(x) != 1L){
-    rlang::abort(glue::glue("Object is of length {length(x)}, should be 1"))
+    cli::cli_abort(glue::glue("Object is of length {length(x)}, should be 1"))
   }
 }

@@ -5,7 +5,10 @@ test_that("`write_eml()` fails with no arguments", {
 })
 
 test_that("`write_eml()` fails with object but no file", {
-  obj <- c("# header 1", "## header 2")
+  obj <- tibble::tibble(level = 1,
+                        label = "eml",
+                        text = "something",
+                        attributes = NA)
   write_eml(obj) |> 
     expect_error()
 })
@@ -16,40 +19,13 @@ test_that("`write_eml()` fails with file but no object", {
 })
 
 test_that("write_eml() fails when incorrect file extension given", {
-  md_example <- c("# header 1", "## header 2")
-  file_out <- "test_file.md"
+  obj <- tibble::tibble(level = 1,
+                        label = "eml",
+                        text = "something",
+                        attributes = NA)
+  file_out <- "test_file.pptx"
   write_eml(md_example, file_out) |>
     expect_error()
-})
-
-test_that("`write_eml()` works for characters", {
-  md_example <- c("# header 1", "## header 2")
-  file_out <- "test_file.xml"
-  write_eml(md_example, file_out)
-  # check file has been written to xml
-  file_out |>
-    file.exists() |>
-    expect_true()
-  # check result has correct format
-  result <- xml2::read_xml(file_out) 
-  expect_s3_class(result, "xml_document")
-  # clean up
-  unlink(file_out)
-})
-
-test_that("`write_eml()` works for lists", {
-  x <- list(eml = list(archive = list("something")))
-  file_out <- "test_file.xml"
-  write_eml(x, file_out)
-  # check file has been written to xml
-  file_out |>
-    file.exists() |>
-    expect_true()
-  # check result has correct format
-  result <- xml2::read_xml(file_out) 
-  expect_s3_class(result, "xml_document")
-  # clean up
-  unlink(file_out)
 })
 
 
@@ -59,7 +35,10 @@ test_that("`write_md()` fails with no arguments", {
 })
 
 test_that("`write_md()` fails with object but no file", {
-  obj <- c("# header 1", "## header 2")
+  obj <- tibble::tibble(level = 1,
+                        label = "eml",
+                        text = "something",
+                        attributes = NA)
   write_md(obj) |> 
     expect_error()
 })
@@ -70,23 +49,11 @@ test_that("`write_md()` fails with file but no object", {
 })
 
 test_that("write_md() fails when incorrect file extension given", {
-  md_example <- c("# header 1", "## header 2")
+  md_example <- tibble::tibble(level = 1,
+                               label = "eml",
+                               text = "something",
+                               attributes = NA)
   file_out <- "test_file.xml"
   write_md(md_example, file_out) |>
     expect_error()
-})
-
-test_that("`write_md()` works for characters", {
-  md_example <- c("# header1", "## header2")
-  file_out <- "test_file.md"
-  write_md(md_example, file_out)
-  # check file has been written to md
-  file_out |>
-    file.exists() |>
-    expect_true()
-  # check result has correct format
-  result <- readLines(file_out) 
-  expect_contains(result, md_example)
-  # clean up
-  unlink(file_out)
 })

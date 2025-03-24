@@ -2,12 +2,15 @@
 % Please edit documentation in R/as_eml_xml.R
 \name{as_eml_xml}
 \alias{as_eml_xml}
+\alias{as_eml_xml.tbl_lp}
 \alias{as_eml_xml.tbl_df}
 \alias{as_eml_xml.list}
 \alias{as_eml_xml.xml_document}
 \title{Convert metadata to an \code{xml_document}}
 \usage{
 as_eml_xml(x, ...)
+
+\method{as_eml_xml}{tbl_lp}(x, ...)
 
 \method{as_eml_xml}{tbl_df}(x, ...)
 

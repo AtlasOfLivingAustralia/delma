@@ -28,7 +28,7 @@ check_metadata <- function(file = NULL,
                            quiet = FALSE){
   # check inputs
   if(is.null(file)){
-    rlang::abort("both `x` and `file` are missing, with no default")
+    cli::cli_abort("both `x` and `file` are missing, with no default")
   }else{
     xmldoc <- xml2::read_xml(file)
   }
@@ -44,7 +44,6 @@ check_metadata <- function(file = NULL,
   }else{
     schema_doc <- schema
   }
-
   
   # run validation
   result <- xml2::xml_validate(xmldoc, 

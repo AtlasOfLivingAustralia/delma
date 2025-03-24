@@ -5,10 +5,9 @@
 ^pkgdown$
 README.Rmd
 ^inst/hex$
+^inst/extdata/import_xsd.R$
 .Rhistory
 .Rapp.history
-^data-raw/
-^data-raw$
 ^doc$
 ^Meta$
 ^\.github$

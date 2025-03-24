@@ -4,13 +4,7 @@ test_that("`read_eml()` fails with no arguments", {
 })
 
 test_that("`read_eml()` fails for invalid format", {
-  read_eml("testdata/bionet_metadata.md") |>
-    expect_error()
-})
-
-test_that("`read_eml()` fails for invalid type", {
-  read_eml("testdata/bionet_metadata.md", 
-           format = "something") |>
+  read_eml("testdata/bionet_metadata.Rmd") |>
     expect_error()
 })
 
@@ -35,17 +29,17 @@ test_that("`read_md()` fails with no arguments", {
 })
 
 test_that("`read_md()` fails with missing files", {
-  read_md("something.md") |>
+  read_md("something.Rmd") |>
     expect_error(regexp = "Specified `file` does not exist.")
 })
 
-test_that("`read_md()` only accepts files that end in `.md`", {
+test_that("`read_md()` only accepts files that end in `.Rmd` or `Qmd", {
   read_md("testdata/bionet_metadata.xml") |>
     expect_error()
 })
 
 test_that("read_md() works on a valid markdown file", {
-  x <- read_md("testdata/bionet_metadata.md")
+  x <- read_md("testdata/bionet_metadata.Rmd")
   expect_s3_class(x, c("tbl_df", "tbl", "data.frame"))
   expect_gte(nrow(x), 10)
 })
