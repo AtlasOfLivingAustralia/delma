@@ -22,11 +22,8 @@
 #' @returns `read_md()` returns an object of class `tbl_df`, `tbl` and 
 #' `data.frame` (i.e. a `tibble`).
 #' @examples \dontrun{
-#' # read from a url
-#' file <- system.file("example_data", 
-#'                     "README_md_example.md", 
-#'                     package = "delma")
-#' df <- read_md(file)
+#' use_metadata("example.Rmd") 
+#' df <- read_md("example.Rmd")
 #' }
 #' @export
 read_md <- function(file){

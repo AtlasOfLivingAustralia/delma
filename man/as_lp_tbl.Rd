@@ -42,3 +42,9 @@ Takes objects of class \code{tbl_df}, \code{list} or \code{xml_document} and con
 them to a tibble with a structure required by \code{lightparser}. Note that
 \code{delma} represents these as an object of class \code{tbl_lp} for convenience.
 }
+\examples{
+\dontrun{
+df <- xml2::read_xml("https://collections.ala.org.au/ws/eml/dr368") |>
+  as_lp_tbl()
+}
+}

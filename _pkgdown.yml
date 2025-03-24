@@ -38,6 +38,7 @@ reference:
   - write_eml
 - title: Format manipulation
   contents:
-  - as_eml_tibble
+  - as_lp_tbl
+  - as_eml_tbl
   - as_eml_list
   - as_eml_xml

@@ -8,6 +8,11 @@
 #' @param ... Other arguments, currently ignored
 #' @name as_eml_xml
 #' @returns An `xml_document` with the specified nodes and attributes.
+#' @examples \dontrun{
+#' use_metadata("example.Rmd") 
+#' df <- read_md("example.Rmd")
+#' as_eml_xml(df)
+#' }
 #' @export
 as_eml_xml <- function(x, ...){
   UseMethod("as_eml_xml")

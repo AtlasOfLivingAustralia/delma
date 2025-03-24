@@ -19,7 +19,6 @@
 #' @return Invisibly returns a tibble showing parsed errors; or an empty 
 #' tibble if no errors are identified.
 #' @examples \dontrun{
-#' # check a file
 #' check_eml(file = "https://collections.ala.org.au/ws/eml/dr368")
 #' }
 #' @export

@@ -39,3 +39,9 @@ them to a tibble with a particular structure, designed for storing nested
 data. Tibbles are required because attributes are stored as list-columns,
 which are not supported by class \code{data.frame}.
 }
+\examples{
+\dontrun{
+df <- xml2::read_xml("https://collections.ala.org.au/ws/eml/dr368") |>
+  as_eml_tbl()
+}
+}

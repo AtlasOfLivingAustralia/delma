@@ -12,6 +12,9 @@
 #' @param quiet (logical) Should messages be suppressed? Defaults to `FALSE`.
 #' @returns Doesn't return anything to the workspace; called for the side-effect
 #' of placing a metadata statement in the working directory.
+#' @examples \dontrun{
+#' use_metadata("example.Rmd") 
+#' }
 #' @export
 use_metadata <- function(file = NULL,
                          overwrite = FALSE,

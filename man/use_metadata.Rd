@@ -26,3 +26,8 @@ built in such a way that standard rendering with \code{rmarkdown} or Quarto to
 HTML or PDF will function; but also that it renders to valid EML using
 \code{\link[=render_metadata]{render_metadata()}}.
 }
+\examples{
+\dontrun{
+use_metadata("example.Rmd") 
+}
+}

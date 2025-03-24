@@ -7,6 +7,11 @@
 #' @param file Filename to write to
 #' @returns Desn't return anything; called for the side-effect of writing the 
 #' specified EML file to disk
+#' @examples \dontrun{
+#' use_metadata("example.Rmd") 
+#' df <- read_md("example.Rmd")
+#' write_eml(df, "example.xml")
+#' }
 #' @export
 write_eml <- function(x, 
                       file){

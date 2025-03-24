@@ -31,3 +31,10 @@ Takes a \code{character} vector, tibble, or \code{list} and converts it to an
 \code{xml_document}, as defined by the \code{xml2} package. When converting from
 a list, this is simply a wrapper for \code{xml2::as_xml_document()}
 }
+\examples{
+\dontrun{
+use_metadata("example.Rmd") 
+df <- read_md("example.Rmd")
+as_eml_xml(df)
+}
+}

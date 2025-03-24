@@ -13,6 +13,11 @@
 #' @param quiet (logical) Should messages be suppressed? Defaults to `FALSE`.
 #' @returns Does not return an object; called for the side-effect of rendering
 #' a file to EML.
+#' @examples \dontrun{
+#' use_metadata("example.Rmd") 
+#' # assume the user edits the file, then calls:
+#' render_metadata("example.Rmd", output_file = "example.xml")
+#' }
 #' @export
 render_metadata <- function(input,
                             output_file = NULL,

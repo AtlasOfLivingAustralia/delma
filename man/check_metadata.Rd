@@ -35,7 +35,6 @@ from \code{http://rs.gbif.org/schema/eml-gbif-profile/1.3/} on
 }
 \examples{
 \dontrun{
-# check a file
 check_eml(file = "https://collections.ala.org.au/ws/eml/dr368")
 }
 }
