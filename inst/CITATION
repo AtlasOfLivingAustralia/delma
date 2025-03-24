@@ -4,7 +4,7 @@ note <- sprintf("R package version %s", meta$Version)
 citHeader("To cite delma in publications use:")
 
 bibentry(bibtype = "Manual",
-    "title" = "delma: Convert Rmarkdown and Quarto documents to Ecological Metadata Language",
+    "title" = "delma: Convert Rmarkdown and Quarto Documents to Ecological Metadata Language",
     author = c(person("Martin", "Westgate"),
                person("Shandiya", "Balasubramaniam"),
                person("Dax", "Kellie")),

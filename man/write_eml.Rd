@@ -20,3 +20,10 @@ specified EML file to disk
 \code{write_eml()} writes a \code{tibble}, \code{list} or \code{xml_document} to an EML file.
 Note that EML files always have the file extension \code{.xml}.
 }
+\examples{
+\dontrun{
+use_metadata("example.Rmd") 
+df <- read_md("example.Rmd")
+write_eml(df, "example.xml")
+}
+}

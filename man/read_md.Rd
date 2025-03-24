@@ -36,10 +36,7 @@ Internally, \code{\link[=read_md]{read_md()}} calls \code{\link[lightparser:spli
 }
 \examples{
 \dontrun{
-# read from a url
-file <- system.file("example_data", 
-                    "README_md_example.md", 
-                    package = "delma")
-df <- read_md(file)
+use_metadata("example.Rmd") 
+df <- read_md("example.Rmd")
 }
 }

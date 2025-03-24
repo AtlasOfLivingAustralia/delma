@@ -15,6 +15,10 @@
 #'   * `label` (chr) the `xml` tag
 #'   * `text` (chr) Any text stored within that tag
 #'   * `attributes` (list) Any attributes for that tag
+#' @examples \dontrun{
+#' df <- xml2::read_xml("https://collections.ala.org.au/ws/eml/dr368") |>
+#'   as_eml_tbl()
+#' }
 #' @export
 as_eml_tbl <- function(x, ...){
   UseMethod("as_eml_tbl")

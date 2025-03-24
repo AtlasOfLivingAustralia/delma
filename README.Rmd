@@ -22,7 +22,7 @@ to contain the letters 'e', 'm' and 'l'.
 
 The logo depicts a striped legless lizard (_Delma impar_) in the 
 style of the classic mobile game 'snake', a play on the observation that
-_Delma_ are often mistaken for snakes. It was drawn by Martin Westgate.
+_Delma_ are often mistaken for snakes. It was drawn by [Martin Westgate](https://martinwestgate.com).
 
 If you have any comments, questions or suggestions, please [contact us](mailto:support@ala.org.au).
  
@@ -89,4 +89,4 @@ citation(package = "delma")
 
 The current recommended citation is:
 
-> Westgate MJ, Balasubramaniam S & Kellie D (2024) Convert Rmarkdown and Quarto documents to Ecological Metadata Language. R Package version 0.1.0.
+> Westgate MJ, Balasubramaniam S & Kellie D (2025) Convert Rmarkdown and Quarto Documents to Ecological Metadata Language. R Package version 0.1.0.

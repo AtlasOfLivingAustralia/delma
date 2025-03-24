@@ -1,6 +1,6 @@
 Package: delma
 Type: Package
-Title: Convert Rmarkdown and Quarto documents to Ecological Metadata Language
+Title: Convert Rmarkdown and Quarto Documents to Ecological Metadata Language
 Version: 0.1.0
 Authors@R:
     c(person(given = "Martin",

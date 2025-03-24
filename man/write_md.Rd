@@ -23,3 +23,9 @@ but lists or tibbles that have been manually formatted require care.
 
 Internally, \code{write_md()} calls \link[lightparser:combine_tbl_to_file]{lightparser::combine_tbl_to_file}.
 }
+\examples{
+\dontrun{
+df <- read_eml("https://collections.ala.org.au/ws/eml/dr368")
+write_eml(df, "example.xml")
+}
+}

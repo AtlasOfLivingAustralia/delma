@@ -18,6 +18,10 @@
 #'   * `heading` (chr) For `type` = `heading`, the value of that heading
 #'   * `heading_level` (dbl) The heading level of that heading (i.e. number of `#`)
 #'   * `section` (chr) The heading this section sits within
+#' @examples \dontrun{
+#' df <- xml2::read_xml("https://collections.ala.org.au/ws/eml/dr368") |>
+#'   as_lp_tbl()
+#' }
 #' @export
 as_lp_tbl <- function(x, ...){
   UseMethod("as_lp_tbl")

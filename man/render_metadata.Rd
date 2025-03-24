@@ -35,3 +35,10 @@ the \code{output} section of the supplied \code{yaml}, though that should still 
 supplied for rendering via other packages. Internally this function wraps
 \code{\link[=read_md]{read_md()}} and \code{\link[=write_eml]{write_eml()}} in that order; see those functions for details.
 }
+\examples{
+\dontrun{
+use_metadata("example.Rmd") 
+# assume the user edits the file, then calls:
+render_metadata("example.Rmd", output_file = "example.xml")
+}
+}

@@ -10,6 +10,10 @@
 #' but lists or tibbles that have been manually formatted require care.
 #' 
 #' Internally, `write_md()` calls [lightparser::combine_tbl_to_file].
+#' @examples \dontrun{
+#' df <- read_eml("https://collections.ala.org.au/ws/eml/dr368")
+#' write_eml(df, "example.xml")
+#' }
 #' @export
 write_md <- function(x, file){
 

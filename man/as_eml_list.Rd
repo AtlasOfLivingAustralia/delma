@@ -32,3 +32,10 @@ Takes an object of class \code{xml_document} or \code{tibble}, and
 converts it to a \code{list}. When converting from an \code{xml_document}, this is
 simply a wrapper for \code{xml2::as_list()}
 }
+\examples{
+\dontrun{
+use_metadata("example_metadata.Rmd")
+df <- read_md("example_metadata.Rmd")
+df_list <- as_eml_list(df)
+}
+}
