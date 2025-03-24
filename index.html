@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>Convert Rmarkdown and Quarto documents to Ecological Metadata Language • delma</title>
+<title>Convert Rmarkdown and Quarto Documents to Ecological Metadata Language • delma</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
 <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="apple-touch-icon.png">
@@ -18,9 +18,9 @@
 <link href="deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="deps/headroom-0.11.0/headroom.min.js"></script><script src="deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="deps/search-1.0.0/fuse.min.js"></script><script src="deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="pkgdown.js"></script><link href="extra.css" rel="stylesheet">
-<meta property="og:title" content="Convert Rmarkdown and Quarto documents to Ecological Metadata Language">
-<meta name="description" content="Simple tools for converting metadata between R formats.">
-<meta property="og:description" content="Simple tools for converting metadata between R formats.">
+<meta property="og:title" content="Convert Rmarkdown and Quarto Documents to Ecological Metadata Language">
+<meta name="description" content="Ecological Metadata Language or EML is a long-established format for describing ecological datasets to facilitate sharing and re-use. Because EML is effectively a modified xml schema, however, it is somewhat challenging to write and manipulate for non-expert users. delma supports users to write metadata statements in Rmarkdown or Quarto format, and parse them to EML and (optionally) back again.">
+<meta property="og:description" content="Ecological Metadata Language or EML is a long-established format for describing ecological datasets to facilitate sharing and re-use. Because EML is effectively a modified xml schema, however, it is somewhat challenging to write and manipulate for non-expert users. delma supports users to write metadata statements in Rmarkdown or Quarto format, and parse them to EML and (optionally) back again.">
 <meta property="og:image" content="https://delma.ala.org.au/logo.png">
 </head>
 <body>
@@ -48,6 +48,7 @@
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="search.json">
 </form></li>
 <li class="nav-item"><a class="nav-link" href="news/index.html">News</a></li>
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/AtlasOfLivingAustralia/delma/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
       </ul>
 </div>
 
@@ -64,7 +65,7 @@
 <h2 id="overview">Overview<a class="anchor" aria-label="anchor" href="#overview"></a>
 </h2>
 <p><code>delma</code> is a package for converting metadata statements written in markdown, RMarkdown or Quarto markdown to <a href="https://eml.ecoinformatics.org" class="external-link">Ecological Metadata Language</a> (EML). It is named for a genus of legless lizards that are endemic to Australia, whose name happens to contain the letters ‘e’, ‘m’ and ‘l’.</p>
-<p>The logo depicts a striped legless lizard (<em>Delma impar</em>) in the style of the classic mobile game ‘snake’, a play on the observation that <em>Delma</em> are often mistaken for snakes. It was drawn by Martin Westgate.</p>
+<p>The logo depicts a striped legless lizard (<em>Delma impar</em>) in the style of the classic mobile game ‘snake’, a play on the observation that <em>Delma</em> are often mistaken for snakes. It was drawn by <a href="https://martinwestgate.com" class="external-link">Martin Westgate</a>.</p>
 <p>If you have any comments, questions or suggestions, please <a href="mailto:support@ala.org.au">contact us</a>.</p>
 </div>
 <div class="section level2">
@@ -103,13 +104,13 @@
 <span><span class="co">#&gt; To cite delma in publications use:</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;   Westgate M, Balasubramaniam S, Kellie D (2025). _delma: Convert</span></span>
-<span><span class="co">#&gt;   Rmarkdown and Quarto documents to Ecological Metadata Language_. R</span></span>
+<span><span class="co">#&gt;   Rmarkdown and Quarto Documents to Ecological Metadata Language_. R</span></span>
 <span><span class="co">#&gt;   package version 0.1.0, &lt;https://delma.ala.org.au&gt;.</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; A BibTeX entry for LaTeX users is</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;   @Manual{,</span></span>
-<span><span class="co">#&gt;     title = {delma: Convert Rmarkdown and Quarto documents to Ecological Metadata Language},</span></span>
+<span><span class="co">#&gt;     title = {delma: Convert Rmarkdown and Quarto Documents to Ecological Metadata Language},</span></span>
 <span><span class="co">#&gt;     author = {Martin Westgate and Shandiya Balasubramaniam and Dax Kellie},</span></span>
 <span><span class="co">#&gt;     year = {2025},</span></span>
 <span><span class="co">#&gt;     note = {R package version 0.1.0},</span></span>
@@ -117,11 +118,19 @@
 <span><span class="co">#&gt;   }</span></span></code></pre></div>
 <p>The current recommended citation is:</p>
 <blockquote>
-<p>Westgate MJ, Balasubramaniam S &amp; Kellie D (2024) Convert Rmarkdown and Quarto documents to Ecological Metadata Language. R Package version 0.1.0.</p>
+<p>Westgate MJ, Balasubramaniam S &amp; Kellie D (2025) Convert Rmarkdown and Quarto Documents to Ecological Metadata Language. R Package version 0.1.0.</p>
 </blockquote>
 </div>
 </div>
-  </main><aside class="col-md-3"><div class="license">
+  </main><aside class="col-md-3"><div class="links">
+<h2 data-toc-skip>Links</h2>
+<ul class="list-unstyled">
+<li><a href="https://github.com/AtlasOfLivingAustralia/delma/" class="external-link">Browse source code</a></li>
+<li><a href="https://github.com/AtlasOfLivingAustralia/delma/issues" class="external-link">Report a bug</a></li>
+</ul>
+</div>
+
+<div class="license">
 <h2 data-toc-skip>License</h2>
 <ul class="list-unstyled">
 <li><a href="https://www.r-project.org/Licenses/GPL-3" class="external-link">GPL-3</a></li>

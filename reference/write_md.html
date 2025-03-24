@@ -20,6 +20,7 @@
       </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json"></form></li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">News</a></li>
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/AtlasOfLivingAustralia/delma/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
       </ul></div>
 
 
@@ -28,7 +29,7 @@
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Write a markdown-formatted metadata document</h1>
-
+      <small class="dont-index">Source: <a href="https://github.com/AtlasOfLivingAustralia/delma/blob/main/R/write_md.R" class="external-link"><code>R/write_md.R</code></a></small>
       <div class="d-none name"><code>write_md.Rd</code></div>
     </div>
 
@@ -46,9 +47,12 @@
 
 
 <dl><dt id="arg-x">x<a class="anchor" aria-label="anchor" href="#arg-x"></a></dt>
-<dd><p>Object of any class handled by <code>delma</code>; i.e. <code>tbl_df</code>, <code>list</code> or
-<code>xml_document</code>.
-#' @param file Filename to write to. Must be either <code>.md</code>, <code>.Rmd</code>
+<dd><p>Object of any class handled by <code>delma</code>; i.e. <code>tbl_lp,</code> <code>tbl_df</code>,
+<code>list</code> or <code>xml_document</code>.</p></dd>
+
+
+<dt id="arg-file">file<a class="anchor" aria-label="anchor" href="#arg-file"></a></dt>
+<dd><p>Filename to write to. Must be either <code>.md</code>, <code>.Rmd</code>
 or <code>.Qmd</code> file.</p></dd>
 
 </dl></div>
@@ -56,11 +60,18 @@ or <code>.Qmd</code> file.</p></dd>
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
     <p>Similar to <code><a href="read_md.html">read_md()</a></code>, <code>write_md()</code> is considerably less generic than most
 <code>write_</code> functions. If <code>x</code> is an <code>xml_document</code> this should convert seamlessly;
-but lists or tibbles that have been manually formatted require care. To parse
-correctly, the supplied <code>tibble</code> <strong>must</strong> contain the columns supplied by <code><a href="read_md.html">read_md()</a></code>.</p>
+but lists or tibbles that have been manually formatted require care.</p>
 <p>Internally, <code>write_md()</code> calls <a href="https://thinkr-open.github.io/lightparser/reference/combine_tbl_to_file.html" class="external-link">lightparser::combine_tbl_to_file</a>.</p>
     </div>
 
+    <div class="section level2">
+    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># \dontrun{</span></span></span>
+<span class="r-in"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="read_eml.html">read_eml</a></span><span class="op">(</span><span class="st">"https://collections.ala.org.au/ws/eml/dr368"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="write_eml.html">write_eml</a></span><span class="op">(</span><span class="va">df</span>, <span class="st">"example.xml"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
+</code></pre></div>
+    </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside></div>
 

@@ -32,6 +32,7 @@ information."><meta property="og:image" content="https://delma.ala.org.au/logo.p
       </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json"></form></li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">News</a></li>
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/AtlasOfLivingAustralia/delma/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
       </ul></div>
 
 
@@ -40,7 +41,7 @@ information."><meta property="og:image" content="https://delma.ala.org.au/logo.p
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Check validity of a metadata statement</h1>
-
+      <small class="dont-index">Source: <a href="https://github.com/AtlasOfLivingAustralia/delma/blob/main/R/check_metadata.R" class="external-link"><code>R/check_metadata.R</code></a></small>
       <div class="d-none name"><code>check_metadata.Rd</code></div>
     </div>
 
@@ -92,7 +93,6 @@ from <code>http://rs.gbif.org/schema/eml-gbif-profile/1.3/</code> on
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># \dontrun{</span></span></span>
-<span class="r-in"><span><span class="co"># check a file</span></span></span>
 <span class="r-in"><span><span class="fu">check_eml</span><span class="op">(</span>file <span class="op">=</span> <span class="st">"https://collections.ala.org.au/ws/eml/dr368"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
 </code></pre></div>

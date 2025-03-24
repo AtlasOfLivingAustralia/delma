@@ -45,6 +45,7 @@
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json">
 </form></li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">News</a></li>
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/AtlasOfLivingAustralia/delma/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
       </ul>
 </div>
 
@@ -63,32 +64,47 @@ Westgate</h4>
             
             <h4 data-toc-skip class="date">2024-11-06</h4>
       
-
+      <small class="dont-index">Source: <a href="https://github.com/AtlasOfLivingAustralia/delma/blob/main/vignettes/quick_start_guide.Rmd" class="external-link"><code>vignettes/quick_start_guide.Rmd</code></a></small>
       <div class="d-none name"><code>quick_start_guide.Rmd</code></div>
     </div>
 
     
     
-<p>The <code>delma</code> package converts markdown files to Ecological
-Metadata Language (EML), which is a “comprehensive vocabulary and a
-readable XML markup syntax for documenting research data” (<a href="https://doi.org/10.5063/F11834T2" class="external-link">Jones et al. 2019</a>). EML has
-been widely adopted as a community-maintained standard for metadata
-exchange, to the point that supplying metadata in this format is a
-requirement of several data-sharing institutions, such as the Global
-Biodiversity Information Facility (<a href="https://gbif.org%5D" class="external-link">GBIF</a>) and its partner nodes.
-Unfortunately, however, the nested structure and xml formatting of EML
-make it difficult for people to use without drawing on bespoke
-programming tools. In contrast, markdown is considerably more generic,
-especially for those who are familiar with tools such as RMarkdown or
-Quarto; but no general-purpose parser exists to transform markdown into
-EML. <code>delma</code> fills this gap.</p>
+<p>Ecological Metadata Language (EML) is a “comprehensive vocabulary and
+a readable XML markup syntax for documenting research data” (<a href="https://doi.org/10.5063/F11834T2" class="external-link">Jones et al. 2019</a>).
+Supplying metadata in this format is a requirement of several
+data-sharing institutions, notably including the Global Biodiversity
+Information Facility (<a href="https://gbif.org" class="external-link">GBIF</a>) and its
+partner nodes. While the <a href="https://cran.r-project.org/package=EML" class="external-link">EML package</a> already
+exists to support building and manipulating EML within the workspace,
+there is no comparable system for writing these documents in a more
+human-readable format, such as Rmarkdown or Quarto. <code>delma</code>
+provides this capability.</p>
+<p>The default method for using <code>delma</code> is to first generate
+a boilerplate metadata statement; edit it in your chosen IDE; then
+render it to EML:</p>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># create a boilerplate statement</span></span>
+<span><span class="fu"><a href="../reference/use_metadata.html">use_metadata</a></span><span class="op">(</span><span class="st">"my_metadata_statement.Rmd"</span><span class="op">)</span></span>
+<span><span class="co"># edit this document in IDE before calling:</span></span>
+<span><span class="fu"><a href="../reference/render_metadata.html">render_metadata</a></span><span class="op">(</span>input <span class="op">=</span> <span class="st">"my_metadata_statement.Rmd"</span>, </span>
+<span>                output_file <span class="op">=</span> <span class="st">"metadata.xml"</span><span class="op">)</span></span></code></pre></div>
+<p>EML is quite stringent in the types of data that are allowed, as well
+as their order and placement in the hierarchy. Getting these points
+right can be challenging, and we suggest using
+<code><a href="../reference/check_metadata.html">check_metadata()</a></code> in combination with the <a href="https://eml.ecoinformatics.org" class="external-link">EML schema documentation</a> to
+get it right.</p>
 <div class="section level2">
-<h2 id="methodological-approach">Methodological approach<a class="anchor" aria-label="anchor" href="#methodological-approach"></a>
+<h2 id="formatting-your-metadata-statement">Formatting your metadata statement<a class="anchor" aria-label="anchor" href="#formatting-your-metadata-statement"></a>
 </h2>
-<p>To convert between markdown and EML, <code>delma</code> relies on the
-assumption that header levels in markdown reflect the nested structure
-of the resulting xml. For example, the markdown file might contain this
-text:</p>
+<p>There are several points that are unusual about Rmarkdown documents
+formatted using <code>delma</code>, which we discuss below</p>
+<div class="section level3">
+<h3 id="document-structure">Document structure<a class="anchor" aria-label="anchor" href="#document-structure"></a>
+</h3>
+<p>Header levels in markdown-formatted metadata statements determine the
+nested structure of the resulting xml. For example, the markdown file
+might contain this text:</p>
 <pre><code># EML
 ## Dataset
 ### Title
@@ -99,66 +115,91 @@ My title</code></pre>
     &lt;title&gt;My title&lt;/title&gt;
   &lt;/dataset&gt;
 &lt;EML&gt;</code></pre>
-<p>To accomplish this conversion, we have built a set of parsers that
-convert data in this sequence:</p>
-<pre><code>.md file -&gt; character -&gt; tibble -&gt; list -&gt; xml -&gt; .xml file</code></pre>
-<p>Rather than export all these individual parsers, <code>delma</code>
-provides a set of transformers with the <code>as_eml_</code> prefix,
-e.g.:</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://delma.ala.org.au">delma</a></span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"# Heading 1"</span>, </span>
-<span>  <span class="st">"## Heading 2"</span>,</span>
-<span>  <span class="st">"text content"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="../reference/as_eml_tibble.html">as_eml_tibble</a></span><span class="op">(</span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"# Heading 1"</span>, </span>
-<span>  <span class="st">"## Heading 2"</span>,</span>
-<span>  <span class="st">"text content"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="../reference/as_eml_xml.html">as_eml_xml</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<p>Every permutation of <code>as_eml_</code> functions is provided in
-<code>delma</code>, meaning you can simply choose the outcome you are
-looking for, and let <code>delma</code> handle the parsing chain needed
-to return the object class you require.</p>
+</div>
+<div class="section level3">
+<h3 id="attributes">Attributes<a class="anchor" aria-label="anchor" href="#attributes"></a>
+</h3>
+<p>Attributes can be added to a particular EML tag by including them in
+a <code>list</code> within a code block, the <code>label</code> of which
+is used by <code>delma</code> to link tags to their attributes. To add
+attributes to the <code>userId</code> field, for example, you would add
+the following code under the <code>## userId</code> heading:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode markdown"><code class="sourceCode markdown"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a><span class="in">#| label: 'userId'</span></span>
+<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a><span class="in">#| include: false</span></span>
+<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a><span class="in">list(directory = "https://orcid.org")</span></span>
+<span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a><span class="in">```</span></span></code></pre></div>
+<p>The <code>include: false</code> tag is added so that this content
+isn’t displayed when the document is knit.</p>
+</div>
+<div class="section level3">
+<h3 id="setting-a-unique-id">Setting a unique ID<a class="anchor" aria-label="anchor" href="#setting-a-unique-id"></a>
+</h3>
+<p>Every EML document must open with the tag <code>eml</code>, and the
+attributes of that element <strong>must</strong> contain a unique
+identifier in the <code>packageId</code> field, as well as a link to the
+system within which that key is unique. A logical example might be a
+DOI:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode markdown"><code class="sourceCode markdown"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a><span class="in">#| label: 'eml'</span></span>
+<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a><span class="in">#| include: false</span></span>
+<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a><span class="in">list(packageId = "https://doi.org/10.32614/CRAN.package.galah",</span></span>
+<span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a><span class="in">     system = "https://doi.org")</span></span>
+<span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a><span class="in">```</span></span></code></pre></div>
+<p>A valid alternative might be a GitHub release:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode markdown"><code class="sourceCode markdown"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a><span class="in">#| label: 'eml'</span></span>
+<span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a><span class="in">#| include: false</span></span>
+<span id="cb6-4"><a href="#cb6-4" tabindex="-1"></a><span class="in">list(packageId = "https://github.com/AtlasOfLivingAustralia/galah-R/releases/download/v2.1.0/galah_2.1.0.tar.gz",</span></span>
+<span id="cb6-5"><a href="#cb6-5" tabindex="-1"></a><span class="in">     system = "https://github.com")</span></span>
+<span id="cb6-6"><a href="#cb6-6" tabindex="-1"></a><span class="in">```</span></span></code></pre></div>
+<p>Note that the <code>eml</code> tag is unusual in <code>delma</code>
+in that it is added automatically if not supplied. Where this occurs,
+all tag levels are also incremented by one to account for this
+change.</p>
+</div>
+<div class="section level3">
+<h3 id="dynamic-content">Dynamic content<a class="anchor" aria-label="anchor" href="#dynamic-content"></a>
+</h3>
+<p><code>delma</code> will call <code><a href="https://pkgs.rstudio.com/rmarkdown/reference/render.html" class="external-link">rmarkdown::render()</a></code>
+internally whenever <code><a href="../reference/read_md.html">read_md()</a></code> or
+<code><a href="../reference/render_metadata.html">render_metadata()</a></code> is used, meaning that it is possible to
+add dynamic content to your metadata statements. The boilerplate
+statement that ships with delma uses this feature to automatically
+populate the <code>Title</code> and <code>Pubdate</code> fields from the
+<code>YAML</code> section, for example:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode markdown"><code class="sourceCode markdown"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a><span class="in">#| echo: false</span></span>
+<span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a><span class="in">#| results: 'asis'</span></span>
+<span id="cb7-4"><a href="#cb7-4" tabindex="-1"></a><span class="in"># NOTE: This is set using the yaml above; do not edit by hand</span></span>
+<span id="cb7-5"><a href="#cb7-5" tabindex="-1"></a><span class="in">cat(rmarkdown::metadata$date)</span></span>
+<span id="cb7-6"><a href="#cb7-6" tabindex="-1"></a><span class="in">```</span></span></code></pre></div>
+<p>You could also implement dynamic content using inline code:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a>This data contains <span class="st">`</span><span class="at">r readr::read_csv("my_data.csv") |&gt; nrow()</span><span class="st">`</span> rows.</span></code></pre></div>
+</div>
 </div>
 <div class="section level2">
-<h2 id="reading-and-writing">Reading and writing<a class="anchor" aria-label="anchor" href="#reading-and-writing"></a>
+<h2 id="reading-writing-and-format-conversion">Reading, writing, and format conversion<a class="anchor" aria-label="anchor" href="#reading-writing-and-format-conversion"></a>
 </h2>
-<p>As is standard for ALA R packages, <code>read_</code> functions in
-<code>delma</code> return a <code>tibble</code>. There are two variants,
-one for reading data from markdown:</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">file</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"example_data"</span>, </span>
-<span>                    <span class="st">"README_md_example.md"</span>, </span>
-<span>                    package <span class="op">=</span> <span class="st">"delma"</span><span class="op">)</span></span>
-<span><span class="fu"><a href="../reference/read_md.html">read_md</a></span><span class="op">(</span><span class="va">file</span><span class="op">)</span></span></code></pre></div>
-<p>And a second for reading data from EML:</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/read_eml.html">read_eml</a></span><span class="op">(</span><span class="st">"https://collections.ala.org.au/ws/eml/dr368"</span><span class="op">)</span></span></code></pre></div>
-<p>The corresponding write functions are <code><a href="../reference/write_md.html">write_md()</a></code> and
-<code><a href="../reference/write_eml.html">write_eml()</a></code>. Both functions accept objects of all classes
-supported by <code>delma</code>, so it is possible to pipe read and
-write functions together without any intermediate stages:</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"example_data"</span>, </span>
-<span>            <span class="st">"README_md_example.md"</span>, </span>
-<span>            package <span class="op">=</span> <span class="st">"delma"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="../reference/read_md.html">read_md</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="../reference/write_eml.html">write_eml</a></span><span class="op">(</span><span class="st">"output.xml"</span><span class="op">)</span></span></code></pre></div>
-<p>It is worth noting, though, that these are quite simple wrapper
-functions to existing import and transformation functions. For example,
-the code block above can be rewritten using only one <code>delma</code>
-function, as follows:</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://xml2.r-lib.org" class="external-link">xml2</a></span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"example_data"</span>, </span>
-<span>            <span class="st">"README_md_example.md"</span>, </span>
-<span>            package <span class="op">=</span> <span class="st">"delma"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu">base</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/base/readLines.html" class="external-link">readLines</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu">delma</span><span class="fu">::</span><span class="fu"><a href="../reference/as_eml_xml.html">as_eml_xml</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu">xml2</span><span class="fu">::</span><span class="fu"><a href="http://xml2.r-lib.org/reference/write_xml.html" class="external-link">write_xml</a></span><span class="op">(</span><span class="st">"output.xml"</span><span class="op">)</span></span></code></pre></div>
+<p>Internally, <code>delma</code> uses the <a href="https://cran.r-project.org/package=lightparser" class="external-link">lightparser</a>
+package to convert markdown files to <code>tibble</code>s, and the <a href="https://cran.r-project.org/package=xml2" class="external-link">xml2</a> package to
+convert <code>list</code>s to xml and write them to file. Between these
+two packages, we have written functions to convert between tibble and
+list versions of EML-formatted markdown.</p>
+<p>Under the hood, <code><a href="../reference/render_metadata.html">render_metadata()</a></code> calls
+<code><a href="../reference/read_md.html">read_md()</a></code>, which does a few things:</p>
+<ul>
+<li>calls <code><a href="https://pkgs.rstudio.com/rmarkdown/reference/render.html" class="external-link">rmarkdown::render()</a></code> on your chosen file, meaning
+any code blocks or inline code is executed properly.</li>
+<li>appends code blocks whose <code>label</code> matches an EML tag to
+the <code>attributes</code> of that EML tag; this allows quite complex
+attribute addition without affecting rendered text.</li>
+<li>‘cleans’ the imported tibble to a small number of required
+columns.</li>
+</ul>
+<p>This tibble is then rendered to EML using <code><a href="../reference/write_eml.html">write_eml()</a></code>.
+The inverse operation is accomplished by calling <code><a href="../reference/read_eml.html">read_eml()</a></code>
+followed by <code><a href="../reference/write_md.html">write_md()</a></code>.</p>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>
