@@ -4,26 +4,34 @@
 #' @noRd
 #' @keywords Internal
 parse_tibble_to_list <- function(x){
+  x <- add_para_tags(x)
+  result <- tibble_to_list_recurse(x, level = 1)
+  add_tibble_attributes_to_list(empty = result,
+                                full = x)
+}
 
-  # ensure lists in `text` column are parsed correctly
-  # requires modification to add `para` tag within list-entries
-  inherits(x$text, "list")
+#' Internal function to ensure lists in `text` column are parsed correctly.
+# Requires modification to add `para` tag within list-entries
+#' @noRd
+#' @keywords Internal
+add_para_tags <- function(x){
+  if(!any(colnames(x) == "text")){
+    cli:cli_abort("Supplied tibble doesn't contain required column `text`", 
+                  call = rlang::caller_env())
+  }
   list_check <- purrr::map(x$text, 
                            \(a){inherits(a, "list")}) |>
     unlist()
   if(any(list_check)){
     list_update <- x$text[list_check]
     x$text[list_check] <- purrr::map(list_update,
-        \(a){
-          result <- purrr::map(a, \(b){list(b)})
-          names(result) <- rep("para", length(result))
-          result
-    })
+                                     \(a){
+                                       result <- purrr::map(a, \(b){list(b)})
+                                       names(result) <- rep("para", length(result))
+                                       result
+                                     })
   }
-  # build with recursion
-  result <- tibble_to_list_recurse(x, level = 1)
-  add_tibble_attributes_to_list(empty = result,
-                                full = x)
+  x
 }
 
 #' Internal function to power `parse_tibble_to_list()`

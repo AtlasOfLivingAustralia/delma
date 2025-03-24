@@ -45,7 +45,9 @@ clean_text <- function(x){
                        \(a){
                          a <- trimws(a)
                          if(length(a) < 2){
-                           if(a == ""){
+                           if(is.na(a)){ # important to parse NAs first
+                             a
+                           }else if(a == ""){
                              NA
                            }else{
                              a

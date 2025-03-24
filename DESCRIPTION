@@ -15,7 +15,12 @@ Authors@R:
              family = "Kellie",
              email = "dax.kellie@csiro.au",
              role = c("aut")))
-Description: Simple tools for converting metadata between R formats.
+Description: Ecological Metadata Language or 'EML' is a long-established format
+  for descibing ecological datasets to facilitate sharing and re-use. Because
+  'EML' is effectively a modified 'xml' schema, however, it is somewhat 
+  challenging to write and manipulate for non-expert users. 'delma' supports
+  users to write metadata statements in 'rmarkdown' or 'Quarto' format, and
+  parse them to 'EML' and (optionally) back again.
 Depends: 
   R (>= 4.3.0)
 Imports:
