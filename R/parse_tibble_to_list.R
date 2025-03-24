@@ -11,12 +11,12 @@ parse_tibble_to_list <- function(x){
 }
 
 #' Internal function to ensure lists in `text` column are parsed correctly.
-# Requires modification to add `para` tag within list-entries
+#' Requires modification to add `para` tag within list-entries
 #' @noRd
 #' @keywords Internal
 add_para_tags <- function(x){
   if(!any(colnames(x) == "text")){
-    cli:cli_abort("Supplied tibble doesn't contain required column `text`", 
+    cli::cli_abort("Supplied tibble doesn't contain required column `text`", 
                   call = rlang::caller_env())
   }
   list_check <- purrr::map(x$text, 

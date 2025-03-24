@@ -41,10 +41,8 @@ read_md <- function(file){
   }
   # check file is correctly specified
   check_is_single_character(file)
-  check_valid_suffix(file)
-
-  # set a working directory
-  temp_dir <- safe_temp_directory()
+  format <- check_valid_suffix(file) # check and return a valid format
+  temp_dir <- safe_temp_directory() # set a working directory
   
   # create a temporary file and convert output format to markdown
   temp_source <- glue::glue("{temp_dir}/temp_source.Rmd")
@@ -53,15 +51,24 @@ read_md <- function(file){
     invisible()
   convert_to_markdown_output(temp_source)
   
-  # create a rendered version of this doc
+  # create a rendered version of this doc, as needed for the supplied `format`
   temp_md <- glue::glue("{temp_dir}/temp_md.md")
-  rmarkdown::render(input = temp_source,
-                    output_file = temp_md,
-                    quiet = TRUE)
+  switch(format, 
+         "Quarto" = {quarto::quarto_render(input = temp_source,
+                                           output_file = temp_md,
+                                           quiet = TRUE)},
+         {rmarkdown::render(input = temp_source,
+                            output_file = temp_md,
+                            quiet = TRUE)}
+  )
   # NOTE: we MUST call `render()` here, and not `knit()`.
   # Only `render()` uses `pandoc`, meaning it will extract and 
   # calculate metadata that is necessary to place the
   # title and date properly in the body of the markdown file
+  
+  # It may also be safer to use the `output_format` argument, rather 
+  # than rewriting YAML (??).
+  
   add_standard_yaml(temp_md)
   
   # import and clean the 'rendered' tibble
@@ -92,6 +99,11 @@ check_valid_suffix <- function(file){
     c("Invalid file suffix", 
       "Please rename `{file}` to end in `.md`, `.Rmd` or `.Qmd`") |>
     cli::cli_abort(call = rlang::caller_env())
+  }else{
+    switch(suffix,
+           ".md" = "basic",
+           ".Rmd" = "Rmarkdown",
+           ".Qmd" = "Quarto")
   }
 }
 
@@ -137,7 +149,7 @@ convert_to_markdown_output <- function(input){
                            get_yml = FALSE,
                            author = FALSE,
                            date = FALSE) |>
-    capture.output()
+    utils::capture.output()
   
   # add new yaml in place of old yaml
   result <- c(yaml_new,
@@ -158,7 +170,7 @@ add_standard_yaml <- function(input){
     ymlthis::yml(get_yml = FALSE,
                  author = FALSE,
                  date = FALSE) |>
-    capture.output()
+    utils::capture.output()
   c(yaml_new,
     readLines(input)) |>
     writeLines(con = input)

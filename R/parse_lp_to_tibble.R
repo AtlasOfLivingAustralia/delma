@@ -121,13 +121,14 @@ clean_url <- function(x){
 #' Internal function to clean EML headings that behave oddly
 #' @noRd
 #' @keywords Internal
+#' @importFrom rlang .data
 clean_eml_tags <- function(df){
   # modify the tibble to the required conventions for list/xml
   # `label` should be camel case
   df |>
     dplyr::mutate(label = snakecase::to_lower_camel_case(.data$label)) |>
-    dplyr::mutate(label = dplyr::case_when(label == "eml" ~ "eml:eml",
-                                           label == "surname" ~ "surName",
-                                           label == "pubdate" ~ "pubDate",
-                                           .default = label))
+    dplyr::mutate(label = dplyr::case_when(.data$label == "eml" ~ "eml:eml",
+                                           .data$label == "surname" ~ "surName",
+                                           .data$label == "pubdate" ~ "pubDate",
+                                           .default = .data$label))
 }
