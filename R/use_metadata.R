@@ -56,9 +56,11 @@ use_metadata <- function(file = NULL,
         use_metadata_closure_message(file)        
       }
     }else{
-      c("file `{file}` already exists and has not been overwritten",
-        i = "set `overwrite = TRUE` to change this behaviour") |>
-        cli::cli_inform()     
+      if(!quiet){
+        c("file `{file}` already exists and has not been overwritten",
+          i = "set `overwrite = TRUE` to change this behaviour") |>
+          cli::cli_inform()         
+      }
     }
   }else{
     if(!quiet){

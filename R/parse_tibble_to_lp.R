@@ -3,7 +3,7 @@
 #' @keywords Internal
 parse_tibble_to_lp <- function(x){
   empty_character <- rep(NA, nrow(x)) |> as.character()
-  x |>
+  result <- x |>
     dplyr::rename("heading" = "label",
                   "heading_level" = "level") |>
     dplyr::mutate("section" = .data$heading,
@@ -16,10 +16,15 @@ parse_tibble_to_lp <- function(x){
     dplyr::select("type", "label", "params", "text", "code", 
                   "heading", "heading_level", "section") |>
     rebuild_yaml() # add yaml from title, date
-  # browser()
+  
+  ### TODO ###
   # Set code block content
   # convert `attributes` to list-code in `code` column
   # add block `label` to `params` column AND `label` column
+  
+  # change class
+  class(result) <- c("tbl_lp", "tbl_df", "tbl", "data.frame")
+  result
 }
 
 #' Internal function to collapse text from list-format to character vectors

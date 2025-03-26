@@ -27,7 +27,7 @@ render_metadata <- function(input,
   if(missing(input)){
     c("No `input` provided",
       i = "Please provide a metadata file",
-      i = "You can call`use_metadata()` to create one") |>
+      i = "You can call `use_metadata()` to create one") |>
       cli::cli_abort()
   }
 
