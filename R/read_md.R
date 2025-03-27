@@ -46,15 +46,16 @@ read_md <- function(file){
   file.copy(from = file, 
             to = temp_source) |>
     invisible()
-  convert_to_markdown_output(temp_source)
-  
+
   # create a rendered version of this doc, as needed for the supplied `format`
   temp_md <- glue::glue("{temp_dir}/temp_md.md")
   switch(format, 
          "Quarto" = {quarto::quarto_render(input = temp_source,
+                                           output_format = "md_document", # Q: does this work?
                                            output_file = temp_md,
                                            quiet = TRUE)},
          {rmarkdown::render(input = temp_source,
+                            output_format = "md_document", # rmarkdown::md_document() ?
                             output_file = temp_md,
                             quiet = TRUE)}
   )
@@ -63,9 +64,8 @@ read_md <- function(file){
   # calculate metadata that is necessary to place the
   # title and date properly in the body of the markdown file
   
-  # It may also be safer to use the `output_format` argument, rather 
-  # than rewriting YAML (??).
-  
+  # rendered markdown files have no yaml, but need one for importing via
+  # lightparser. Add a placeholder YAML here (note: data not used)
   add_standard_yaml(temp_md)
   
   # import and clean the 'rendered' tibble
@@ -118,56 +118,19 @@ safe_temp_directory <- function(){
   safe_location
 }
 
-
-#' Internal function to convert an Rmd or Qmd to have `md_document` as output
-#' @param input location of a file to be editted
-#' @returns Called for side-effect of editing file given by `input`
-#' @noRd
-#' @keywords Internal
-convert_to_markdown_output <- function(input){
-  
-  x <- readLines(input)
-  
-  # find yaml in plain text
-  yaml_finder <- grepl("^---", x)
-  if(length(which(yaml_finder)) < 2){
-    cli::cli_abort("yaml not found",
-                 call = rlang::caller_env())
-  }
-  yaml_end <- which(yaml_finder)[2]
-  
-  # import yaml text as a list 
-  # convert output to markdown
-  x_yaml <- rmarkdown::yaml_front_matter(input) |>
-    ymlthis::yml_output(rmarkdown::md_document())
-  
-  # write this as a text string
-  yaml_new <- ymlthis::yml(x_yaml, 
-                           get_yml = FALSE,
-                           author = FALSE,
-                           date = FALSE) |>
-    utils::capture.output()
-  
-  # add new yaml in place of old yaml
-  result <- c(yaml_new,
-              x[seq(yaml_end + 1, length(x), by = 1)])
-  
-  # write to file
-  writeLines(result, con = input)
-}
-
 #' Internal function to add yaml to a file that is missing one
 #' @returns Called for side-effect of editing file given by `input`
 #' @noRd
 #' @keywords Internal
 add_standard_yaml <- function(input){
-  # write this as a text string
-  yaml_new <- list(author = "unknown",
-                   date = "today") |>
-    ymlthis::yml(get_yml = FALSE,
-                 author = FALSE,
-                 date = FALSE) |>
-    utils::capture.output()
+  # write new yaml as a text string
+  # NOTE: This isn't actually used anywhere; it's a patch to get past
+  # lightparser's import requirements
+  yaml_new <- c("---" ,
+                "author: unknown",
+                "date: today",
+                "---" )
+  # write to supplied file
   c(yaml_new,
     readLines(input)) |>
     writeLines(con = input)
