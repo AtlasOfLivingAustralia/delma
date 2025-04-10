@@ -94,7 +94,7 @@ check_valid_suffix <- function(file){
   suffix <- stringr::str_extract(file, "\\.[:alnum:]+$")
   if(!(suffix %in% c(".md", ".Rmd", ".Qmd"))){
     c("Invalid file suffix", 
-      "Please rename `{file}` to end in `.md`, `.Rmd` or `.Qmd`") |>
+      "Accepted formats are `.md`, `.Rmd` or `.Qmd`") |>
     cli::cli_abort(call = rlang::caller_env())
   }else{
     switch(suffix,
