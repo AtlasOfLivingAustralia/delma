@@ -21,6 +21,6 @@ write_md <- function(x, file){
   check_valid_suffix(file)
   
   x |>
-    as_lp_tbl() |>
+    as_lp_tibble() |>
     lightparser::combine_tbl_to_file(output_file = file)
 }

@@ -22,7 +22,7 @@
 #' @returns `read_md()` returns an object of class `tbl_df`, `tbl` and 
 #' `data.frame` (i.e. a `tibble`).
 #' @examples \dontrun{
-#' use_metadata("example.Rmd") 
+#' use_metadata_template("example.Rmd") 
 #' df <- read_md("example.Rmd")
 #' }
 #' @export
@@ -70,7 +70,7 @@ read_md <- function(file){
   
   # import and clean the 'rendered' tibble
   result <- read_lp(temp_md) |>
-    as_eml_tbl()
+    as_eml_tibble()
 
   # import 'unrendered' tibble, extract hidden lists as attributes
   eml_attributes <- read_lp(file) |>

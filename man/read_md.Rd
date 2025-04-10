@@ -36,7 +36,7 @@ Internally, \code{\link[=read_md]{read_md()}} calls \code{\link[lightparser:spli
 }
 \examples{
 \dontrun{
-use_metadata("example.Rmd") 
+use_metadata_template("example.Rmd") 
 df <- read_md("example.Rmd")
 }
 }

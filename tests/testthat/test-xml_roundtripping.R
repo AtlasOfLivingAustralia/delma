@@ -1,9 +1,9 @@
-test_that("`use_metadata()` can be imported, written to EML, and back", {
+test_that("`use_metadata_template()` can be imported, written to EML, and back", {
   
   # set up a file for testing
-  use_metadata("EXAMPLE.Rmd", 
-               overwrite = TRUE,
-               quiet = TRUE)
+  use_metadata_template("EXAMPLE.Rmd", 
+                        overwrite = TRUE,
+                        quiet = TRUE)
   
   # first read using `lightparser` format
   x <- read_lp("EXAMPLE.Rmd")
@@ -62,7 +62,7 @@ test_that("`use_metadata()` can be imported, written to EML, and back", {
   expect_equal(names(y_list), "eml") # NOTE `xml2` simplifies `eml:eml` tag
   
   # to tibble
-  y_df <- as_eml_tbl(y_list)
+  y_df <- as_eml_tibble(y_list)
   inherits(y_df, 
            c("tbl_lp", "tbl_df", "tbl", "data.frame")) |>
     expect_true()

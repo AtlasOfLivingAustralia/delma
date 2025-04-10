@@ -23,14 +23,14 @@ transparency and ease-of-use, then convert them to EML for efficient transfer.
 
 \strong{Reading and writing}
 \itemize{
-\item \code{\link[=read_eml]{read_eml()}}/\code{\link[=write_eml]{write_eml()}} - Read / write EML files to \code{tbl_df}
-\item \code{\link[=read_md]{read_md()}}/\code{\link[=write_md]{write_md()}} - Read / write Rmd or Qmd files to \code{tbl_df}
+\item \code{\link[=read_eml]{read_eml()}}/\code{\link[=write_eml]{write_eml()}} - Read / write EML files to a \code{tibble}
+\item \code{\link[=read_md]{read_md()}}/\code{\link[=write_md]{write_md()}} - Read / write Rmd or Qmd files to a \code{tibble}
 }
 
 \strong{Format manipulation}
 \itemize{
-\item \code{\link[=as_lp_tbl]{as_lp_tbl()}} - Convert metadata to class \code{tbl_lp}
-\item \code{\link[=as_eml_tbl]{as_eml_tbl()}} - Convert metadata to class \code{tbl_df}
+\item \code{\link[=as_lp_tibble]{as_lp_tibble()}} - Convert metadata to class a \code{tibble} (class \code{tbl_lp})
+\item \code{\link[=as_eml_tibble]{as_eml_tibble()}} - Convert metadata to class a \code{tibble} (class \code{tbl_df})
 \item \code{\link[=as_eml_list]{as_eml_list()}} - Convert metadata to class \code{list}
 \item \code{\link[=as_eml_xml]{as_eml_xml()}}- Convert metadata to class \code{xml_document}
 }
