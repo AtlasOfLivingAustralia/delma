@@ -8,7 +8,7 @@ render_metadata(
   input,
   output_file = NULL,
   output_dir = NULL,
-  overwrite = TRUE,
+  overwrite = FALSE,
   quiet = FALSE
 )
 }
@@ -19,10 +19,10 @@ render_metadata(
 
 \item{output_dir}{The output directory for the rendered \code{output_file}}
 
-\item{overwrite}{(logical) Should any existing file be overwritten? Defaults
-to \code{TRUE}.}
+\item{overwrite}{(logical) Should any existing file be overwritten? Default is set
+to \code{FALSE}.}
 
-\item{quiet}{(logical) Should messages be suppressed? Defaults to \code{FALSE}.}
+\item{quiet}{(logical) Should messages be suppressed? Default is set to \code{FALSE}.}
 }
 \value{
 Does not return an object; called for the side-effect of rendering
@@ -37,7 +37,7 @@ supplied for rendering via other packages. Internally this function wraps
 }
 \examples{
 \dontrun{
-use_metadata("example.Rmd") 
+use_metadata_template("example.Rmd") 
 # assume the user edits the file, then calls:
 render_metadata("example.Rmd", output_file = "example.xml")
 }

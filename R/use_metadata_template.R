@@ -6,32 +6,32 @@
 #' HTML or PDF will function; but also that it renders to valid EML using
 #' [render_metadata()]. 
 #' @param file (string) A name for the resulting file, with either `.Rmd` or
-#' `.Qmd` as a suffix. If `NULL` will default to `metadata.md`.
+#' `.qmd` as a suffix. If `NULL` will default to `metadata.md`.
 #' @param overwrite (logical) Should any existing file be overwritten? Defaults
 #' to `FALSE`.
 #' @param quiet (logical) Should messages be suppressed? Defaults to `FALSE`.
 #' @returns Doesn't return anything to the workspace; called for the side-effect
 #' of placing a metadata statement in the working directory.
 #' @examples \dontrun{
-#' use_metadata("example.Rmd") 
+#' use_metadata_template("example.Rmd") 
 #' }
 #' @export
-use_metadata <- function(file = NULL,
+use_metadata_template <- function(file = NULL,
                          overwrite = FALSE,
                          quiet = FALSE){
   if(is.null(file)){
     file <- "metadata.md"
   }
   if(!quiet){
-    cli::cli_progress_step("Creating template file `{file}`.")
-    cli::cli_progress_done()    
+    # cli::cli_progress_step("Creating template file")
+    # cli::cli_progress_done()    
   }
   
   # check format
   format <- stringr::str_extract(file, "\\.[:alnum:]+$")
-  if(!(format %in% c(".Rmd", ".Qmd"))){
-    c("Accepted file suffixes are `.Rmd` and `.Qmd`",
-      i = "Please rename `{file}` and try again") |>
+  if(!(format %in% c(".Rmd", ".Qmd", ".qmd"))){
+    c("Accepted file suffixes are `.Rmd` and `.qmd`.",
+      i = "Please rename {.file {file}} and try again.") |>
       cli::cli_abort()
   }
   
@@ -45,7 +45,7 @@ use_metadata <- function(file = NULL,
   if(file.exists(file)){
     if(overwrite){
       if(!quiet){
-        cli::cli_progress_step("Overwriting existing file `{file}`.")        
+        cli::cli_progress_step("Overwriting existing file {.file {file}}")        
       }
       file.copy(from = source_file,
                 to = file,
@@ -57,14 +57,14 @@ use_metadata <- function(file = NULL,
       }
     }else{
       if(!quiet){
-        c("file `{file}` already exists and has not been overwritten",
-          i = "set `overwrite = TRUE` to change this behaviour") |>
+        c("File {.file {file}} already exists and has not been overwritten.",
+          i = "Set `overwrite = TRUE` to change this behaviour.") |>
           cli::cli_inform()         
       }
     }
   }else{
     if(!quiet){
-      cli::cli_progress_step("Creating new file `{file}`.")      
+      cli::cli_progress_step("Writing {.file {file}}.")      
     }
     file.copy(from = source_file,
               to = file,
@@ -82,11 +82,9 @@ use_metadata <- function(file = NULL,
 #' @keywords Internal
 use_metadata_closure_message <- function(file){
   cli::cli_bullets(c(
-    v = "File template `{file}` saved to top folder in local directory.",
+    v = "{.file {file}} saved to top direcotry folder.",
     i = paste(
-      c(" Edit `{file}`") |> 
-        cli::col_grey(), 
-      c("then use {.fn build_metadata} to build final metadata statement.") |> 
+      c(" Edit {.file {file}} before converting to EML.") |> 
         cli::col_grey()
     )
   ))

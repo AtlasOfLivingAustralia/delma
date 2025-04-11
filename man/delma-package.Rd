@@ -16,7 +16,7 @@ transparency and ease-of-use, then convert them to EML for efficient transfer.
 
 \strong{Main functions}
 \itemize{
-\item \code{\link[=use_metadata]{use_metadata()}} - Create a boilerplate metadata statement
+\item \code{\link[=use_metadata_template]{use_metadata_template()}} - Create a boilerplate metadata statement template.
 \item \code{\link[=render_metadata]{render_metadata()}} - Render metadata as an EML document
 \item \code{\link[=check_metadata]{check_metadata()}} - Run checks on an EML document
 }
@@ -24,7 +24,7 @@ transparency and ease-of-use, then convert them to EML for efficient transfer.
 \strong{Reading and writing}
 \itemize{
 \item \code{\link[=read_eml]{read_eml()}}/\code{\link[=write_eml]{write_eml()}} - Read / write EML files to a \code{tibble}
-\item \code{\link[=read_md]{read_md()}}/\code{\link[=write_md]{write_md()}} - Read / write Rmd or Qmd files to a \code{tibble}
+\item \code{\link[=read_md]{read_md()}}/\code{\link[=write_md]{write_md()}} - Read / write Rmd or qmd files to a \code{tibble}
 }
 
 \strong{Format manipulation}

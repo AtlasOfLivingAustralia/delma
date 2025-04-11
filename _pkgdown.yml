@@ -27,7 +27,7 @@ navbar:
 reference:
 - title: Main functions
   contents: 
-  - use_metadata
+  - use_metadata_template
   - render_metadata
   - check_metadata
 - title: Reading and writing

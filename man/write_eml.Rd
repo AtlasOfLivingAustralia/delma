@@ -22,7 +22,7 @@ Note that EML files always have the file extension \code{.xml}.
 }
 \examples{
 \dontrun{
-use_metadata("example.Rmd") 
+use_metadata_template("example.Rmd") 
 df <- read_md("example.Rmd")
 write_eml(df, "example.xml")
 }

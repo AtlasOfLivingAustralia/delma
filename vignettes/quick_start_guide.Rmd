@@ -21,16 +21,11 @@ to support building and manipulating EML within the workspace, there is no
 comparable system for writing these documents in a more human-readable format,
 such as Rmarkdown or Quarto. `delma` provides this capability.
 
-The default method for using `delma` is to first generate a boilerplate metadata 
-statement; edit it in your chosen IDE; then render it to EML:
+The default method for using `delma` is to:
 
-```{r, eval=FALSE}
-# create a boilerplate statement
-use_metadata("my_metadata_statement.Rmd")
-# edit this document in IDE before calling:
-render_metadata(input = "my_metadata_statement.Rmd", 
-                output_file = "metadata.xml")
-```
+1. Create a metadata statement template with `use_metadata_template()`
+2. Edit metadata in your chosen IDE
+3. Render the completed metadata to EML with `render_metadata()`
 
 EML is quite stringent in the types of data that are allowed, as well 
 as their order and placement in the hierarchy. Getting these points right can be 
@@ -44,18 +39,27 @@ using `delma`, which we discuss below
 
 ### Document structure
 
+Create a metadata statement template using `use_markdown_template()`
+
+```{r}
+use_metadata_template("my-metadata-statement.Rmd")
+```
+
 Header levels in markdown-formatted metadata statements 
-determine the nested structure of the resulting xml. For example, the markdown 
-file might contain this text:
+determine the nested structure of the resulting xml. For example, this 
+text in markdown...
 
 ```
 # EML
+
 ## Dataset
+
 ### Title
 My title
+
 ```
 
-Which would parse to this in xml:
+...parses to this in xml.
 ```
 <EML>
   <dataset>
@@ -75,6 +79,7 @@ you would add the following code under the `## userId` heading:
 `r ''````{r}
 #| label: 'userId'
 #| include: false
+
 list(directory = "https://orcid.org")
 ```
 ````
@@ -93,6 +98,7 @@ be a DOI:
 `r ''````{r}
 #| label: 'eml'
 #| include: false
+
 list(packageId = "https://doi.org/10.32614/CRAN.package.galah",
      system = "https://doi.org")
 ```
@@ -104,6 +110,7 @@ A valid alternative might be a GitHub release:
 `r ''````{r}
 #| label: 'eml'
 #| include: false
+
 list(packageId = "https://github.com/AtlasOfLivingAustralia/galah-R/releases/download/v2.1.0/galah_2.1.0.tar.gz",
      system = "https://github.com")
 ```
@@ -126,12 +133,13 @@ fields from the `YAML` section, for example:
 `r ''````{r}
 #| echo: false
 #| results: 'asis'
+
 # NOTE: This is set using the yaml above; do not edit by hand
 cat(rmarkdown::metadata$date)
 ```
 ````
 
-You could also implement dynamic content using inline code:
+You could also implement dynamic content using inline code. For example:
 
 ```{r, eval=FALSE}
 This data contains `r readr::read_csv("my_data.csv") |> nrow()` rows.

@@ -1,33 +1,33 @@
-test_that("use_metadata() arguments work", {
+test_that("use_metadata_template() arguments work", {
   filename <- "EXAMPLE.Rmd"
   # quiet
-  use_metadata(filename, 
-               overwrite = FALSE,
-               quiet = TRUE) |>
+  use_metadata_template(filename, 
+                        overwrite = FALSE,
+                        quiet = TRUE) |>
     expect_no_message()
   file.exists(filename) |>
     expect_true()
   unlink(filename)
   
   # noisy
-  use_metadata(filename, 
-               overwrite = FALSE,
-               quiet = FALSE) |>
+  use_metadata_template(filename, 
+                        overwrite = FALSE,
+                        quiet = FALSE) |>
     expect_message()
   file.exists(filename) |>
     expect_true()
   # leave file in place
   
   # expect message when file already exists, ignoring `quiet`
-  use_metadata(filename, 
-               overwrite = FALSE,
-               quiet = TRUE) |>
+  use_metadata_template(filename, 
+                        overwrite = FALSE,
+                        quiet = TRUE) |>
     expect_no_message()
   
   # ditto, but overwrite = TRUE
-  use_metadata(filename, 
-               overwrite = TRUE,
-               quiet = TRUE) |>
+  use_metadata_template(filename, 
+                        overwrite = TRUE,
+                        quiet = TRUE) |>
     expect_no_message()
   
   # clean up
@@ -35,9 +35,9 @@ test_that("use_metadata() arguments work", {
 })
 
 test_that("render_metadata() arguments work", {
-  use_metadata("EXAMPLE.Rmd",
-               overwrite = TRUE,
-               quiet = TRUE)
+  use_metadata_template("EXAMPLE.Rmd",
+                        overwrite = TRUE,
+                        quiet = TRUE)
   
   # fails with no args
   render_metadata() |>
@@ -99,9 +99,9 @@ test_that("render_metadata() arguments work", {
 
 test_that("check_metadata() works", {
   skip_if_offline()
-  use_metadata("EXAMPLE.Rmd", 
-               overwrite = TRUE,
-               quiet = TRUE)
+  use_metadata_template("EXAMPLE.Rmd", 
+                        overwrite = TRUE,
+                        quiet = TRUE)
   render_metadata("EXAMPLE.Rmd", 
                   output_file = "EXAMPLE.xml",
                   quiet = TRUE)
