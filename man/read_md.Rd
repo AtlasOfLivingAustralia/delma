@@ -8,7 +8,7 @@ read_md(file)
 }
 \arguments{
 \item{file}{Filename to read from. Must be either \code{.md}, \code{.Rmd}
-or \code{.Qmd} file.}
+or \code{.qmd} file.}
 }
 \value{
 \code{read_md()} returns an object of class \code{tbl_df}, \code{tbl} and

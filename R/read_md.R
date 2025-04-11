@@ -3,7 +3,7 @@
 #' `read_md()` imports metadata from a markdown file into the workspace as a 
 #' `tibble`.
 #' @param file Filename to read from. Must be either `.md`, `.Rmd`
-#' or `.Qmd` file.
+#' or `.qmd` file.
 #' @details
 #' [read_md()] is unusual in that it calls [rmarkdown::render()] or 
 #' [quarto::quarto_render()] internally to ensure code blocks and snippets 
@@ -34,7 +34,7 @@ read_md <- function(file){
   }
   # check file exists
   if(!file.exists(file)){
-    cli::cli_abort("Specified `file` does not exist.")
+    cli::cli_abort("Specified file \"{file}\" does not exist.")
   }
   # check file is correctly specified
   check_is_single_character(file)
@@ -49,16 +49,51 @@ read_md <- function(file){
 
   # create a rendered version of this doc, as needed for the supplied `format`
   temp_md <- glue::glue("{temp_dir}/temp_md.md")
+  
+  invisible(
+    file.copy(
+      from = file,
+      to = glue::glue("{temp_dir}/{file}"),
+      overwrite = TRUE
+    )
+  )
+  
+  # browser()
   switch(format, 
-         "Quarto" = {quarto::quarto_render(input = temp_source,
-                                           output_format = "md_document", # Q: does this work?
-                                           output_file = temp_md,
-                                           quiet = TRUE)},
+         "Quarto" = {
+           # Copy .qmd file from local directory to temp directory; a
+           # workaround required due to quarto's inability to render a document
+           # anywhere except the directory where the .qmd file is located (and it can't
+           # be rendered in the package directory!)
+           
+           # This solution to copy qmd to temp directory and explicitly 
+           # set the temp directory to run `quarto_render()` seems viable
+           # but causes an error in `as_xml_document()`
+           invisible(
+             file.copy(
+               from = file,
+               to = glue::glue("{temp_dir}/{file}"),
+               overwrite = TRUE
+             )
+           )
+           xfun::in_dir(glue::glue("{temp_dir}/"), 
+                        # run Quarto in the directory of the input file
+                        report <- quarto::quarto_render(
+                          # run the input file
+                          input = basename(glue::glue("{file}")),
+                          output_format = "md",
+                          # output file will be created in the temp directory
+                          output_file = "temp_md.md"
+                        )
+           )
+           
+           },
          {rmarkdown::render(input = temp_source,
                             output_format = "md_document", # rmarkdown::md_document() ?
                             output_file = temp_md,
                             quiet = TRUE)}
   )
+  
   # NOTE: we MUST call `render()` here, and not `knit()`.
   # Only `render()` uses `pandoc`, meaning it will extract and 
   # calculate metadata that is necessary to place the
@@ -92,15 +127,16 @@ read_md <- function(file){
 #' @keywords Internal
 check_valid_suffix <- function(file){
   suffix <- stringr::str_extract(file, "\\.[:alnum:]+$")
-  if(!(suffix %in% c(".md", ".Rmd", ".Qmd"))){
+  if(!(suffix %in% c(".md", ".Rmd", ".Qmd", ".qmd"))){
     c("Invalid file suffix", 
-      "Accepted formats are `.md`, `.Rmd` or `.Qmd`") |>
+      "Accepted formats are `.md`, `.Rmd` or `.qmd`") |>
     cli::cli_abort(call = rlang::caller_env())
   }else{
     switch(suffix,
            ".md" = "basic",
            ".Rmd" = "Rmarkdown",
-           ".Qmd" = "Quarto")
+           ".Qmd" = "Quarto",
+           ".qmd" = "Quarto")
   }
 }
 
