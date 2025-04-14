@@ -1,7 +1,15 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# delma <img src="man/figures/logo.png" align="right" style="margin: 0px 10px 0px 10px;" alt="" width="120"/><br>
+# delma <img src="man/figures/logo.png" align="right" style="margin: 0px 10px 0px 10px;" width="120"/><br>
+
+<!-- badges: start -->
+
+[![CRAN
+status](https://www.r-pkg.org/badges/version/delma)](https://CRAN.R-project.org/package=delma)
+[![Codecov test
+coverage](https://codecov.io/gh/AtlasOfLivingAustralia/delma/graph/badge.svg)](https://app.codecov.io/gh/AtlasOfLivingAustralia/delma)
+<!-- badges: end -->
 
 ## Overview
 
@@ -13,7 +21,7 @@ contain the letters ‘e’, ‘m’ and ‘l’.
 
 The logo depicts a striped legless lizard (*Delma impar*) in the style
 of the classic mobile game ‘snake’, a play on the observation that
-*Delma* are often mistaken for snakes. It was drawn by [Martin
+*Delma* are often mistaken for snakes. It was designed by [Martin
 Westgate](https://martinwestgate.com).
 
 If you have any comments, questions or suggestions, please [contact
@@ -25,8 +33,8 @@ This package is under active development, and is not yet available on
 CRAN. You can install the latest development version from GitHub with:
 
 ``` r
-install.packages("remotes")
-remotes::install_github("AtlasOfLivingAustralia/delma")
+# install.packages("devtools")
+devtools::install_github("AtlasOfLivingAustralia/delma")
 ```
 
 Load the package:
@@ -38,29 +46,70 @@ library(delma)
 ## Basic usage
 
 The primary use case for `delma` is to build metadata statements for
-sharing biodiversity data. The first step is to create a markdown file,
-and add any headings that you like that conform to the EML standard. The
-header ‘level’ (i.e. number of `#`) is used to designate the degree of
-nesting. If you don’t want to start from scratch, you can use the
-example statement provided:
+sharing biodiversity data. To get started, create a basic template with
+`use_metadata_template()`.
 
 ``` r
-use_metadata("my_metadata_statement.Rmd")
+use_metadata_template("my_metadata_statement.Rmd")
 ```
 
-This document can be knit like any other Rmarkdown document, using
-either the ‘knit’ button in RStudio, or the function
-`rmarkdown::knit()`. In both cases it will render to the format defined
-in the yaml section, which defaults to `html_document`, but can easily
-be changed. To convert this document to EML, use:
+Here is a shortened minimal example of what a metadata template looks
+like.
+
+    ---
+    title: A Descriptive Title for your Dataset in Title Case
+    output: html_document
+    date: 2025-02-01
+    ---
+
+    ## Dataset
+
+    ### Title
+
+    ### Creator
+
+    #### Individual Name
+
+    ##### Given Name
+    Firstname
+
+    ##### Surname
+    Lastname
+
+    #### Address
+
+Users can add any additional headings that conform to the EML standard
+to their metadata statement. The header level (i.e. the number of `#`)
+designates the degree of nesting.
+
+This document can be knit like any other Rmarkdown document (using
+either the ‘knit’ button in RStudio or `rmarkdown::knit()`) to the
+format defined in the yaml section, which defaults to `html_document`.
+
+To convert an metadata statement in markdown to EML, use:
 
 ``` r
-render_metadata("my_metadata_statement.Rmd", 
-                "metadata.xml")
+render_metadata("my_metadata_statement.Rmd")
 ```
 
-Note that EML documents use the extension `.xml`. To check that your
-document is formatted in accordance with the EML standard, use:
+This reformats our metadata in EML and saves it as a file. EML documents
+are saved as `.xml` files.
+
+    <?xml version="1.0" encoding="UTF-8"?>
+    <eml:eml xmlns:eml="https://eml.ecoinformatics.org/eml-2.2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" packageId="the-doi-for-this-archive" system="https://doi.org" scope="system" xsi:schemaLocation="http://rs.gbif.org/schema/eml-gbif-profile/1.3/eml-gbif-profile.xsd">
+      <dataset>
+        <title>A Descriptive Title for your Dataset in Title Case</title>
+        <creator>
+          <individualName>
+            <givenName>Firstname</givenName>
+            <surName>Lastname</surName>
+          </individualName>
+        </creator>
+      </dataset>
+    </eml:eml>
+
+To check that your document is formatted in accordance with the EML
+standard, use:
 
 ``` r
 check_metadata("metadata.xml")
@@ -76,21 +125,6 @@ run:
 
 ``` r
 citation(package = "delma")
-#> To cite delma in publications use:
-#> 
-#>   Westgate M, Balasubramaniam S, Kellie D (2025). _delma: Convert
-#>   Rmarkdown and Quarto Documents to Ecological Metadata Language_. R
-#>   package version 0.1.0, <https://delma.ala.org.au>.
-#> 
-#> A BibTeX entry for LaTeX users is
-#> 
-#>   @Manual{,
-#>     title = {delma: Convert Rmarkdown and Quarto Documents to Ecological Metadata Language},
-#>     author = {Martin Westgate and Shandiya Balasubramaniam and Dax Kellie},
-#>     year = {2025},
-#>     note = {R package version 0.1.0},
-#>     url = {https://delma.ala.org.au},
-#>   }
 ```
 
 The current recommended citation is:

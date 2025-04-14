@@ -8,7 +8,7 @@ parse_list_to_tibble <- function(x){
     result <- purrr::list_flatten(result)
   }
   result_tibble <- result |>
-    clean_tibble_text() |>
+    clean_tbl_text_list() |>
     dplyr::bind_rows()
 
   # break pipe here to remove duplicates
@@ -167,7 +167,7 @@ format_xml_tibble <- function(df){
 #' @param x a flat list (i.e. no nesting) containing one tibble per entry
 #' @noRd
 #' @keywords Internal
-clean_tibble_text <- function(x){
+clean_tbl_text_list <- function(x){
   purrr::map(x, \(a){
     if(is.null(a)){
       a

@@ -3,10 +3,13 @@ title: A Descriptive Title for your Dataset in Title Case
 output: html_document
 date: 2025-02-01
 ---
+
 <!--
-This is a metadata template in .Rmd format, which has been formatted such that 
-it can render either to the `output` specified in the yaml section (above) AND 
-to Ecological Metadata language (EML) using the {delma} R package. Sections can 
+This is a metadata template in .Rmd format. 
+
+This template has been formatted to render as an html document (set in the 
+yaml `output` above) AND to Ecological Metadata language (EML) using the 
+{delma} R package. Sections can 
 be added, re-arranged or removed to suit the dataset being described. Some 
 features to be aware of:
 
@@ -15,14 +18,15 @@ features to be aware of:
 - Code blocks whose `label` corresponds to a supplied EML tag are used to set 
   attributes for that tag using `list()`
 
-You can delete this section if you want. See https:://delma.ala.org.au for 
-software information or https://eml.ecoinformatics.org for information on EML.
+See https:://delma.ala.org.au for software information or 
+https://eml.ecoinformatics.org for information on EML.
 -->
+
 # EML
 ```{r}
 #| label: 'eml'
 #| include: false
-# This sections sets metadata for the EML file itself.
+# This section sets metadata for the EML file itself.
 # Mostly this should be fine unedited EXCEPT for the `packageId`, 
 # which expects a valid DOI. To use a different UUID system, change the 
 # 'system' param _and_ the `packageId`.
@@ -47,9 +51,11 @@ cat(rmarkdown::metadata$title)
 ```
 
 ### Creator
-<!-- The 'creator' element provides the full name of the person, organization, 
+<!-- 
+This section provides the full name of the person, organization, 
 or position who created the resource. The list of creators for a resource 
-represent the people and organizations who should be cited for the resource.-->
+represents the people and organizations who should be cited for the resource.
+-->
 
 #### Individual Name
 
@@ -104,7 +110,7 @@ EN
 A brief overview of the resource. This should provide enough information to help 
 potential users of the data to understand if it may be of interest. Example 
 content may include what the study was designed to investigate, what taxa were 
-observed, and over what time period.
+observed, and over what time period. 200 word limit
 
 ### Keyword Set
 
@@ -140,9 +146,11 @@ generalised (i.e. set to a lower spatial precision than the source dataset).
 
 
 ### Contact
-<!-- The contact field contains contact information for this dataset. This is 
+<!-- 
+This section provides contact information for this dataset. This is 
 the person or institution to contact with questions about the use, 
-interpretation of a data set.-->
+interpretation of a data set.
+-->
 
 #### Individual Name
 

@@ -3,7 +3,7 @@
 #' `read_md()` imports metadata from a markdown file into the workspace as a 
 #' `tibble`.
 #' @param file Filename to read from. Must be either `.md`, `.Rmd`
-#' or `.Qmd` file.
+#' or `.qmd` file.
 #' @details
 #' [read_md()] is unusual in that it calls [rmarkdown::render()] or 
 #' [quarto::quarto_render()] internally to ensure code blocks and snippets 
@@ -22,7 +22,7 @@
 #' @returns `read_md()` returns an object of class `tbl_df`, `tbl` and 
 #' `data.frame` (i.e. a `tibble`).
 #' @examples \dontrun{
-#' use_metadata("example.Rmd") 
+#' use_metadata_template("example.Rmd") 
 #' df <- read_md("example.Rmd")
 #' }
 #' @export
@@ -34,7 +34,7 @@ read_md <- function(file){
   }
   # check file exists
   if(!file.exists(file)){
-    cli::cli_abort("Specified `file` does not exist.")
+    cli::cli_abort("Specified file \"{file}\" does not exist.")
   }
   # check file is correctly specified
   check_is_single_character(file)
@@ -46,31 +46,66 @@ read_md <- function(file){
   file.copy(from = file, 
             to = temp_source) |>
     invisible()
-  convert_to_markdown_output(temp_source)
-  
+
   # create a rendered version of this doc, as needed for the supplied `format`
   temp_md <- glue::glue("{temp_dir}/temp_md.md")
+  
+  invisible(
+    file.copy(
+      from = file,
+      to = glue::glue("{temp_dir}/{file}"),
+      overwrite = TRUE
+    )
+  )
+  
+  # browser()
   switch(format, 
-         "Quarto" = {quarto::quarto_render(input = temp_source,
-                                           output_file = temp_md,
-                                           quiet = TRUE)},
+         "Quarto" = {
+           # Copy .qmd file from local directory to temp directory; a
+           # workaround required due to quarto's inability to render a document
+           # anywhere except the directory where the .qmd file is located (and it can't
+           # be rendered in the package directory!)
+           
+           # This solution to copy qmd to temp directory and explicitly 
+           # set the temp directory to run `quarto_render()` seems viable
+           # but causes an error in `as_xml_document()`
+           invisible(
+             file.copy(
+               from = file,
+               to = glue::glue("{temp_dir}/{file}"),
+               overwrite = TRUE
+             )
+           )
+           xfun::in_dir(glue::glue("{temp_dir}/"), 
+                        # run Quarto in the directory of the input file
+                        report <- quarto::quarto_render(
+                          # run the input file
+                          input = basename(glue::glue("{file}")),
+                          output_format = "md",
+                          # output file will be created in the temp directory
+                          output_file = "temp_md.md"
+                        )
+           )
+           
+           },
          {rmarkdown::render(input = temp_source,
+                            output_format = "md_document", # rmarkdown::md_document() ?
                             output_file = temp_md,
                             quiet = TRUE)}
   )
+  
   # NOTE: we MUST call `render()` here, and not `knit()`.
   # Only `render()` uses `pandoc`, meaning it will extract and 
   # calculate metadata that is necessary to place the
   # title and date properly in the body of the markdown file
   
-  # It may also be safer to use the `output_format` argument, rather 
-  # than rewriting YAML (??).
-  
+  # rendered markdown files have no yaml, but need one for importing via
+  # lightparser. Add a placeholder YAML here (note: data not used)
   add_standard_yaml(temp_md)
   
   # import and clean the 'rendered' tibble
   result <- read_lp(temp_md) |>
-    as_eml_tbl()
+    as_eml_tibble()
 
   # import 'unrendered' tibble, extract hidden lists as attributes
   eml_attributes <- read_lp(file) |>
@@ -92,15 +127,16 @@ read_md <- function(file){
 #' @keywords Internal
 check_valid_suffix <- function(file){
   suffix <- stringr::str_extract(file, "\\.[:alnum:]+$")
-  if(!(suffix %in% c(".md", ".Rmd", ".Qmd"))){
+  if(!(suffix %in% c(".md", ".Rmd", ".Qmd", ".qmd"))){
     c("Invalid file suffix", 
-      "Please rename `{file}` to end in `.md`, `.Rmd` or `.Qmd`") |>
+      "Accepted formats are `.md`, `.Rmd` or `.qmd`") |>
     cli::cli_abort(call = rlang::caller_env())
   }else{
     switch(suffix,
            ".md" = "basic",
            ".Rmd" = "Rmarkdown",
-           ".Qmd" = "Quarto")
+           ".Qmd" = "Quarto",
+           ".qmd" = "Quarto")
   }
 }
 
@@ -118,56 +154,19 @@ safe_temp_directory <- function(){
   safe_location
 }
 
-
-#' Internal function to convert an Rmd or Qmd to have `md_document` as output
-#' @param input location of a file to be editted
-#' @returns Called for side-effect of editing file given by `input`
-#' @noRd
-#' @keywords Internal
-convert_to_markdown_output <- function(input){
-  
-  x <- readLines(input)
-  
-  # find yaml in plain text
-  yaml_finder <- grepl("^---", x)
-  if(length(which(yaml_finder)) < 2){
-    cli::cli_abort("yaml not found",
-                 call = rlang::caller_env())
-  }
-  yaml_end <- which(yaml_finder)[2]
-  
-  # import yaml text as a list 
-  # convert output to markdown
-  x_yaml <- rmarkdown::yaml_front_matter(input) |>
-    ymlthis::yml_output(rmarkdown::md_document())
-  
-  # write this as a text string
-  yaml_new <- ymlthis::yml(x_yaml, 
-                           get_yml = FALSE,
-                           author = FALSE,
-                           date = FALSE) |>
-    utils::capture.output()
-  
-  # add new yaml in place of old yaml
-  result <- c(yaml_new,
-              x[seq(yaml_end + 1, length(x), by = 1)])
-  
-  # write to file
-  writeLines(result, con = input)
-}
-
 #' Internal function to add yaml to a file that is missing one
 #' @returns Called for side-effect of editing file given by `input`
 #' @noRd
 #' @keywords Internal
 add_standard_yaml <- function(input){
-  # write this as a text string
-  yaml_new <- list(author = "unknown",
-                   date = "today") |>
-    ymlthis::yml(get_yml = FALSE,
-                 author = FALSE,
-                 date = FALSE) |>
-    utils::capture.output()
+  # write new yaml as a text string
+  # NOTE: This isn't actually used anywhere; it's a patch to get past
+  # lightparser's import requirements
+  yaml_new <- c("---" ,
+                "author: unknown",
+                "date: today",
+                "---" )
+  # write to supplied file
   c(yaml_new,
     readLines(input)) |>
     writeLines(con = input)

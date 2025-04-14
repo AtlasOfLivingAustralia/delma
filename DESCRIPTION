@@ -17,10 +17,10 @@ Authors@R:
              role = c("aut")))
 Description: Ecological Metadata Language or 'EML' is a long-established format
   for describing ecological datasets to facilitate sharing and re-use. Because
-  'EML' is effectively a modified 'xml' schema, however, it is somewhat 
-  challenging to write and manipulate for non-expert users. 'delma' supports
-  users to write metadata statements in 'Rmarkdown' or 'Quarto' format, and
-  parse them to 'EML' and (optionally) back again.
+  'EML' is effectively a modified 'xml' schema, however, it is challenging to 
+  write and manipulate for non-expert users. 'delma' supports users to write 
+  metadata statements in 'Rmarkdown' or 'Quarto' format, and parse them to 'EML' 
+  and (optionally) back again.
 Depends: 
   R (>= 4.3.0)
 Imports:
@@ -35,7 +35,6 @@ Imports:
   snakecase,
   stringr,
   tibble,
-  ymlthis,
   xml2
 Suggests:
   knitr,

@@ -8,7 +8,7 @@ read_md(file)
 }
 \arguments{
 \item{file}{Filename to read from. Must be either \code{.md}, \code{.Rmd}
-or \code{.Qmd} file.}
+or \code{.qmd} file.}
 }
 \value{
 \code{read_md()} returns an object of class \code{tbl_df}, \code{tbl} and
@@ -36,7 +36,7 @@ Internally, \code{\link[=read_md]{read_md()}} calls \code{\link[lightparser:spli
 }
 \examples{
 \dontrun{
-use_metadata("example.Rmd") 
+use_metadata_template("example.Rmd") 
 df <- read_md("example.Rmd")
 }
 }

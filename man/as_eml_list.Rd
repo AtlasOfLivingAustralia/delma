@@ -34,7 +34,7 @@ simply a wrapper for \code{xml2::as_list()}
 }
 \examples{
 \dontrun{
-use_metadata("example_metadata.Rmd")
+use_metadata_template("example_metadata.Rmd")
 df <- read_md("example_metadata.Rmd")
 df_list <- as_eml_list(df)
 }

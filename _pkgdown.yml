@@ -27,7 +27,7 @@ navbar:
 reference:
 - title: Main functions
   contents: 
-  - use_metadata
+  - use_metadata_template
   - render_metadata
   - check_metadata
 - title: Reading and writing
@@ -38,7 +38,7 @@ reference:
   - write_eml
 - title: Format manipulation
   contents:
-  - as_lp_tbl
-  - as_eml_tbl
+  - as_lp_tibble
+  - as_eml_tibble
   - as_eml_list
   - as_eml_xml

@@ -14,17 +14,17 @@
 #' @section Functions:
 #' 
 #' **Main functions**
-#'   * [use_metadata()] - Create a boilerplate metadata statement
+#'   * [use_metadata_template()] - Create a boilerplate metadata statement template.
 #'   * [render_metadata()] - Render metadata as an EML document
 #'   * [check_metadata()] - Run checks on an EML document
 #' 
 #' **Reading and writing** 
-#'   * [read_eml()]/[write_eml()] - Read / write EML files to `tbl_df`
-#'   * [read_md()]/[write_md()] - Read / write Rmd or Qmd files to `tbl_df`
+#'   * [read_eml()]/[write_eml()] - Read / write EML files to a `tibble`
+#'   * [read_md()]/[write_md()] - Read / write Rmd or qmd files to a `tibble`
 #'   
 #' **Format manipulation**
-#'   * [as_lp_tbl()] - Convert metadata to class `tbl_lp`
-#'   * [as_eml_tbl()] - Convert metadata to class `tbl_df`
+#'   * [as_lp_tibble()] - Convert metadata to class a `tibble` (class `tbl_lp`)
+#'   * [as_eml_tibble()] - Convert metadata to class a `tibble` (class `tbl_df`)
 #'   * [as_eml_list()] - Convert metadata to class `list`
 #'   * [as_eml_xml()]- Convert metadata to class `xml_document`
 #'   

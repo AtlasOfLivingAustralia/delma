@@ -9,7 +9,7 @@ parse_lp_to_tibble <- function(x){
     dplyr::filter(.data$type != "yaml",
                   is.na(.data$heading),
                   .data$heading_level > 0) |>
-    clean_text() |>
+    clean_lp_text() |>
     clean_urls() |>
     dplyr::select("heading_level", "section", "text", "attributes") |>
     dplyr::rename("level" = "heading_level", 
@@ -40,7 +40,7 @@ clean_header_level <- function(x){
 #' @param x A tibble
 #' @noRd
 #' @keywords Internal
-clean_text <- function(x){
+clean_lp_text <- function(x){
   result <- purrr::map(x$text,
                        \(a){
                          a <- trimws(a)

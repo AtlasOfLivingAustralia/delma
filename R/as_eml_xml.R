@@ -9,7 +9,7 @@
 #' @name as_eml_xml
 #' @returns An `xml_document` with the specified nodes and attributes.
 #' @examples \dontrun{
-#' use_metadata("example.Rmd") 
+#' use_metadata_template("example.Rmd") 
 #' df <- read_md("example.Rmd")
 #' as_eml_xml(df)
 #' }

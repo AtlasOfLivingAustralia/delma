@@ -3,7 +3,7 @@
 #' Takes objects of class `tbl_df`, `list` or `xml_document` and converts 
 #' them to a tibble with a structure required by `lightparser`. Note that 
 #' `delma` represents these as an object of class `tbl_lp` for convenience.
-#' @name as_lp_tbl
+#' @name as_lp_tibble
 #' @order 1
 #' @param x Object to be converted
 #' @param ... Other arguments, currently ignored
@@ -20,40 +20,40 @@
 #'   * `section` (chr) The heading this section sits within
 #' @examples \dontrun{
 #' df <- xml2::read_xml("https://collections.ala.org.au/ws/eml/dr368") |>
-#'   as_lp_tbl()
+#'   as_lp_tibble()
 #' }
 #' @export
-as_lp_tbl <- function(x, ...){
-  UseMethod("as_lp_tbl")
+as_lp_tibble <- function(x, ...){
+  UseMethod("as_lp_tibble")
 }
 
-#' @name as_lp_tbl
+#' @name as_lp_tibble
 #' @order 2
-#' @exportS3Method delma::as_lp_tbl
-as_lp_tbl.tbl_lp <- function(x, ...){
+#' @exportS3Method delma::as_lp_tibble
+as_lp_tibble.tbl_lp <- function(x, ...){
   x
 }
 
-#' @name as_lp_tbl
+#' @name as_lp_tibble
 #' @order 3
-#' @exportS3Method delma::as_lp_tbl
-as_lp_tbl.tbl_df <- function(x, ...){
+#' @exportS3Method delma::as_lp_tibble
+as_lp_tibble.tbl_df <- function(x, ...){
   parse_tibble_to_lp(x)
 }
 
-#' @rdname as_lp_tbl
+#' @rdname as_lp_tibble
 #' @order 4
-#' @exportS3Method delma::as_lp_tbl
-as_lp_tbl.list <- function(x, ...){
+#' @exportS3Method delma::as_lp_tibble
+as_lp_tibble.list <- function(x, ...){
   x |>
     parse_list_to_tibble() |>
     parse_tibble_to_lp()
 }
 
-#' @rdname as_lp_tbl
+#' @rdname as_lp_tibble
 #' @order 5
-#' @exportS3Method delma::as_lp_tbl
-as_lp_tbl.xml_document <- function(x, ...){
+#' @exportS3Method delma::as_lp_tibble
+as_lp_tibble.xml_document <- function(x, ...){
   x |>
     xml2::as_list() |>
     parse_list_to_tibble() |>
