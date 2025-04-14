@@ -3,6 +3,14 @@
 
 # delma <img src="man/figures/logo.png" align="right" style="margin: 0px 10px 0px 10px;" width="120"/><br>
 
+<!-- badges: start -->
+
+[![CRAN
+status](https://www.r-pkg.org/badges/version/delma)](https://CRAN.R-project.org/package=delma)
+[![Codecov test
+coverage](https://codecov.io/gh/AtlasOfLivingAustralia/delma/graph/badge.svg)](https://app.codecov.io/gh/AtlasOfLivingAustralia/delma)
+<!-- badges: end -->
+
 ## Overview
 
 `delma` is a package for converting metadata statements written in
@@ -25,7 +33,7 @@ This package is under active development, and is not yet available on
 CRAN. You can install the latest development version from GitHub with:
 
 ``` r
-install.packages("remotes")
+# install.packages("devtools")
 devtools::install_github("AtlasOfLivingAustralia/delma")
 ```
 
@@ -78,11 +86,10 @@ This document can be knit like any other Rmarkdown document (using
 either the ‘knit’ button in RStudio or `rmarkdown::knit()`) to the
 format defined in the yaml section, which defaults to `html_document`.
 
-To convert an metadata statement document to EML, use:
+To convert an metadata statement in markdown to EML, use:
 
 ``` r
-render_metadata("my_metadata_statement.Rmd", 
-                "metadata.xml")
+render_metadata("my_metadata_statement.Rmd")
 ```
 
 This reformats our metadata in EML and saves it as a file. EML documents
