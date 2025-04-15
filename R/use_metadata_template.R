@@ -64,7 +64,7 @@ use_metadata_template <- function(file = NULL,
     }
   }else{
     if(!quiet){
-      cli::cli_progress_step("Writing {.file {file}}.")      
+      cli::cli_progress_step("Writing {.file {file}} to top directory folder.")      
     }
     file.copy(from = source_file,
               to = file,
@@ -75,6 +75,7 @@ use_metadata_template <- function(file = NULL,
       use_metadata_closure_message(file)
     }
   }
+  cli::cli_progress_done()
 }
 
 #' Internal function to say something useful about the dataset
@@ -82,10 +83,8 @@ use_metadata_template <- function(file = NULL,
 #' @keywords Internal
 use_metadata_closure_message <- function(file){
   cli::cli_bullets(c(
-    v = "{.file {file}} saved to top direcotry folder.",
     i = paste(
-      c(" Edit {.file {file}} before converting to EML.") |> 
-        cli::col_grey()
+      c(" Edit {.file {file}} before converting to EML.")
     )
   ))
 }
