@@ -32,9 +32,23 @@ as_eml_xml.tbl_lp <- function(x, ...){
 #' @order 3
 #' @exportS3Method delma::as_eml_xml
 as_eml_xml.tbl_df <- function(x, ...){
-  x |>
-    parse_tibble_to_list() |>
-    xml2::as_xml_document()
+  
+  # quarto documents generate multiple list elements at the top of the document
+  # Rmd & md documents generate 1 list element
+  
+  # So, if the first row contains many elements & the first label isn't "eml", 
+  # drop the row then render
+  if(length(unlist(x[1,]$text)) > 1 && x[1,]$label != "eml:eml") {
+    parsed <- x |>
+      dplyr::slice(-1) |>
+      parse_tibble_to_list()
+  } else {
+    parsed <- x |>
+      parse_tibble_to_list()
+  }
+  
+    parsed |> 
+      xml2::as_xml_document()    
 }
 
 #' @rdname as_eml_xml

@@ -63,12 +63,10 @@ read_md <- function(file){
          "Quarto" = {
            # Copy .qmd file from local directory to temp directory; a
            # workaround required due to quarto's inability to render a document
-           # anywhere except the directory where the .qmd file is located (and it can't
-           # be rendered in the package directory!)
+           # anywhere except the directory where the .qmd file is located.
            
-           # This solution to copy qmd to temp directory and explicitly 
-           # set the temp directory to run `quarto_render()` seems viable
-           # but causes an error in `as_xml_document()`
+           # This solution copies qmd to temp directory and explicitly 
+           # sets the temp directory to run `quarto_render()`
            invisible(
              file.copy(
                from = file,
@@ -79,12 +77,11 @@ read_md <- function(file){
            xfun::in_dir(glue::glue("{temp_dir}/"), 
                         # run Quarto in the directory of the input file
                         report <- quarto::quarto_render(
-                          # run the input file
                           input = basename(glue::glue("{file}")),
                           output_format = "md",
-                          # output file will be created in the temp directory
-                          output_file = "temp_md.md"
-                        )
+                          output_file = "temp_md.md", # output file will be created in the temp directory
+                          quiet = TRUE
+                          )
            )
            
            },
