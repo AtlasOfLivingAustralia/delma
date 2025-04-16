@@ -1,9 +1,11 @@
 #' Write a markdown-formatted metadata document
 #' 
+#' @description
+#' `write_md()` creates an `xml` file from an R Markdown or Quarto markdown file.
 #' @param x Object of any class handled by `delma`; i.e. `tbl_lp,` `tbl_df`, 
 #' `list` or `xml_document`.
 #' @param file Filename to write to. Must be either `.md`, `.Rmd`
-#' or `.Qmd` file.
+#' or `.qmd` file.
 #' @details
 #' Similar to [read_md()], [write_md()] is considerably less generic than most 
 #' `write_` functions. If `x` is an `xml_document` this should convert seamlessly;

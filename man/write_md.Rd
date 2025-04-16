@@ -11,10 +11,10 @@ write_md(x, file)
 \code{list} or \code{xml_document}.}
 
 \item{file}{Filename to write to. Must be either \code{.md}, \code{.Rmd}
-or \code{.Qmd} file.}
+or \code{.qmd} file.}
 }
 \description{
-Write a markdown-formatted metadata document
+\code{write_md()} creates an \code{xml} file from an R Markdown or Quarto markdown file.
 }
 \details{
 Similar to \code{\link[=read_md]{read_md()}}, \code{\link[=write_md]{write_md()}} is considerably less generic than most

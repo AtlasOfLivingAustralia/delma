@@ -29,11 +29,23 @@ render_metadata <- function(input,
       i = "You can call `use_metadata_template()` to create one.") |>
       cli::cli_abort()
   }
+  
+  # browser()
+  
+  if(!isTRUE(file.exists(input))) {
+    message <- c(
+      "Input does not exist.",
+      x = "Cannot find file {.file {input}}."
+    )
+    cli::cli_abort(message)
+  }
+  
   # cli::cli_progress_step("Converting {.file {input}} to EML.")
   cli::cli_alert_info("Converting {.file {input}} to EML")
   for(i in 1:100) {
     Sys.sleep(0.001) # wait
   }
+  
   
   # create file name
   # NOTE: This is too basic at present, as either could be NULL
@@ -66,21 +78,20 @@ render_metadata <- function(input,
     }
   }else{
     if(!quiet){
-      # c("Writing {.file {output_string}}") |>
-      #   cli::cli_progress_step(spinner)
-      for (i in cli::cli_progress_along(1:100, "Converting")) {
-        Sys.sleep(5/100)
-      }
-      md_output <- read_md(input) 
-      cli::cli_progress_done()
+      c("Writing {.file {output_string}}") |>
+        cli::cli_progress_step()
+      # for (i in cli::cli_progress_along(1:100, "Converting")) {
+      #   Sys.sleep(5/100)
+      # }
+      # md_output <- read_md(input) 
+      # 
+      # md_output |> 
+      #   write_eml(file = output_string)
+      # cli::cli_progress_done()
       
-      cli::cli_progress_step("Writing {.file {output_string}}.")
-      md_output |> 
-        write_eml(file = output_string)
-      
-    } else {
-      read_md(input) |>
-        write_eml(file = output_string)
-    }
+    } 
+    
+    read_md(input) |>
+      write_eml(file = output_string)
   }
 }

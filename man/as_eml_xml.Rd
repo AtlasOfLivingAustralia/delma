@@ -19,9 +19,9 @@ as_eml_xml(x, ...)
 \method{as_eml_xml}{xml_document}(x, ...)
 }
 \arguments{
-\item{x}{Object to be converted}
+\item{x}{Object to be converted.}
 
-\item{...}{Other arguments, currently ignored}
+\item{...}{Other arguments, currently ignored.}
 }
 \value{
 An \code{xml_document} with the specified nodes and attributes.
@@ -29,7 +29,7 @@ An \code{xml_document} with the specified nodes and attributes.
 \description{
 Takes a \code{character} vector, tibble, or \code{list} and converts it to an
 \code{xml_document}, as defined by the \code{xml2} package. When converting from
-a list, this is simply a wrapper for \code{xml2::as_xml_document()}
+a list, this is simply a wrapper for \code{xml2::as_xml_document()}.
 }
 \examples{
 \dontrun{

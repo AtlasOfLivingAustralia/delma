@@ -34,6 +34,8 @@ test_that("use_metadata_template() arguments work", {
   unlink(filename)
 })
 
+# TODO: test quarto documents too
+
 test_that("render_metadata() arguments work", {
   use_metadata_template("EXAMPLE.Rmd",
                         overwrite = TRUE,
@@ -57,17 +59,16 @@ test_that("render_metadata() arguments work", {
   file.exists("meta.xml") |>
     expect_true()
 
-  # where file already exists (as created in prev test), default is to 
-  # overwrite noisily
+  # where file already exists (as created in prev test), default is to not overwrite 
   render_metadata("EXAMPLE.Rmd") |>
-    expect_message()
+    expect_warning("File")
   unlink("meta.xml")
   
   # setting a file name generates a file with that name, which is valid EML
   render_metadata("EXAMPLE.Rmd", 
                   output_file = "EXAMPLE.xml",
                   quiet = TRUE) |>
-    expect_no_message()
+    expect_message()
   file.exists("EXAMPLE.xml") |>
     expect_true()
   # check reimporting works
@@ -90,7 +91,7 @@ test_that("render_metadata() arguments work", {
                   output_file = "EXAMPLE.xml",
                   overwrite = FALSE,
                   quiet = FALSE) |>
-    expect_message()  
+    expect_warning("File")  
   
   # ditto when overwrite = FALSE
   unlink("EXAMPLE.Rmd")

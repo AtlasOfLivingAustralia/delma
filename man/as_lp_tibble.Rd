@@ -19,9 +19,9 @@ as_lp_tibble(x, ...)
 \method{as_lp_tibble}{xml_document}(x, ...)
 }
 \arguments{
-\item{x}{Object to be converted}
+\item{x}{Object to be converted.}
 
-\item{...}{Other arguments, currently ignored}
+\item{...}{Other arguments, currently ignored.}
 }
 \value{
 An object of class \code{tbl_lp}, \code{tbl_df}, \code{tbl} and \code{data.frame}, containing

@@ -19,7 +19,7 @@ including the Global Biodiversity Information Facility
 [EML package](https://cran.r-project.org/package=EML) already exists 
 to support building and manipulating EML within the workspace, there is no 
 comparable system for writing these documents in a more human-readable format,
-such as Rmarkdown or Quarto. `delma` provides this capability.
+such as R Markdown or Quarto markdown. `delma` provides this capability.
 
 The default method for using `delma` is to:
 
@@ -39,7 +39,7 @@ using `delma`, which we discuss below
 
 ### Document structure
 
-Create a metadata statement template using `use_markdown_template()`
+Create a metadata statement template using `use_metadata_template()`
 
 ```{r}
 use_metadata_template("my-metadata-statement.Rmd")

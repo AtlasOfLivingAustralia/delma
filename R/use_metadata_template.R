@@ -1,5 +1,6 @@
 #' Write an example metadata statement to disk
 #' 
+#' @description
 #' This function places a metadata template at the address specified by `"file"`,
 #' defaulting to `"metadata.Rmd"` in the working directory. The template is 
 #' built in such a way that standard rendering with `rmarkdown` or Quarto to

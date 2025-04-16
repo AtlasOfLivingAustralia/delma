@@ -30,10 +30,10 @@ test_that("`read_md()` fails with no arguments", {
 
 test_that("`read_md()` fails with missing files", {
   read_md("something.Rmd") |>
-    expect_error(regexp = "Specified `file` does not exist.")
+    expect_error(regexp = "Specified file \"something.Rmd\" does not exist.")
 })
 
-test_that("`read_md()` only accepts files that end in `.Rmd` or `Qmd", {
+test_that("`read_md()` only accepts files that end in `.Rmd` or `.qmd", {
   read_md("testdata/bionet_metadata.xml") |>
     expect_error()
 })

@@ -1,6 +1,6 @@
 Package: delma
 Type: Package
-Title: Convert 'Rmarkdown' and 'Quarto' Documents to Ecological Metadata Language
+Title: Convert 'R Markdown' and 'Quarto' Documents to Ecological Metadata Language
 Version: 0.1.0
 Authors@R:
     c(person(given = "Martin",
@@ -19,8 +19,8 @@ Description: Ecological Metadata Language or 'EML' is a long-established format
   for describing ecological datasets to facilitate sharing and re-use. Because
   'EML' is effectively a modified 'xml' schema, however, it is challenging to 
   write and manipulate for non-expert users. 'delma' supports users to write 
-  metadata statements in 'Rmarkdown' or 'Quarto' format, and parse them to 'EML' 
-  and (optionally) back again.
+  metadata statements in 'R Markdown' or 'Quarto markdown' format, and parse 
+  them to 'EML' and (optionally) back again.
 Depends: 
   R (>= 4.3.0)
 Imports:

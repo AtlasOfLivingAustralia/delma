@@ -2,10 +2,10 @@
 #' 
 #' Takes a `character` vector, tibble, or `list` and converts it to an 
 #' `xml_document`, as defined by the `xml2` package. When converting from
-#' a list, this is simply a wrapper for `xml2::as_xml_document()`
+#' a list, this is simply a wrapper for `xml2::as_xml_document()`.
 #' @order 1
-#' @param x Object to be converted
-#' @param ... Other arguments, currently ignored
+#' @param x Object to be converted.
+#' @param ... Other arguments, currently ignored.
 #' @name as_eml_xml
 #' @returns An `xml_document` with the specified nodes and attributes.
 #' @examples \dontrun{

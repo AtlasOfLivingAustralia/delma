@@ -6,17 +6,18 @@
 \alias{delma-package}
 \title{Convert metadata between markdown and EML}
 \description{
-Ecological Metadata Language is a common
+Ecological Metadata Language (EML) is a common
 framework for describing ecological datasets so they can be shared and reused.
-\code{delma} supports users to write metadata statements in markdown for greater
-transparency and ease-of-use, then convert them to EML for efficient transfer.
+\code{delma} supports users to write metadata statements in R Markdown or Quarto
+Markdown for greater transparency and ease-of-use, then convert them to
+EML for efficient transfer.
 }
 \section{Functions}{
 
 
 \strong{Main functions}
 \itemize{
-\item \code{\link[=use_metadata_template]{use_metadata_template()}} - Create a boilerplate metadata statement template.
+\item \code{\link[=use_metadata_template]{use_metadata_template()}} - Create a template boilerplate metadata statement
 \item \code{\link[=render_metadata]{render_metadata()}} - Render metadata as an EML document
 \item \code{\link[=check_metadata]{check_metadata()}} - Run checks on an EML document
 }

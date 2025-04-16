@@ -1,9 +1,9 @@
 #' Read markdown-formatted metadata
 #' 
+#' @description
 #' `read_md()` imports metadata from a markdown file into the workspace as a 
 #' `tibble`.
-#' @param file Filename to read from. Must be either `.md`, `.Rmd`
-#' or `.qmd` file.
+#' @param file Filename to read from. Must be either `.Rmd` or `.qmd` file.
 #' @details
 #' [read_md()] is unusual in that it calls [rmarkdown::render()] or 
 #' [quarto::quarto_render()] internally to ensure code blocks and snippets 
@@ -13,7 +13,7 @@
 #' renderer with output type `tibble` than a traditional `read_` function.
 #' 
 #' This approach has one unusual consequence; it prevents 'round-tripping' of 
-#' embedded code. That is, dynamic content written in code snippets within the 
+#' embedded code. That is, dynamic content in code snippets within the 
 #' metadata statement is rendered to plain text in `EML.` If that `EML` document 
 #' is later re-imported to `Rmd` using [read_eml()] and [write_md()], formerly 
 #' dynamic content will be shown as plain text. 
@@ -50,13 +50,13 @@ read_md <- function(file){
   # create a rendered version of this doc, as needed for the supplied `format`
   temp_md <- glue::glue("{temp_dir}/temp_md.md")
   
-  invisible(
-    file.copy(
-      from = file,
-      to = glue::glue("{temp_dir}/{file}"),
-      overwrite = TRUE
-    )
-  )
+  # invisible(
+  #   file.copy(
+  #     from = file,
+  #     to = glue::glue("{temp_dir}/{file}"),
+  #     overwrite = TRUE
+  #   )
+  # )
   
   # browser()
   switch(format, 
@@ -103,7 +103,7 @@ read_md <- function(file){
   # import and clean the 'rendered' tibble
   result <- read_lp(temp_md) |>
     as_eml_tibble()
-
+  
   # import 'unrendered' tibble, extract hidden lists as attributes
   eml_attributes <- read_lp(file) |>
     parse_eml_attributes(tags = result$label)
@@ -124,13 +124,13 @@ read_md <- function(file){
 #' @keywords Internal
 check_valid_suffix <- function(file){
   suffix <- stringr::str_extract(file, "\\.[:alnum:]+$")
-  if(!(suffix %in% c(".md", ".Rmd", ".Qmd", ".qmd"))){
+  if(!(suffix %in% c(".Rmd", ".Qmd", ".qmd"))){
     c("Invalid file suffix", 
-      "Accepted formats are `.md`, `.Rmd` or `.qmd`") |>
+      "Accepted formats are `.Rmd` or `.qmd`") |>
     cli::cli_abort(call = rlang::caller_env())
   }else{
     switch(suffix,
-           ".md" = "basic",
+           # ".md" = "basic",
            ".Rmd" = "Rmarkdown",
            ".Qmd" = "Quarto",
            ".qmd" = "Quarto")
