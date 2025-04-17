@@ -30,8 +30,6 @@ render_metadata <- function(input,
       cli::cli_abort()
   }
   
-  # browser()
-  
   if(!isTRUE(file.exists(input))) {
     message <- c(
       "Input does not exist.",
@@ -40,12 +38,13 @@ render_metadata <- function(input,
     cli::cli_abort(message)
   }
   
-  # cli::cli_progress_step("Converting {.file {input}} to EML.")
-  cli::cli_alert_info("Converting {.file {input}} to EML")
-  for(i in 1:100) {
-    Sys.sleep(0.001) # wait
+  if(!quiet) {
+    # cli::cli_progress_step("Converting {.file {input}} to EML.")
+    cli::cli_alert_info("Converting {.file {input}} to EML")
+    for(i in 1:100) {
+      Sys.sleep(0.001) # wait
+    }
   }
-  
   
   # create file name
   # NOTE: This is too basic at present, as either could be NULL
