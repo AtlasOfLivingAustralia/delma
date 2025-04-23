@@ -9,8 +9,9 @@ parse_list_to_tibble <- function(x){
   }
   result_tibble <- result |>
     clean_tbl_text_list() |>
-    dplyr::bind_rows()
-
+    dplyr::bind_rows() |>
+    dplyr::mutate(index_number = dplyr::row_number())
+  
   # break pipe here to remove duplicates
   result_tibble <- result_tibble[!duplicated(result_tibble), ] # duplicated in any column
   # removal of duplicates is causing later issues with `ulink`
@@ -22,7 +23,7 @@ parse_list_to_tibble <- function(x){
   # restart pipe
   result_tibble |>
     dplyr::select(
-      dplyr::any_of(c("level", "label", "text", "attributes"))) |>
+      dplyr::any_of(c("level", "label", "index_number", "text", "attributes"))) |>
     clean_empty_lists() |>
     clean_paragraphs()
 }
@@ -146,7 +147,8 @@ xml_tibble <- function(level = NA,
     label = as.character(label),
     attributes = as.list(attributes),
     text = as.character(text),
-    index = as.list(index))
+    index = as.list(index)
+    )
 }
 
 #' Internal function to format a tibble from list
@@ -222,10 +224,10 @@ clean_paragraphs <- function(x){
       dplyr::bind_rows(x) |>
       dplyr::filter(.data$group < 1) |>
       dplyr::arrange(.data$index) |>
-      dplyr::select(c("level", "label", "text", "attributes"))
+      dplyr::select(c("level", "label", "index_number", "text", "attributes"))
   }else{
     x |>
-      dplyr::select(c("level", "label", "text", "attributes"))
+      dplyr::select(c("level", "label", "index_number", "text", "attributes"))
   }
 }
 

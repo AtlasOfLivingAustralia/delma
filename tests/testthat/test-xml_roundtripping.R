@@ -82,15 +82,25 @@ test_that("xml documents can be losslessly converted to Rmd and back", {
   # read, convert, write
   xml2::read_xml("testdata/meta_example.xml") |>
     write_md()
-
-  # TODO:
-  # need to check that xml > Rmd is rendering properly
-      
-  # It is VERY unlikely that tests below this point will work
   
-    # as_eml_tibble() |>
-    # write_eml("testdata/TEST_meta_example.xml")
+  # TODO:
+  # need to check that xml -> Rmd is rendering properly
+  # It is VERY unlikely that tests below this point will work
+  # ---
+  # DAX NOTE: Now hits error when parsing to xml document
+  # There are several 'level 1' labels, which I think is triggering an error
+  # ---
+  
+  # xml2::read_xml("./tests/testthat/testdata/meta_example.xml") |>
+  #   write_md(file = "./tests/testthat/testdata/meta_example.Rmd")
 
+  read_md("./tests/testthat/testdata/meta_example.Rmd") |>
+    as_eml_tibble()
+    # write_eml("./tests/testthat/testdata/TEST_meta_example.xml")
+
+  read_md("./tests/testthat/testdata/meta_example.Rmd") |>
+    as_eml_tibble()
+  
   # scan both xml files, compare for differences
   x <- base::readLines("testdata/meta_example.xml")
   y <- base::readLines("testdata/TEST_meta_example.xml")

@@ -5,7 +5,7 @@ parse_tibble_to_lp <- function(x){
   # set up required content
   empty_character <- rep(NA, nrow(x)) |> as.character()
   # x_attr <- build_attributes_code(x)
-
+  
   # rebuild tibble
   result <- x |>
     dplyr::rename("heading" = "label",
@@ -39,15 +39,19 @@ build_attributes_code <- function(x){
     result <- tibble::tibble(
       type = "block",
       label = x$heading[attr_rows],
-      params = purrr::map(
+      params = purrr::map2(
         x$heading[attr_rows], 
-        \(a){list(label = a, include = FALSE)}
+        x$index_number[attr_rows], 
+        \(i_heading, i_number){
+          list(label = glue::glue("{i_heading}-{i_number}"), include = FALSE)
+          }
       ),
       text = NA,
       code = purrr::map(x$attributes[attr_rows], convert_list_to_code),
       heading = NA,
       heading_level = NA,
-      section = x$heading[attr_rows])
+      section = x$heading[attr_rows]
+      )
     # join each row in it's right place
     n_index <- seq_len(nrow(result))
     index_rows <- attr_rows + n_index - 1
@@ -150,7 +154,7 @@ format_header <- function(df){
   if(df$heading_level > 0){
     hashes <- strrep("#", df$heading_level)
     heading <- df$heading
-    glue::glue("{hashes} {heading}") |>
+    glue::glue("{hashes} {heading}") |> 
       as.character() |>
       list()
   }else{
