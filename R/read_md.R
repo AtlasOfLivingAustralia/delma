@@ -100,8 +100,22 @@ read_md <- function(file){
   # lightparser. Add a placeholder YAML here (note: data not used)
   add_standard_yaml(temp_md)
   
-  # import and clean the 'rendered' tibble
-  result <- read_lp(temp_md) |>
+  # Parse markdown info as a tibble
+  parsed <- read_lp(temp_md)
+  
+  # Remove any headings with spaces (title must not have spaces in EML)
+  # NOTE: This step is important for Quarto documents. lightparser reads  
+  #       yaml title as a heading in qmd but not Rmd, which must be removed
+  if (any(grepl("\\s", parsed))) {
+    cleaned <- parsed |>
+      dplyr::filter(!grepl("\\s", heading)) |>
+      dplyr::mutate(
+        section = ifelse(!grepl("\\s", section), section, NA)
+      )
+  }
+  
+  # rearrange tibble to prepare for EML format
+  result <- cleaned |> 
     as_eml_tibble()
   
   # import 'unrendered' tibble, extract hidden lists as attributes
