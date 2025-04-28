@@ -74,7 +74,7 @@ sharing biodiversity data. To get started, create a basic template with
 use_metadata_template("my_metadata_statement.Rmd")
 ```
 
-Here is a shortened minimal example of what a metadata template looks
+Here is a short, minimal example of what a metadata template looks
 like.
 
 ```         
@@ -101,8 +101,8 @@ Lastname
 #### Address
 ```
 
-Users can add any additional headings that conform to the EML standard
-to their metadata statement. The header level (i.e. the number of `#`)
+Users can add any additional headings to their metadata statement that conform 
+with EML standard. The header level (i.e. the number of `#`)
 designates the degree of nesting.
 
 This document can be knit like any other R Markdown or Quarto document (using
