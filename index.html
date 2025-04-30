@@ -5,22 +5,21 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>Convert Rmarkdown and Quarto Documents to Ecological Metadata Language • delma</title>
-<!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
-<link rel="apple-touch-icon" type="image/png" sizes="180x180" href="apple-touch-icon.png">
-<link rel="apple-touch-icon" type="image/png" sizes="120x120" href="apple-touch-icon-120x120.png">
-<link rel="apple-touch-icon" type="image/png" sizes="76x76" href="apple-touch-icon-76x76.png">
-<link rel="apple-touch-icon" type="image/png" sizes="60x60" href="apple-touch-icon-60x60.png">
+<title>Convert R Markdown and Quarto Documents to Ecological Metadata Language • delma</title>
+<!-- favicons --><link rel="icon" type="image/png" sizes="96x96" href="favicon-96x96.png">
+<link rel="icon" type="”image/svg+xml”" href="favicon.svg">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+<link rel="icon" sizes="any" href="favicon.ico">
+<link rel="manifest" href="site.webmanifest">
 <script src="deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
-<script src="deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="deps/Source_Code_Pro-0.4.9/font.css" rel="stylesheet">
+<script src="deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="deps/Source_Code_Pro-0.4.10/font.css" rel="stylesheet">
 <link href="deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="deps/headroom-0.11.0/headroom.min.js"></script><script src="deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="deps/search-1.0.0/fuse.min.js"></script><script src="deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="pkgdown.js"></script><link href="extra.css" rel="stylesheet">
-<meta property="og:title" content="Convert Rmarkdown and Quarto Documents to Ecological Metadata Language">
-<meta name="description" content="Ecological Metadata Language or EML is a long-established format for describing ecological datasets to facilitate sharing and re-use. Because EML is effectively a modified xml schema, however, it is somewhat challenging to write and manipulate for non-expert users. delma supports users to write metadata statements in Rmarkdown or Quarto format, and parse them to EML and (optionally) back again.">
-<meta property="og:description" content="Ecological Metadata Language or EML is a long-established format for describing ecological datasets to facilitate sharing and re-use. Because EML is effectively a modified xml schema, however, it is somewhat challenging to write and manipulate for non-expert users. delma supports users to write metadata statements in Rmarkdown or Quarto format, and parse them to EML and (optionally) back again.">
+<meta property="og:title" content="Convert R Markdown and Quarto Documents to Ecological Metadata Language">
+<meta name="description" content="Ecological Metadata Language or EML is a long-established format for describing ecological datasets to facilitate sharing and re-use. Because EML is effectively a modified xml schema, however, it is challenging to write and manipulate for non-expert users. delma supports users to write metadata statements in R Markdown or Quarto markdown format, and parse them to EML and (optionally) back again.">
+<meta property="og:description" content="Ecological Metadata Language or EML is a long-established format for describing ecological datasets to facilitate sharing and re-use. Because EML is effectively a modified xml schema, however, it is challenging to write and manipulate for non-expert users. delma supports users to write metadata statements in R Markdown or Quarto markdown format, and parse them to EML and (optionally) back again.">
 <meta property="og:image" content="https://delma.ala.org.au/logo.png">
 </head>
 <body>
@@ -61,11 +60,13 @@
 <img src="logo.png" class="logo" alt=""><h1 id="delma--">delma <br><a class="anchor" aria-label="anchor" href="#delma--"></a>
 </h1>
 </div>
+<!-- badges: start -->
+
 <div class="section level2">
 <h2 id="overview">Overview<a class="anchor" aria-label="anchor" href="#overview"></a>
 </h2>
 <p><code>delma</code> is a package for converting metadata statements written in markdown, RMarkdown or Quarto markdown to <a href="https://eml.ecoinformatics.org" class="external-link">Ecological Metadata Language</a> (EML). It is named for a genus of legless lizards that are endemic to Australia, whose name happens to contain the letters ‘e’, ‘m’ and ‘l’.</p>
-<p>The logo depicts a striped legless lizard (<em>Delma impar</em>) in the style of the classic mobile game ‘snake’, a play on the observation that <em>Delma</em> are often mistaken for snakes. It was drawn by <a href="https://martinwestgate.com" class="external-link">Martin Westgate</a>.</p>
+<p>The logo depicts a striped legless lizard (<em>Delma impar</em>) in the style of the classic mobile game ‘snake’, a play on the observation that <em>Delma</em> are often mistaken for snakes. It was designed by <a href="https://martinwestgate.com" class="external-link">Martin Westgate</a>.</p>
 <p>If you have any comments, questions or suggestions, please <a href="mailto:support@ala.org.au">contact us</a>.</p>
 </div>
 <div class="section level2">
@@ -73,8 +74,8 @@
 </h2>
 <p>This package is under active development, and is not yet available on CRAN. You can install the latest development version from GitHub with:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"remotes"</span><span class="op">)</span></span>
-<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"AtlasOfLivingAustralia/delma"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># install.packages("devtools")</span></span>
+<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"AtlasOfLivingAustralia/delma"</span><span class="op">)</span></span></code></pre></div>
 <p>Load the package:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://delma.ala.org.au">delma</a></span><span class="op">)</span></span></code></pre></div>
@@ -82,15 +83,51 @@
 <div class="section level2">
 <h2 id="basic-usage">Basic usage<a class="anchor" aria-label="anchor" href="#basic-usage"></a>
 </h2>
-<p>The primary use case for <code>delma</code> is to build metadata statements for sharing biodiversity data. The first step is to create a markdown file, and add any headings that you like that conform to the EML standard. The header ‘level’ (i.e. number of <code>#</code>) is used to designate the degree of nesting. If you don’t want to start from scratch, you can use the example statement provided:</p>
+<p>The primary use case for <code>delma</code> is to build metadata statements for sharing biodiversity data. To get started, create a basic template with <code><a href="reference/use_metadata_template.html">use_metadata_template()</a></code>.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="reference/use_metadata.html">use_metadata</a></span><span class="op">(</span><span class="st">"my_metadata_statement.Rmd"</span><span class="op">)</span></span></code></pre></div>
-<p>This document can be knit like any other Rmarkdown document, using either the ‘knit’ button in RStudio, or the function <code>rmarkdown::knit()</code>. In both cases it will render to the format defined in the yaml section, which defaults to <code>html_document</code>, but can easily be changed. To convert this document to EML, use:</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="reference/render_metadata.html">render_metadata</a></span><span class="op">(</span><span class="st">"my_metadata_statement.Rmd"</span>, </span>
-<span>                <span class="st">"metadata.xml"</span><span class="op">)</span></span></code></pre></div>
-<p>Note that EML documents use the extension <code>.xml</code>. To check that your document is formatted in accordance with the EML standard, use:</p>
+<code class="sourceCode R"><span><span class="fu"><a href="reference/use_metadata_template.html">use_metadata_template</a></span><span class="op">(</span><span class="st">"my_metadata_statement.Rmd"</span><span class="op">)</span></span></code></pre></div>
+<p>Here is a shortened minimal example of what a metadata template looks like.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="sc">---</span></span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a>title<span class="sc">:</span> A Descriptive Title <span class="cf">for</span> your Dataset <span class="cf">in</span> Title Case</span>
+<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a>output<span class="sc">:</span> html_document</span>
+<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a>date<span class="sc">:</span> <span class="dv">2025-02-01</span></span>
+<span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a><span class="sc">---</span></span>
+<span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a></span>
+<span id="cb4-7"><a href="#cb4-7" tabindex="-1"></a><span class="do">## Dataset</span></span>
+<span id="cb4-8"><a href="#cb4-8" tabindex="-1"></a></span>
+<span id="cb4-9"><a href="#cb4-9" tabindex="-1"></a><span class="do">### Title</span></span>
+<span id="cb4-10"><a href="#cb4-10" tabindex="-1"></a></span>
+<span id="cb4-11"><a href="#cb4-11" tabindex="-1"></a><span class="do">### Creator</span></span>
+<span id="cb4-12"><a href="#cb4-12" tabindex="-1"></a></span>
+<span id="cb4-13"><a href="#cb4-13" tabindex="-1"></a><span class="do">#### Individual Name</span></span>
+<span id="cb4-14"><a href="#cb4-14" tabindex="-1"></a></span>
+<span id="cb4-15"><a href="#cb4-15" tabindex="-1"></a><span class="do">##### Given Name</span></span>
+<span id="cb4-16"><a href="#cb4-16" tabindex="-1"></a>Firstname</span>
+<span id="cb4-17"><a href="#cb4-17" tabindex="-1"></a></span>
+<span id="cb4-18"><a href="#cb4-18" tabindex="-1"></a><span class="do">##### Surname</span></span>
+<span id="cb4-19"><a href="#cb4-19" tabindex="-1"></a>Lastname</span>
+<span id="cb4-20"><a href="#cb4-20" tabindex="-1"></a></span>
+<span id="cb4-21"><a href="#cb4-21" tabindex="-1"></a><span class="do">#### Address</span></span></code></pre></div>
+<p>Users can add any additional headings that conform to the EML standard to their metadata statement. The header level (i.e. the number of <code>#</code>) designates the degree of nesting.</p>
+<p>This document can be knit like any other Rmarkdown document (using either the ‘knit’ button in RStudio or <code>rmarkdown::knit()</code>) to the format defined in the yaml section, which defaults to <code>html_document</code>.</p>
+<p>To convert an metadata statement in markdown to EML, use:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="reference/render_metadata.html">render_metadata</a></span><span class="op">(</span><span class="st">"my_metadata_statement.Rmd"</span><span class="op">)</span></span></code></pre></div>
+<p>This reformats our metadata in EML and saves it as a file. EML documents are saved as <code>.xml</code> files.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="sc">&lt;</span>?xml version<span class="ot">=</span><span class="st">"1.0"</span> encoding<span class="ot">=</span><span class="st">"UTF-8"</span>?<span class="sc">&gt;</span></span>
+<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a><span class="er">&lt;</span>eml<span class="sc">:</span>eml xmlns<span class="sc">:</span>eml<span class="ot">=</span><span class="st">"https://eml.ecoinformatics.org/eml-2.2.0"</span> xmlns<span class="sc">:</span>xsi<span class="ot">=</span><span class="st">"http://www.w3.org/2001/XMLSchema-instance"</span> packageId<span class="ot">=</span><span class="st">"the-doi-for-this-archive"</span> system<span class="ot">=</span><span class="st">"https://doi.org"</span> scope<span class="ot">=</span><span class="st">"system"</span> xsi<span class="sc">:</span>schemaLocation<span class="ot">=</span><span class="st">"http://rs.gbif.org/schema/eml-gbif-profile/1.3/eml-gbif-profile.xsd"</span><span class="sc">&gt;</span></span>
+<span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a>  <span class="er">&lt;</span>dataset<span class="sc">&gt;</span></span>
+<span id="cb6-4"><a href="#cb6-4" tabindex="-1"></a>    <span class="er">&lt;</span>title<span class="sc">&gt;</span>A Descriptive Title <span class="cf">for</span> your Dataset <span class="cf">in</span> Title Case<span class="sc">&lt;</span><span class="er">/</span>title<span class="sc">&gt;</span></span>
+<span id="cb6-5"><a href="#cb6-5" tabindex="-1"></a>    <span class="er">&lt;</span>creator<span class="sc">&gt;</span></span>
+<span id="cb6-6"><a href="#cb6-6" tabindex="-1"></a>      <span class="er">&lt;</span>individualName<span class="sc">&gt;</span></span>
+<span id="cb6-7"><a href="#cb6-7" tabindex="-1"></a>        <span class="er">&lt;</span>givenName<span class="sc">&gt;</span>Firstname<span class="sc">&lt;</span><span class="er">/</span>givenName<span class="sc">&gt;</span></span>
+<span id="cb6-8"><a href="#cb6-8" tabindex="-1"></a>        <span class="er">&lt;</span>surName<span class="sc">&gt;</span>Lastname<span class="sc">&lt;</span><span class="er">/</span>surName<span class="sc">&gt;</span></span>
+<span id="cb6-9"><a href="#cb6-9" tabindex="-1"></a>      <span class="er">&lt;/</span>individualName<span class="sc">&gt;</span></span>
+<span id="cb6-10"><a href="#cb6-10" tabindex="-1"></a>    <span class="er">&lt;/</span>creator<span class="sc">&gt;</span></span>
+<span id="cb6-11"><a href="#cb6-11" tabindex="-1"></a>  <span class="er">&lt;/</span>dataset<span class="sc">&gt;</span></span>
+<span id="cb6-12"><a href="#cb6-12" tabindex="-1"></a><span class="er">&lt;/</span>eml<span class="sc">:</span>eml<span class="sc">&gt;</span></span></code></pre></div>
+<p>To check that your document is formatted in accordance with the EML standard, use:</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/check_metadata.html">check_metadata</a></span><span class="op">(</span><span class="st">"metadata.xml"</span><span class="op">)</span></span></code></pre></div>
 <p>For a more detailed description of delma’s capabilities and methods, see the ‘Quick start guide’ vignette.</p>
 </div>
@@ -99,23 +136,8 @@
 <a class="anchor" aria-label="anchor" href="#citing-delma"></a>
 </h2>
 <p>To generate a citation for the package version you are using, you can run:</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/citation.html" class="external-link">citation</a></span><span class="op">(</span>package <span class="op">=</span> <span class="st">"delma"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; To cite delma in publications use:</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;   Westgate M, Balasubramaniam S, Kellie D (2025). _delma: Convert</span></span>
-<span><span class="co">#&gt;   Rmarkdown and Quarto Documents to Ecological Metadata Language_. R</span></span>
-<span><span class="co">#&gt;   package version 0.1.0, &lt;https://delma.ala.org.au&gt;.</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; A BibTeX entry for LaTeX users is</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;   @Manual{,</span></span>
-<span><span class="co">#&gt;     title = {delma: Convert Rmarkdown and Quarto Documents to Ecological Metadata Language},</span></span>
-<span><span class="co">#&gt;     author = {Martin Westgate and Shandiya Balasubramaniam and Dax Kellie},</span></span>
-<span><span class="co">#&gt;     year = {2025},</span></span>
-<span><span class="co">#&gt;     note = {R package version 0.1.0},</span></span>
-<span><span class="co">#&gt;     url = {https://delma.ala.org.au},</span></span>
-<span><span class="co">#&gt;   }</span></span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/citation.html" class="external-link">citation</a></span><span class="op">(</span>package <span class="op">=</span> <span class="st">"delma"</span><span class="op">)</span></span></code></pre></div>
 <p>The current recommended citation is:</p>
 <blockquote>
 <p>Westgate MJ, Balasubramaniam S &amp; Kellie D (2025) Convert Rmarkdown and Quarto Documents to Ecological Metadata Language. R Package version 0.1.0.</p>
@@ -148,9 +170,9 @@
 <div class="developers">
 <h2 data-toc-skip>Developers</h2>
 <ul class="list-unstyled">
-<li>Martin Westgate <br><small class="roles"> Author, maintainer </small>  </li>
-<li>Shandiya Balasubramaniam <br><small class="roles"> Author </small>  </li>
-<li>Dax Kellie <br><small class="roles"> Author </small>  </li>
+<li>Martin Westgate <br><small class="roles"> Author, maintainer </small>   </li>
+<li>Shandiya Balasubramaniam <br><small class="roles"> Author </small>   </li>
+<li>Dax Kellie <br><small class="roles"> Author </small>   </li>
 </ul>
 </div>
 
@@ -165,7 +187,7 @@
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.2.</p>
 </div>
 
     </footer>
