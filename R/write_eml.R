@@ -32,10 +32,8 @@ write_eml <- function(x,
   if(!grepl(".xml$", file)){
     cli::cli_abort("`write_eml()` only writes files with a `.xml` suffix.")
   }
-  # browser()
-  # xml_find_all(x, ".//title") # works
-  # xml_find_all(x, ".//para") # fails
   
+  # write out
   xml2::write_xml(x, 
                   file, 
                   options = list("format", "as_xml"))

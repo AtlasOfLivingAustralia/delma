@@ -25,7 +25,7 @@ parse_lp_to_tibble <- function(x){
 #' @keywords Internal
 clean_header_level <- function(x){
   heading_value <- 0
-  all_rows <- seq_len(nrow(x))[-1]
+  all_rows <- seq_len(nrow(x))
   for(i in all_rows){
     if(!is.na(x$heading_level[i])){
       heading_value <- x$heading_level[i]

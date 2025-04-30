@@ -44,21 +44,13 @@ read_md <- function(file){
   # create a temporary file and convert output format to markdown
   temp_source <- glue::glue("{temp_dir}/temp_source.Rmd")
   file.copy(from = file, 
-            to = temp_source) |>
+            to = temp_source,
+            overwrite = TRUE) |>
     invisible()
 
   # create a rendered version of this doc, as needed for the supplied `format`
   temp_md <- glue::glue("{temp_dir}/temp_md.md")
   
-  # invisible(
-  #   file.copy(
-  #     from = file,
-  #     to = glue::glue("{temp_dir}/{file}"),
-  #     overwrite = TRUE
-  #   )
-  # )
-  
-  # browser()
   switch(format, 
          "Quarto" = {
            # Copy .qmd file from local directory to temp directory; a
@@ -90,7 +82,6 @@ read_md <- function(file){
                             output_file = temp_md,
                             quiet = TRUE)}
   )
-  
   # NOTE: we MUST call `render()` here, and not `knit()`.
   # Only `render()` uses `pandoc`, meaning it will extract and 
   # calculate metadata that is necessary to place the
@@ -101,22 +92,9 @@ read_md <- function(file){
   add_standard_yaml(temp_md)
   
   # Parse markdown info as a tibble
-  parsed <- read_lp(temp_md)
-  
-  # Remove any headings with spaces (title must not have spaces in EML)
-  # NOTE: This step is important for Quarto documents. lightparser reads  
-  #       yaml title as a heading in qmd but not Rmd, which must be removed
-  if (any(grepl("\\s", parsed))) {
-    cleaned <- parsed |>
-      dplyr::filter(!grepl("\\s", heading)) |>
-      dplyr::mutate(
-        section = ifelse(!grepl("\\s", section), section, NA)
-      )
-  }
-  
-  # rearrange tibble to prepare for EML format
-  result <- cleaned |> 
-    as_eml_tibble()
+  result <- read_lp(temp_md) |>
+    place_eml_first() |>
+    parse_lp_to_tibble()
   
   # import 'unrendered' tibble, extract hidden lists as attributes
   eml_attributes <- read_lp(file) |>
@@ -132,6 +110,28 @@ read_md <- function(file){
     join_eml_attributes(result, eml_attributes)
   }
 }
+
+#' Internal function to ensure no headings are placed before eml
+#' @noRd
+#' @keywords Internal
+place_eml_first <- function(df){
+  # Remove any headings placed *before* EML
+  # NOTE: This step is important for Quarto documents. lightparser reads  
+  #       yaml title as a heading in qmd but not Rmd, which must be removed
+  eml_checker <- df$heading |>
+    tolower() |>
+    grepl("^eml", x = _) # accounts for both `eml:eml` and `EML`
+  if(any(eml_checker)){
+    eml_row <- which(eml_checker)[1]
+    if(eml_row > 1){ # if EML is first, impossible for a header to be earlier
+      df <- df[seq(from = eml_row, to = nrow(df)), ]
+    }
+  }
+  # Note that the approach above *always* removes yaml. If that is needed later
+  # this approach will require revision
+  df
+}
+
 
 #' Internal function to check file name contains a supported suffix
 #' @noRd

@@ -4,7 +4,6 @@
 parse_tibble_to_lp <- function(x){
   # set up required content
   empty_character <- rep(NA, nrow(x)) |> as.character()
-  # x_attr <- build_attributes_code(x)
   
   # rebuild tibble
   result <- x |>
@@ -41,7 +40,7 @@ build_attributes_code <- function(x){
       label = x$heading[attr_rows],
       params = purrr::map2(
         x$heading[attr_rows], 
-        x$index_number[attr_rows], 
+        attr_rows,
         \(i_heading, i_number){
           list(label = glue::glue("{i_heading}-{i_number}"), include = FALSE)
           }
