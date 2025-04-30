@@ -1,9 +1,9 @@
 #' Read markdown-formatted metadata
 #' 
+#' @description
 #' `read_md()` imports metadata from a markdown file into the workspace as a 
 #' `tibble`.
-#' @param file Filename to read from. Must be either `.md`, `.Rmd`
-#' or `.qmd` file.
+#' @param file Filename to read from. Must be either `.Rmd` or `.qmd` file.
 #' @details
 #' [read_md()] is unusual in that it calls [rmarkdown::render()] or 
 #' [quarto::quarto_render()] internally to ensure code blocks and snippets 
@@ -13,7 +13,7 @@
 #' renderer with output type `tibble` than a traditional `read_` function.
 #' 
 #' This approach has one unusual consequence; it prevents 'round-tripping' of 
-#' embedded code. That is, dynamic content written in code snippets within the 
+#' embedded code. That is, dynamic content in code snippets within the 
 #' metadata statement is rendered to plain text in `EML.` If that `EML` document 
 #' is later re-imported to `Rmd` using [read_eml()] and [write_md()], formerly 
 #' dynamic content will be shown as plain text. 
@@ -44,31 +44,21 @@ read_md <- function(file){
   # create a temporary file and convert output format to markdown
   temp_source <- glue::glue("{temp_dir}/temp_source.Rmd")
   file.copy(from = file, 
-            to = temp_source) |>
+            to = temp_source,
+            overwrite = TRUE) |>
     invisible()
 
   # create a rendered version of this doc, as needed for the supplied `format`
   temp_md <- glue::glue("{temp_dir}/temp_md.md")
   
-  invisible(
-    file.copy(
-      from = file,
-      to = glue::glue("{temp_dir}/{file}"),
-      overwrite = TRUE
-    )
-  )
-  
-  # browser()
   switch(format, 
          "Quarto" = {
            # Copy .qmd file from local directory to temp directory; a
            # workaround required due to quarto's inability to render a document
-           # anywhere except the directory where the .qmd file is located (and it can't
-           # be rendered in the package directory!)
+           # anywhere except the directory where the .qmd file is located.
            
-           # This solution to copy qmd to temp directory and explicitly 
-           # set the temp directory to run `quarto_render()` seems viable
-           # but causes an error in `as_xml_document()`
+           # This solution copies qmd to temp directory and explicitly 
+           # sets the temp directory to run `quarto_render()`
            invisible(
              file.copy(
                from = file,
@@ -79,12 +69,11 @@ read_md <- function(file){
            xfun::in_dir(glue::glue("{temp_dir}/"), 
                         # run Quarto in the directory of the input file
                         report <- quarto::quarto_render(
-                          # run the input file
                           input = basename(glue::glue("{file}")),
                           output_format = "md",
-                          # output file will be created in the temp directory
-                          output_file = "temp_md.md"
-                        )
+                          output_file = "temp_md.md", # output file will be created in the temp directory
+                          quiet = TRUE
+                          )
            )
            
            },
@@ -93,7 +82,6 @@ read_md <- function(file){
                             output_file = temp_md,
                             quiet = TRUE)}
   )
-  
   # NOTE: we MUST call `render()` here, and not `knit()`.
   # Only `render()` uses `pandoc`, meaning it will extract and 
   # calculate metadata that is necessary to place the
@@ -103,10 +91,11 @@ read_md <- function(file){
   # lightparser. Add a placeholder YAML here (note: data not used)
   add_standard_yaml(temp_md)
   
-  # import and clean the 'rendered' tibble
+  # Parse markdown info as a tibble
   result <- read_lp(temp_md) |>
-    as_eml_tibble()
-
+    place_eml_first() |>
+    parse_lp_to_tibble()
+  
   # import 'unrendered' tibble, extract hidden lists as attributes
   eml_attributes <- read_lp(file) |>
     parse_eml_attributes(tags = result$label)
@@ -122,18 +111,40 @@ read_md <- function(file){
   }
 }
 
+#' Internal function to ensure no headings are placed before eml
+#' @noRd
+#' @keywords Internal
+place_eml_first <- function(df){
+  # Remove any headings placed *before* EML
+  # NOTE: This step is important for Quarto documents. lightparser reads  
+  #       yaml title as a heading in qmd but not Rmd, which must be removed
+  eml_checker <- df$heading |>
+    tolower() |>
+    grepl("^eml", x = _) # accounts for both `eml:eml` and `EML`
+  if(any(eml_checker)){
+    eml_row <- which(eml_checker)[1]
+    if(eml_row > 1){ # if EML is first, impossible for a header to be earlier
+      df <- df[seq(from = eml_row, to = nrow(df)), ]
+    }
+  }
+  # Note that the approach above *always* removes yaml. If that is needed later
+  # this approach will require revision
+  df
+}
+
+
 #' Internal function to check file name contains a supported suffix
 #' @noRd
 #' @keywords Internal
 check_valid_suffix <- function(file){
   suffix <- stringr::str_extract(file, "\\.[:alnum:]+$")
-  if(!(suffix %in% c(".md", ".Rmd", ".Qmd", ".qmd"))){
+  if(!(suffix %in% c(".Rmd", ".Qmd", ".qmd"))){
     c("Invalid file suffix", 
-      "Accepted formats are `.md`, `.Rmd` or `.qmd`") |>
+      "Accepted formats are `.Rmd` or `.qmd`") |>
     cli::cli_abort(call = rlang::caller_env())
   }else{
     switch(suffix,
-           ".md" = "basic",
+           # ".md" = "basic",
            ".Rmd" = "Rmarkdown",
            ".Qmd" = "Quarto",
            ".qmd" = "Quarto")

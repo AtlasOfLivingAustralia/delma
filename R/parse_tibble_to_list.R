@@ -4,7 +4,8 @@
 #' @noRd
 #' @keywords Internal
 parse_tibble_to_list <- function(x){
-  x <- add_para_tags(x)
+  x <- add_para_tags(x) |>
+       remove_empty_rows()
   result <- tibble_to_list_recurse(x, level = 1)
   add_tibble_attributes_to_list(empty = result,
                                 full = x)
@@ -32,6 +33,31 @@ add_para_tags <- function(x){
                                      })
   }
   x
+}
+
+#' Internal function to remove tibble rows without useful information
+#' @noRd
+#' @keywords Internal
+remove_empty_rows <- function(x){
+  text_na <- is_na_list(x$text)
+  attributes_na <- is_na_list(x$attributes)
+  label_na <- is.na(x$label)
+  x[!(label_na & text_na & attributes_na), ]
+}
+
+#' Internal function to find length-1 NA entries in list-columns
+#' @noRd
+#' @keywords Internal
+is_na_list <- function(a){
+  purrr::map(a,
+             \(b){
+               if(length(b) == 1){
+                 if(is.na(b[[1]])){
+                   TRUE
+                 }else{FALSE}
+               }else{FALSE}
+             }) |>
+    unlist()
 }
 
 #' Internal function to power `parse_tibble_to_list()`

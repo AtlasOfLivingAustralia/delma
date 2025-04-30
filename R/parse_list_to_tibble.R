@@ -10,17 +10,13 @@ parse_list_to_tibble <- function(x){
   result_tibble <- result |>
     clean_tbl_text_list() |>
     dplyr::bind_rows()
-
+  
   # break pipe here to remove duplicates
-  result_tibble <- result_tibble[!duplicated(result_tibble), ] # duplicated in any column
-  # removal of duplicates is causing later issues with `ulink`
-  # more broadly, though, you should be allowed to have duplicated
-  # content if you want. This is a very coarse way to detect bugs
-  # perhaps detecting duplicated index values?! rather than names?
-  # that could work\
+  result_tibble <- result_tibble[!duplicated(result_tibble), ] 
   
   # restart pipe
   result_tibble |>
+    dplyr::mutate(index_number = dplyr::row_number()) |>
     dplyr::select(
       dplyr::any_of(c("level", "label", "text", "attributes"))) |>
     clean_empty_lists() |>
@@ -39,7 +35,6 @@ list_to_tibble_recurse <- function(x,
   x_names <- names(x)
   purrr::map(.x = seq_along(x),
              .f = \(a){
-               # browser()
                result <- extract_list_to_tibble(a, x_names, x, level)
                if(!is.null(result)){
                  if(nrow(result) > 0){
@@ -57,13 +52,9 @@ list_to_tibble_recurse <- function(x,
                                           outcome = outcome) 
                  }
                  else{
-                   # browser() # trying to find indexing info here
                    format_xml_tibble(outcome)
                  }
                }else if(is.character(x[[a]])){
-                 # if(grepl("^Creative Commons Attribution", x[[a]])){
-                 #    browser()
-                 # }
                  result <- format_xml_tibble(outcome)
                  # This code is rather convoluted.
                  # Where a `para` tag includes text FOLLOWED by other tags,
@@ -81,7 +72,7 @@ list_to_tibble_recurse <- function(x,
                  }
                  result 
                }else{
-                 format_xml_tibble(outcome) 
+                 format_xml_tibble(outcome)
                }
              }
   )
@@ -146,7 +137,8 @@ xml_tibble <- function(level = NA,
     label = as.character(label),
     attributes = as.list(attributes),
     text = as.character(text),
-    index = as.list(index))
+    index = as.list(index)
+    )
 }
 
 #' Internal function to format a tibble from list
@@ -154,12 +146,12 @@ xml_tibble <- function(level = NA,
 #' @keywords Internal
 format_xml_tibble <- function(df){
   df <- df[-1, ] # top row is empty
-  index_names <- purrr::map(.x = seq_len(nrow(df)), 
+  index_names <- purrr::map(.x = seq_len(nrow(df)),
                       .f = \(a){
                         paste(df$label[seq_len(a)], collapse = "_")
                       }) |>
     unlist()
-  df$index_names <- index_names 
+  df$index_names <- index_names
   df
 }
 
@@ -239,7 +231,6 @@ detect_paras <- function(y){
   value <- 0
   for(i in seq_len(n)){
     if(i > 1 & i < n){
-      # if(i == 6){browser()}
       if(y[i] != "Para" & y[(i + 1)] == "Para"){
         value <- value + 1
         result[i] <- value

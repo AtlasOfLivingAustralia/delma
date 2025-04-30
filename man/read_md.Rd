@@ -7,8 +7,7 @@
 read_md(file)
 }
 \arguments{
-\item{file}{Filename to read from. Must be either \code{.md}, \code{.Rmd}
-or \code{.qmd} file.}
+\item{file}{Filename to read from. Must be either \code{.Rmd} or \code{.qmd} file.}
 }
 \value{
 \code{read_md()} returns an object of class \code{tbl_df}, \code{tbl} and
@@ -27,7 +26,7 @@ than a standard import function. Conceptually, therefore, it is closer to a
 renderer with output type \code{tibble} than a traditional \code{read_} function.
 
 This approach has one unusual consequence; it prevents 'round-tripping' of
-embedded code. That is, dynamic content written in code snippets within the
+embedded code. That is, dynamic content in code snippets within the
 metadata statement is rendered to plain text in \code{EML.} If that \code{EML} document
 is later re-imported to \code{Rmd} using \code{\link[=read_eml]{read_eml()}} and \code{\link[=write_md]{write_md()}}, formerly
 dynamic content will be shown as plain text.

@@ -7,6 +7,9 @@
 #' `data.frame` (i.e. a `tibble`).
 #' @examples \dontrun{
 #' # read from a url
+#' df <- read_eml("eml.xml")
+#' 
+#' # read from a url
 #' df <- read_eml("https://collections.ala.org.au/ws/eml/dr368")
 #' }
 #' @export

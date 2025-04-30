@@ -5,10 +5,10 @@ date: 2025-02-01
 ---
 
 <!--
-This is a metadata template in .Rmd format. 
+This is a metadata template. 
 
-This template has been formatted to render as an html document (set in the 
-yaml `output` above) AND to Ecological Metadata language (EML) using the 
+It is formatted to render as an html document (using the "Knit" button or
+`knitr::knit()`) AND to Ecological Metadata language (EML) using the 
 {delma} R package. Sections can 
 be added, re-arranged or removed to suit the dataset being described. Some 
 features to be aware of:
@@ -26,10 +26,10 @@ https://eml.ecoinformatics.org for information on EML.
 ```{r}
 #| label: 'eml'
 #| include: false
-# This section sets metadata for the EML file itself.
-# Mostly this should be fine unedited EXCEPT for the `packageId`, 
-# which expects a valid DOI. To use a different UUID system, change the 
-# 'system' param _and_ the `packageId`.
+# NOTE: Do not delete this chunk!
+#       This section sets metadata for the EML file itself.
+#       Please edit the `packageId` value, which expects a valid DOI. 
+#       To use a different UUID system, change the 'system' param _and_ the `packageId`.
 list(
   packageId = "the-doi-for-this-archive",
   system = "https://doi.org",

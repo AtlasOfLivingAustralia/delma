@@ -5,8 +5,8 @@
 #' `delma` represents these as an object of class `tbl_lp` for convenience.
 #' @name as_lp_tibble
 #' @order 1
-#' @param x Object to be converted
-#' @param ... Other arguments, currently ignored
+#' @param x Object to be converted.
+#' @param ... Other arguments, currently ignored.
 #' @returns An object of class `tbl_lp`, `tbl_df`, `tbl` and `data.frame`, containing
 #' the following fields:
 #' 
