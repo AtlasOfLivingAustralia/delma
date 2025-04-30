@@ -21,7 +21,7 @@ use_metadata_template <- function(file = NULL,
                          overwrite = FALSE,
                          quiet = FALSE){
   if(is.null(file)){
-    file <- "metadata.md"
+    file <- "metadata.Rmd"
   }
   if(!quiet){
     # cli::cli_progress_step("Creating template file")
