@@ -1,7 +1,7 @@
 ---
 title: "Quick start guide"
 author: "Martin Westgate"
-date: "2024-11-06"
+date: "2025-04-30"
 output:
   rmarkdown::html_vignette
 vignette: >
@@ -42,6 +42,7 @@ using `delma`, which we discuss below
 Create a metadata statement template using `use_metadata_template()`
 
 ```{r}
+#| eval: FALSE
 use_metadata_template("my-metadata-statement.Rmd")
 ```
 
