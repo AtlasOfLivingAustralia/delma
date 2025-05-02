@@ -4,8 +4,8 @@
 #' This function places a metadata template at the address specified by `"file"`,
 #' defaulting to `"metadata.Rmd"` in the working directory. The template is 
 #' built in such a way that standard rendering with `rmarkdown` or Quarto to
-#' HTML or PDF will function; but also that it renders to valid EML using
-#' [render_metadata()]. 
+#' HTML or PDF will function; but also that it renders to valid EML when 
+#' processed using [read_md()] and [write_eml()]. 
 #' @param file (string) A name for the resulting file, with either `.Rmd` or
 #' `.qmd` as a suffix. If `NULL` will default to `metadata.md`.
 #' @param overwrite (logical) Should any existing file be overwritten? Defaults

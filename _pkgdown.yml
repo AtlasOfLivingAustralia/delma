@@ -28,14 +28,11 @@ reference:
 - title: Main functions
   contents: 
   - use_metadata_template
-  - render_metadata
-  - check_metadata
-- title: Reading and writing
-  contents:
   - read_md
   - write_md
   - read_eml
   - write_eml
+  - check_metadata
 - title: Format manipulation
   contents:
   - as_lp_tibble

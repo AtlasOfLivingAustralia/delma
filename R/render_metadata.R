@@ -18,7 +18,8 @@
 #' # assume the user edits the file, then calls:
 #' render_metadata("example.Rmd", output_file = "example.xml")
 #' }
-#' @export
+#' @noRd
+#' @keywords Internal
 render_metadata <- function(input,
                             output_file = NULL,
                             output_dir = NULL,

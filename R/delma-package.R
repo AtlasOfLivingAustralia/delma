@@ -16,12 +16,9 @@
 #' 
 #' **Main functions**
 #'   * [use_metadata_template()] - Create a template boilerplate metadata statement
-#'   * [render_metadata()] - Render metadata as an EML document
-#'   * [check_metadata()] - Run checks on an EML document
-#' 
-#' **Reading and writing** 
 #'   * [read_eml()]/[write_eml()] - Read / write EML files to a `tibble`
 #'   * [read_md()]/[write_md()] - Read / write Rmd or qmd files to a `tibble`
+#'   * [check_metadata()] - Run checks on an EML document
 #'   
 #' **Format manipulation**
 #'   * [as_lp_tibble()] - Convert metadata to class a `tibble` (class `tbl_lp`)
