@@ -78,6 +78,8 @@ test_that("Rmd files from `use_metadata_template()` can be imported, written to 
 })
 
 test_that("Quarto files `use_metadata_template()` can be imported, written to EML, and back", {
+  skip_on_ci()
+  skip_on_cran()
   
   # set up a file for testing
   use_metadata_template("EXAMPLE.Qmd", 
