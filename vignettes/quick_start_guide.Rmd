@@ -25,7 +25,8 @@ The default method for using `delma` is to:
 
 1. Create a metadata statement template with `use_metadata_template()`
 2. Edit metadata in your chosen IDE
-3. Render the completed metadata to EML with `render_metadata()`
+3. Read the data into R with `read_md()` 
+4. Write the data to an EML file with `write_eml()`
 
 EML is quite stringent in the types of data that are allowed, as well 
 as their order and placement in the hierarchy. Getting these points right can be 
@@ -155,7 +156,7 @@ markdown files to `tibble`s, and the
 and write them to file. Between these two packages, we have written functions 
 to convert between tibble and list versions of EML-formatted markdown.
 
-Under the hood, `render_metadata()` calls `read_md()`, which does a few things:
+Under the hood, `read_md()`, which does a few things:
 
 - calls `rmarkdown::render()` on your chosen file, meaning any code blocks or
   inline code is executed properly.
@@ -164,5 +165,5 @@ Under the hood, `render_metadata()` calls `read_md()`, which does a few things:
   rendered text.
 - 'cleans' the imported tibble to a small number of required columns.
 
-This tibble is then rendered to EML using `write_eml()`. The inverse operation
-is accomplished by calling `read_eml()` followed by `write_md()`.
+This tibble can then be rendered to EML using `write_eml()`. The inverse 
+operation is accomplished by calling `read_eml()` followed by `write_md()`.
