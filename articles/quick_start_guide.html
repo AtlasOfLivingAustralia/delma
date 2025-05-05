@@ -85,8 +85,9 @@ human-readable format, such as R Markdown or Quarto markdown.
 <code><a href="../reference/use_metadata_template.html">use_metadata_template()</a></code>
 </li>
 <li>Edit metadata in your chosen IDE</li>
-<li>Render the completed metadata to EML with
-<code><a href="../reference/render_metadata.html">render_metadata()</a></code>
+<li>Read the data into R with <code><a href="../reference/read_md.html">read_md()</a></code>
+</li>
+<li>Write the data to an EML file with <code><a href="../reference/write_eml.html">write_eml()</a></code>
 </li>
 </ol>
 <p>EML is quite stringent in the types of data that are allowed, as well
@@ -173,7 +174,7 @@ change.</p>
 </h3>
 <p><code>delma</code> will call <code><a href="https://pkgs.rstudio.com/rmarkdown/reference/render.html" class="external-link">rmarkdown::render()</a></code>
 internally whenever <code><a href="../reference/read_md.html">read_md()</a></code> or
-<code><a href="../reference/render_metadata.html">render_metadata()</a></code> is used, meaning that it is possible to
+<code>render_metadata()</code> is used, meaning that it is possible to
 add dynamic content to your metadata statements. The boilerplate
 statement that ships with delma uses this feature to automatically
 populate the <code>Title</code> and <code>Pubdate</code> fields from the
@@ -198,8 +199,7 @@ package to convert markdown files to <code>tibble</code>s, and the <a href="http
 convert <code>list</code>s to xml and write them to file. Between these
 two packages, we have written functions to convert between tibble and
 list versions of EML-formatted markdown.</p>
-<p>Under the hood, <code><a href="../reference/render_metadata.html">render_metadata()</a></code> calls
-<code><a href="../reference/read_md.html">read_md()</a></code>, which does a few things:</p>
+<p>Under the hood, <code><a href="../reference/read_md.html">read_md()</a></code>, which does a few things:</p>
 <ul>
 <li>calls <code><a href="https://pkgs.rstudio.com/rmarkdown/reference/render.html" class="external-link">rmarkdown::render()</a></code> on your chosen file, meaning
 any code blocks or inline code is executed properly.</li>
@@ -209,9 +209,9 @@ attribute addition without affecting rendered text.</li>
 <li>‘cleans’ the imported tibble to a small number of required
 columns.</li>
 </ul>
-<p>This tibble is then rendered to EML using <code><a href="../reference/write_eml.html">write_eml()</a></code>.
-The inverse operation is accomplished by calling <code><a href="../reference/read_eml.html">read_eml()</a></code>
-followed by <code><a href="../reference/write_md.html">write_md()</a></code>.</p>
+<p>This tibble can then be rendered to EML using
+<code><a href="../reference/write_eml.html">write_eml()</a></code>. The inverse operation is accomplished by
+calling <code><a href="../reference/read_eml.html">read_eml()</a></code> followed by <code><a href="../reference/write_md.html">write_md()</a></code>.</p>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>
