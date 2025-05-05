@@ -23,8 +23,8 @@ of placing a metadata statement in the working directory.
 This function places a metadata template at the address specified by \code{"file"},
 defaulting to \code{"metadata.Rmd"} in the working directory. The template is
 built in such a way that standard rendering with \code{rmarkdown} or Quarto to
-HTML or PDF will function; but also that it renders to valid EML using
-\code{\link[=render_metadata]{render_metadata()}}.
+HTML or PDF will function; but also that it renders to valid EML when
+processed using \code{\link[=read_md]{read_md()}} and \code{\link[=write_eml]{write_eml()}}.
 }
 \examples{
 \dontrun{
