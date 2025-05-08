@@ -76,10 +76,24 @@ dynamic content will be shown as plain text.</p>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># \dontrun{</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="use_metadata_template.html">use_metadata_template</a></span><span class="op">(</span><span class="st">"example.Rmd"</span><span class="op">)</span> </span></span>
-<span class="r-in"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu">read_md</span><span class="op">(</span><span class="st">"example.Rmd"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">source_file</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, </span></span>
+<span class="r-in"><span>                           <span class="st">"bionet_metadata.Rmd"</span>,</span></span>
+<span class="r-in"><span>                           package <span class="op">=</span> <span class="st">"delma"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">read_md</span><span class="op">(</span><span class="va">source_file</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 62 × 4</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    level label               text      attributes</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>               <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span>     1 eml:eml             <span style="color: #949494;">&lt;lgl [1]&gt;</span> <span style="color: #949494;">&lt;lgl [1]&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span>     2 dataset             <span style="color: #949494;">&lt;lgl [1]&gt;</span> <span style="color: #949494;">&lt;lgl [1]&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span>     3 alternateIdentifier <span style="color: #949494;">&lt;chr [1]&gt;</span> <span style="color: #949494;">&lt;lgl [1]&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span>     3 alternateIdentifier <span style="color: #949494;">&lt;chr [1]&gt;</span> <span style="color: #949494;">&lt;lgl [1]&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span>     3 alternateIdentifier <span style="color: #949494;">&lt;chr [1]&gt;</span> <span style="color: #949494;">&lt;lgl [1]&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span>     3 alternateIdentifier <span style="color: #949494;">&lt;chr [1]&gt;</span> <span style="color: #949494;">&lt;lgl [1]&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span>     3 title               <span style="color: #949494;">&lt;chr [1]&gt;</span> <span style="color: #949494;">&lt;lgl [1]&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span>     3 creator             <span style="color: #949494;">&lt;lgl [1]&gt;</span> <span style="color: #949494;">&lt;lgl [1]&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span>     4 organizationName    <span style="color: #949494;">&lt;chr [1]&gt;</span> <span style="color: #949494;">&lt;lgl [1]&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span>     4 address             <span style="color: #949494;">&lt;lgl [1]&gt;</span> <span style="color: #949494;">&lt;lgl [1]&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 52 more rows</span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
