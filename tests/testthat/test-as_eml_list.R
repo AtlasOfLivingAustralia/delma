@@ -1,12 +1,18 @@
 test_that("`as_eml_list()` works for class `tbl_lp` imported from md", {
-  x <- read_lp("testdata/bionet_metadata.Rmd") |>
+  x <- system.file("extdata", 
+                   "bionet_metadata.Rmd",
+                   package = "delma") |>
+    read_lp() |>
     as_eml_list()
   inherits(x, "list") |>
     expect_true()
 })
 
 test_that("`as_eml_list()` works for class `tbl_df` imported from md", {
-  x <- read_md("testdata/bionet_metadata.Rmd")
+  x <- system.file("extdata", 
+                   "bionet_metadata.Rmd",
+                   package = "delma") |>
+    read_md()
   result <- as_eml_list(x)
   inherits(result, "list") |>
     expect_true()
@@ -35,7 +41,10 @@ test_that("`as_eml_list()` works for class `tbl_df` imported from xml", {
 })
 
 test_that("`as_eml_list()` works for class `list`", {
-  x <- read_md("testdata/bionet_metadata.Rmd") |>
+  x <- system.file("extdata", 
+                   "bionet_metadata.Rmd",
+                   package = "delma") |>
+    read_md() |>
     as_eml_list()
   y <- as_eml_list(x)
   inherits(y, "list") |>
@@ -44,7 +53,10 @@ test_that("`as_eml_list()` works for class `list`", {
 })
 
 test_that("`as_eml_list()` works for class `xml_document", {
-  x <- xml2::read_xml("testdata/bionet_metadata.xml") |>
+  x <- system.file("extdata", 
+                   "bionet_metadata.xml",
+                   package = "delma") |>
+    xml2::read_xml() |>
     as_eml_list()
   inherits(x, "list") |>
     expect_true()

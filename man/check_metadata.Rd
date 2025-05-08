@@ -12,7 +12,7 @@ check_metadata(file = NULL, schema = NULL, quiet = FALSE)
 \item{schema}{Either \code{NULL} (the default) to compare to the GBIF profile;
 or a URL to a valid schema (passed internally to \link[xml2:read_xml]{xml2::read_xml}).}
 
-\item{quiet}{(logical) Should messages be hidden? Defaults to FALSE}
+\item{quiet}{(logical) Should messages be hidden? Defaults to \code{FALSE}.}
 }
 \value{
 Invisibly returns a tibble showing parsed errors; or an empty
@@ -34,7 +34,10 @@ from \code{http://rs.gbif.org/schema/eml-gbif-profile/1.3/} on
 2024-09-25.
 }
 \examples{
-\dontrun{
-check_eml(file = "https://collections.ala.org.au/ws/eml/dr368")
+\donttest{
+source_file <- system.file("extdata", 
+                           "bionet_metadata.xml",
+                           package = "delma")
+check_metadata(source_file)
 }
 }

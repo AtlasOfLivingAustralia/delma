@@ -13,8 +13,8 @@ write_eml(x, file)
 \item{file}{Filename to write to}
 }
 \value{
-Desn't return anything; called for the side-effect of writing the
-specified EML file to disk
+Doesn't return anything; called for the side-effect of writing the
+specified EML file to disk.
 }
 \description{
 \code{write_eml()} writes a \code{tibble}, \code{list} or \code{xml_document} to an EML file.
@@ -22,8 +22,10 @@ Note that EML files always have the file extension \code{.xml}.
 }
 \examples{
 \dontrun{
-use_metadata_template("example.Rmd") 
-df <- read_md("example.Rmd")
+source_file <- system.file("extdata", 
+                           "bionet_metadata.Rmd",
+                           package = "delma") 
+df <- read_md(source_file)
 write_eml(df, "example.xml")
 }
 }

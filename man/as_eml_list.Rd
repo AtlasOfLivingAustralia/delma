@@ -33,9 +33,9 @@ converts it to a \code{list}. When converting from an \code{xml_document}, this 
 simply a wrapper for \code{xml2::as_list()}
 }
 \examples{
-\dontrun{
-use_metadata_template("example_metadata.Rmd")
-df <- read_md("example_metadata.Rmd")
-df_list <- as_eml_list(df)
-}
+source_file <- system.file("extdata", 
+                           "bionet_metadata.Rmd",
+                           package = "delma")
+df <- read_md(source_file)
+as_eml_list(df) |> str()
 }

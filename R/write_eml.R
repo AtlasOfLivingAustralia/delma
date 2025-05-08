@@ -5,11 +5,13 @@
 #' @param x Object of any class handled by `delma`; i.e. `tbl_df`, `list` or 
 #' `xml_document`.
 #' @param file Filename to write to
-#' @returns Desn't return anything; called for the side-effect of writing the 
-#' specified EML file to disk
+#' @returns Doesn't return anything; called for the side-effect of writing the 
+#' specified EML file to disk.
 #' @examples \dontrun{
-#' use_metadata_template("example.Rmd") 
-#' df <- read_md("example.Rmd")
+#' source_file <- system.file("extdata", 
+#'                            "bionet_metadata.Rmd",
+#'                            package = "delma") 
+#' df <- read_md(source_file)
 #' write_eml(df, "example.xml")
 #' }
 #' @export

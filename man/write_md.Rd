@@ -13,19 +13,25 @@ write_md(x, file)
 \item{file}{Filename to write to. Must be either \code{.md}, \code{.Rmd}
 or \code{.qmd} file.}
 }
+\value{
+Doesn't return anything; called for the side-effect of writing the
+specified markdown file to disk.
+}
 \description{
-\code{write_md()} creates an \code{xml} file from an R Markdown or Quarto markdown file.
+\code{write_md()} creates an \code{Rmd} or \code{Qmd} file from an EML file.
 }
 \details{
 Similar to \code{\link[=read_md]{read_md()}}, \code{\link[=write_md]{write_md()}} is considerably less generic than most
 \code{write_} functions. If \code{x} is an \code{xml_document} this should convert seamlessly;
 but lists or tibbles that have been manually formatted require care.
-
 Internally, \code{write_md()} calls \link[lightparser:combine_tbl_to_file]{lightparser::combine_tbl_to_file}.
 }
 \examples{
 \dontrun{
-df <- read_eml("https://collections.ala.org.au/ws/eml/dr368")
-write_eml(df, "example.xml")
+source_file <- system.file("extdata", 
+                           "bionet_metadata.xml",
+                           package = "delma")
+df <- read_eml(source_file)
+write_md(df, "example.Rmd")
 }
 }

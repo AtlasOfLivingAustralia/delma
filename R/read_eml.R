@@ -5,13 +5,11 @@
 #' @param file Filename or URL to read from.
 #' @returns `read_eml()` returns an object of class `tbl_df`, `tbl` and 
 #' `data.frame` (i.e. a `tibble`).
-#' @examples \dontrun{
-#' # read from a url
-#' df <- read_eml("eml.xml")
-#' 
-#' # read from a url
-#' df <- read_eml("https://collections.ala.org.au/ws/eml/dr368")
-#' }
+#' @examples
+#' source_file <- system.file("extdata", 
+#'                            "bionet_metadata.xml",
+#'                            package = "delma")
+#' df <- read_eml(source_file)
 #' @export
 read_eml <- function(file){
   # abort if file missing

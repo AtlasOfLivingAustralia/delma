@@ -45,8 +45,13 @@ us](mailto:support@ala.org.au).
 
 ## Installation
 
-This package is under active development, and is not yet available on
-CRAN. You can install the latest development version from GitHub with:
+You can install from CRAN using:
+
+```{r, eval=FALSE}
+install.packages("delma")
+```
+
+Alternatively, you can install the latest development version from GitHub with:
 
 ```{r, eval = FALSE}
 # install.packages("devtools")

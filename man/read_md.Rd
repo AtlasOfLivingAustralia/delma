@@ -34,8 +34,8 @@ dynamic content will be shown as plain text.
 Internally, \code{\link[=read_md]{read_md()}} calls \code{\link[lightparser:split_to_tbl]{lightparser::split_to_tbl()}}.
 }
 \examples{
-\dontrun{
-use_metadata_template("example.Rmd") 
-df <- read_md("example.Rmd")
-}
+source_file <- system.file("extdata", 
+                           "bionet_metadata.Rmd",
+                           package = "delma")
+read_md(source_file)
 }

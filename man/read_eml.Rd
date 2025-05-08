@@ -18,11 +18,8 @@ read_eml(file)
 \code{tibble}.
 }
 \examples{
-\dontrun{
-# read from a url
-df <- read_eml("eml.xml")
-
-# read from a url
-df <- read_eml("https://collections.ala.org.au/ws/eml/dr368")
-}
+source_file <- system.file("extdata", 
+                           "bionet_metadata.xml",
+                           package = "delma")
+df <- read_eml(source_file)
 }

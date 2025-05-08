@@ -32,9 +32,9 @@ Takes a \code{character} vector, tibble, or \code{list} and converts it to an
 a list, this is simply a wrapper for \code{xml2::as_xml_document()}.
 }
 \examples{
-\dontrun{
-use_metadata_template("example.Rmd") 
-df <- read_md("example.Rmd")
-as_eml_xml(df)
-}
+source_file <- system.file("extdata", 
+                           "bionet_metadata.Rmd",
+                           package = "delma")
+df <- read_md(source_file)
+as_eml_list(df) |> str()
 }

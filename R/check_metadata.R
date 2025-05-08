@@ -10,7 +10,7 @@
 #' @param file An EML file to check Can be either local or a URL.
 #' @param schema Either `NULL` (the default) to compare to the GBIF profile;
 #' or a URL to a valid schema (passed internally to [xml2::read_xml]).
-#' @param quiet (logical) Should messages be hidden? Defaults to FALSE
+#' @param quiet (logical) Should messages be hidden? Defaults to `FALSE`.
 #' @details
 #' This function uses local versions of `dc.xsd`, `eml-gbif-profile.xsd` and 
 #' `eml.xsd` downloaded
@@ -18,8 +18,11 @@
 #'  2024-09-25.
 #' @return Invisibly returns a tibble showing parsed errors; or an empty 
 #' tibble if no errors are identified.
-#' @examples \dontrun{
-#' check_eml(file = "https://collections.ala.org.au/ws/eml/dr368")
+#' @examples \donttest{
+#' source_file <- system.file("extdata", 
+#'                            "bionet_metadata.xml",
+#'                            package = "delma")
+#' check_metadata(source_file)
 #' }
 #' @export
 check_metadata <- function(file = NULL,

@@ -8,11 +8,12 @@
 #' @param ... Other arguments, currently ignored.
 #' @name as_eml_xml
 #' @returns An `xml_document` with the specified nodes and attributes.
-#' @examples \dontrun{
-#' use_metadata_template("example.Rmd") 
-#' df <- read_md("example.Rmd")
-#' as_eml_xml(df)
-#' }
+#' @examples
+#' source_file <- system.file("extdata", 
+#'                            "bionet_metadata.Rmd",
+#'                            package = "delma")
+#' df <- read_md(source_file)
+#' as_eml_list(df) |> str()
 #' @export
 as_eml_xml <- function(x, ...){
   UseMethod("as_eml_xml")

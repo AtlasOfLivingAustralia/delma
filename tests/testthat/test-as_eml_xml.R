@@ -1,5 +1,8 @@
 test_that("`as_eml_xml()` works for class tbl_lp", {
-  x <- read_lp("testdata/bionet_metadata.Rmd") |>
+  x <- system.file("extdata", 
+                   "bionet_metadata.Rmd",
+                   package = "delma") |>
+    read_lp() |>
     as_eml_xml()
   inherits(x,
            c("xml_document", "xml_node")) |>
@@ -7,7 +10,10 @@ test_that("`as_eml_xml()` works for class tbl_lp", {
 })
 
 test_that("`as_eml_xml()` works for class tbl_df", {
-  x <- read_md("testdata/bionet_metadata.Rmd") |>
+  x <- system.file("extdata", 
+                   "bionet_metadata.Rmd",
+                   package = "delma") |>
+    read_md() |>
     as_eml_xml()
   inherits(x, 
            c("xml_document", "xml_node")) |>
@@ -15,7 +21,10 @@ test_that("`as_eml_xml()` works for class tbl_df", {
 })
 
 test_that("`as_eml_xml()` works for class list", {
-  x <- xml2::read_xml("testdata/bionet_metadata.xml") |>
+  x <- system.file("extdata", 
+                   "bionet_metadata.xml",
+                   package = "delma") |>
+    xml2::read_xml() |>
     as_eml_list()
   inherits(x, "list") |>
     expect_true()
