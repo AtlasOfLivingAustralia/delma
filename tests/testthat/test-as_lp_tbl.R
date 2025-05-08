@@ -1,5 +1,8 @@
 test_that("`as_lp_tibble()` works for class tbl_lp", {
-  x <- read_md("testdata/bionet_metadata.Rmd") |>
+  x <- system.file("extdata", 
+                   "bionet_metadata.Rmd",
+                   package = "delma") |>
+    read_md() |>
     as_lp_tibble()
   inherits(x, 
            c("tbl_lp", "tbl_df", "tbl", "data.frame")) |>
@@ -9,7 +12,10 @@ test_that("`as_lp_tibble()` works for class tbl_lp", {
 
 # as_eml_tibble.list
 test_that("`as_lp_tibble()` works for class list", {
-  x <- xml2::read_xml("testdata/bionet_metadata.xml") |>
+  x <- system.file("extdata", 
+                   "bionet_metadata.xml",
+                   package = "delma") |>
+    xml2::read_xml() |>
     as_eml_list()
   inherits(x, "list") |>
     expect_true()
@@ -21,7 +27,10 @@ test_that("`as_lp_tibble()` works for class list", {
 })
 
 test_that("as_lp_tibble() works for xml documents", {
-  x <- xml2::read_xml("testdata/bionet_metadata.xml") |>
+  x <- system.file("extdata", 
+                   "bionet_metadata.xml",
+                   package = "delma") |>
+    xml2::read_xml() |>
     as_lp_tibble()
   inherits(x, c("tbl_lp", "tbl_df", "tbl", "data.frame")) |>
     expect_true()

@@ -9,3 +9,4 @@ README.Rmd
 ^doc$
 ^Meta$
 ^\.github$
+inst/extdata/get_example_data.R

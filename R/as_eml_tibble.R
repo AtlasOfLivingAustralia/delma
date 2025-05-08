@@ -16,10 +16,12 @@
 #'   * `label` (chr) the `xml` tag
 #'   * `text` (chr) Any text stored within that tag
 #'   * `attributes` (list) Any attributes for that tag
-#' @examples \dontrun{
-#' df <- xml2::read_xml("https://collections.ala.org.au/ws/eml/dr368") |>
-#'   as_eml_tibble()
-#' }
+#' @examples
+#' source_file <- system.file("extdata", 
+#'                            "bionet_metadata.xml",
+#'                            package = "delma")
+#' xml_data <- xml2::read_xml(source_file)
+#' as_eml_tibble(xml_data)
 #' @export
 as_eml_tibble <- function(x, ...){
   UseMethod("as_eml_tibble")

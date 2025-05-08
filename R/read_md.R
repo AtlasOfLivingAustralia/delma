@@ -21,10 +21,11 @@
 #' Internally, [read_md()] calls [lightparser::split_to_tbl()].
 #' @returns `read_md()` returns an object of class `tbl_df`, `tbl` and 
 #' `data.frame` (i.e. a `tibble`).
-#' @examples \dontrun{
-#' use_metadata_template("example.Rmd") 
-#' df <- read_md("example.Rmd")
-#' }
+#' @examples
+#' source_file <- system.file("extdata", 
+#'                            "bionet_metadata.Rmd",
+#'                            package = "delma")
+#' read_md(source_file)
 #' @export
 read_md <- function(file){
   

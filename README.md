@@ -13,11 +13,17 @@ coverage](https://codecov.io/gh/AtlasOfLivingAustralia/delma/graph/badge.svg)](h
 
 ## Overview
 
-`delma` is a package for converting metadata statements written in
-markdown, RMarkdown or Quarto markdown to [Ecological Metadata
-Language](https://eml.ecoinformatics.org) (EML). It is named for a genus
-of legless lizards that are endemic to Australia, whose name happens to
-contain the letters ‘e’, ‘m’ and ‘l’.
+`delma` is a package for converting metadata statements written in R
+Markdown or Quarto markdown to [Ecological Metadata
+Language](https://eml.ecoinformatics.org) (EML). Ecological Metadata
+Language (EML) is a common framework for describing ecological datasets
+so they can be shared and reused. `delma` supports users to write
+metadata statements in R Markdown or Quarto markdown for greater
+transparency and ease-of-use, then convert them to EML for efficient
+transfer.
+
+`delma` is named for a genus of legless lizards that are endemic to
+Australia, whose name happens to contain the letters ‘e’, ‘m’ and ‘l’.
 
 The logo depicts a striped legless lizard (*Delma impar*) in the style
 of the classic mobile game ‘snake’, a play on the observation that
@@ -29,8 +35,14 @@ us](mailto:support@ala.org.au).
 
 ## Installation
 
-This package is under active development, and is not yet available on
-CRAN. You can install the latest development version from GitHub with:
+You can install from CRAN using:
+
+``` r
+install.packages("delma")
+```
+
+Alternatively, you can install the latest development version from
+GitHub with:
 
 ``` r
 # install.packages("devtools")
@@ -53,8 +65,7 @@ sharing biodiversity data. To get started, create a basic template with
 use_metadata_template("my_metadata_statement.Rmd")
 ```
 
-Here is a shortened minimal example of what a metadata template looks
-like.
+Here is a short, minimal example of what a metadata template looks like.
 
     ---
     title: A Descriptive Title for your Dataset in Title Case
@@ -78,15 +89,16 @@ like.
 
     #### Address
 
-Users can add any additional headings that conform to the EML standard
-to their metadata statement. The header level (i.e. the number of `#`)
+Users can add any additional headings to their metadata statement that
+conform with EML standard. The header level (i.e. the number of `#`)
 designates the degree of nesting.
 
-This document can be knit like any other Rmarkdown document (using
-either the ‘knit’ button in RStudio or `rmarkdown::knit()`) to the
-format defined in the yaml section, which defaults to `html_document`.
+This document can be knit like any other R Markdown or Quarto document
+(using either the ‘knit’ button in RStudio or `rmarkdown::knit()`) to
+the format defined in the yaml section, which defaults to
+`html_document`.
 
-To convert an metadata statement in markdown to EML, use:
+To convert an R Markdown metadata statement to EML, use:
 
 ``` r
 render_metadata("my_metadata_statement.Rmd")
@@ -129,6 +141,6 @@ citation(package = "delma")
 
 The current recommended citation is:
 
-> Westgate MJ, Balasubramaniam S & Kellie D (2025) Convert Rmarkdown and
-> Quarto Documents to Ecological Metadata Language. R Package version
-> 0.1.0.
+> Westgate MJ, Balasubramaniam S & Kellie D (2025) Convert R Markdown
+> and Quarto documents to Ecological Metadata Language. R Package
+> version 0.1.0.

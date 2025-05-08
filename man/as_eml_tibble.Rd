@@ -40,8 +40,9 @@ data. Tibbles are required because attributes are stored as list-columns,
 which are not supported by class \code{data.frame}.
 }
 \examples{
-\dontrun{
-df <- xml2::read_xml("https://collections.ala.org.au/ws/eml/dr368") |>
-  as_eml_tibble()
-}
+source_file <- system.file("extdata", 
+                           "bionet_metadata.xml",
+                           package = "delma")
+xml_data <- xml2::read_xml(source_file)
+as_eml_tibble(xml_data)
 }

@@ -16,7 +16,10 @@ test_that("`read_eml()` works for a url", {
 })
 
 test_that("read_eml() works on a local xml file", {
-  x <- read_eml("testdata/bionet_metadata.xml")
+  x <- system.file("extdata", 
+                   "bionet_metadata.xml",
+                   package = "delma") |>
+    read_eml()
   expect_s3_class(x, c("tbl_df", "tbl", "data.frame"))
   expect_gte(nrow(x), 10)
 })
@@ -34,12 +37,18 @@ test_that("`read_md()` fails with missing files", {
 })
 
 test_that("`read_md()` only accepts files that end in `.Rmd` or `.qmd", {
-  read_md("testdata/bionet_metadata.xml") |>
+  x <- system.file("extdata", 
+                   "bionet_metadata.xml",
+                   package = "delma") |>
+    read_md() |>
     expect_error()
 })
 
 test_that("read_md() works on a valid markdown file", {
-  x <- read_md("testdata/bionet_metadata.Rmd")
+  x <- system.file("extdata", 
+                   "bionet_metadata.Rmd",
+                   package = "delma") |>
+    read_md()
   expect_s3_class(x, c("tbl_df", "tbl", "data.frame"))
   expect_gte(nrow(x), 10)
 })

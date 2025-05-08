@@ -18,10 +18,12 @@
 #'   * `heading` (chr) For `type` = `heading`, the value of that heading
 #'   * `heading_level` (dbl) The heading level of that heading (i.e. number of `#`)
 #'   * `section` (chr) The heading this section sits within
-#' @examples \dontrun{
-#' df <- xml2::read_xml("https://collections.ala.org.au/ws/eml/dr368") |>
-#'   as_lp_tibble()
-#' }
+#' @examples
+#' source_file <- system.file("extdata", 
+#'                            "bionet_metadata.xml",
+#'                            package = "delma")
+#' xml_data <- xml2::read_xml(source_file)
+#' as_lp_tibble(xml_data)
 #' @export
 as_lp_tibble <- function(x, ...){
   UseMethod("as_lp_tibble")

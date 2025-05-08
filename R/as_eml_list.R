@@ -9,11 +9,12 @@
 #' @param ... Other arguments, currently ignored
 #' @returns A list, where both the nested structure of the XML/md and the 
 #' attributes of XML nodes, are preserved.
-#' @examples \dontrun{
-#' use_metadata_template("example_metadata.Rmd")
-#' df <- read_md("example_metadata.Rmd")
-#' df_list <- as_eml_list(df)
-#' }
+#' @examples 
+#' source_file <- system.file("extdata", 
+#'                            "bionet_metadata.Rmd",
+#'                            package = "delma")
+#' df <- read_md(source_file)
+#' as_eml_list(df) |> str()
 #' @export
 as_eml_list <- function(x, ...){
   UseMethod("as_eml_list")

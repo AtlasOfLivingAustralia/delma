@@ -158,7 +158,10 @@ test_that("Quarto files `use_metadata_template()` can be imported, written to EM
 test_that("xml documents can be losslessly converted to Rmd and back", {
   # first read an example dataset
   # NOTE: this is created in `get_example_data.R`
-  x <- xml2::read_xml("testdata/bionet_metadata.xml") 
+  x <- system.file("extdata", 
+                   "bionet_metadata.xml",
+                   package = "delma") |>
+    xml2::read_xml() 
   x |>
     inherits(c("xml_document", "xml_node")) |>
     expect_true()
