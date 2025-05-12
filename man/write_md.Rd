@@ -27,11 +27,15 @@ but lists or tibbles that have been manually formatted require care.
 Internally, \code{write_md()} calls \link[lightparser:combine_tbl_to_file]{lightparser::combine_tbl_to_file}.
 }
 \examples{
-\dontrun{
+\dontshow{
+.old_wd <- setwd(tempdir())
+}
 source_file <- system.file("extdata", 
                            "bionet_metadata.xml",
                            package = "delma")
 df <- read_eml(source_file)
 write_md(df, "example.Rmd")
+\dontshow{
+setwd(.old_wd)
 }
 }

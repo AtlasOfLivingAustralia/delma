@@ -13,12 +13,17 @@
 #' Internally, `write_md()` calls [lightparser::combine_tbl_to_file].
 #' @returns Doesn't return anything; called for the side-effect of writing the 
 #' specified markdown file to disk.
-#' @examples \dontrun{
+#' @examples
+#' \dontshow{
+#' .old_wd <- setwd(tempdir())
+#' }
 #' source_file <- system.file("extdata", 
 #'                            "bionet_metadata.xml",
 #'                            package = "delma")
 #' df <- read_eml(source_file)
 #' write_md(df, "example.Rmd")
+#' \dontshow{
+#' setwd(.old_wd)
 #' }
 #' @export
 write_md <- function(x, file){

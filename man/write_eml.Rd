@@ -21,11 +21,15 @@ specified EML file to disk.
 Note that EML files always have the file extension \code{.xml}.
 }
 \examples{
-\dontrun{
+\dontshow{
+.old_wd <- setwd(tempdir())
+}
 source_file <- system.file("extdata", 
                            "bionet_metadata.Rmd",
                            package = "delma") 
 df <- read_md(source_file)
 write_eml(df, "example.xml")
+\dontshow{
+setwd(.old_wd)
 }
 }

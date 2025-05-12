@@ -18,12 +18,11 @@
 #'  2024-09-25.
 #' @return Invisibly returns a tibble showing parsed errors; or an empty 
 #' tibble if no errors are identified.
-#' @examples \donttest{
+#' @examples
 #' source_file <- system.file("extdata", 
 #'                            "bionet_metadata.xml",
 #'                            package = "delma")
 #' check_metadata(source_file)
-#' }
 #' @export
 check_metadata <- function(file = NULL,
                            schema = NULL,
