@@ -34,10 +34,8 @@ from \code{http://rs.gbif.org/schema/eml-gbif-profile/1.3/} on
 2024-09-25.
 }
 \examples{
-\donttest{
 source_file <- system.file("extdata", 
                            "bionet_metadata.xml",
                            package = "delma")
 check_metadata(source_file)
-}
 }

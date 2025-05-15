@@ -27,7 +27,11 @@ HTML or PDF will function; but also that it renders to valid EML when
 processed using \code{\link[=read_md]{read_md()}} and \code{\link[=write_eml]{write_eml()}}.
 }
 \examples{
-\dontrun{
+\dontshow{
+.old_wd <- setwd(tempdir())
+}
 use_metadata_template("example.Rmd") 
+\dontshow{
+setwd(.old_wd)
 }
 }

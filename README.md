@@ -143,4 +143,4 @@ The current recommended citation is:
 
 > Westgate MJ, Balasubramaniam S & Kellie D (2025) Convert R Markdown
 > and Quarto documents to Ecological Metadata Language. R Package
-> version 0.1.0.
+> version 0.1.1.
