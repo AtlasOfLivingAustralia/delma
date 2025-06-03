@@ -134,9 +134,23 @@ print_xsd_messages <- function(df){
 #' @noRd
 #' @keywords Internal
 format_messages_from_checks <- function(df) {
-  title <- df$title |> unique()
-  m <- df$message
+  title <- df$title |> 
+    unique() |>
+    make_glue_safe()
+  m <- df$message |> 
+    make_glue_safe()
   cli::cli_h3(title)
   cli::cli_text(m)
   cli::cat_line()
+}
+
+#' Prevent curly brackets in messages
+#' Source bug was this string:
+#' "The QName value '{http://www.w3.org/XML/1998/namespace}lang' does not resolve to a(n) attribute declaration"
+#' @noRd
+#' @keywords Internal
+make_glue_safe <- function(x){
+  x |>
+    gsub("\\{", "<", x = _) |>
+    gsub("\\}", ">", x = _)
 }
