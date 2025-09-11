@@ -12,7 +12,7 @@ parse_tibble_to_list <- function(x){
 }
 
 #' Internal function to ensure lists in `text` column are parsed correctly.
-#' Requires modification to add `para` tag within list-entries
+#' Requires modification to add `<para>` tag within list-entries
 #' @noRd
 #' @keywords Internal
 add_para_tags <- function(x){
@@ -20,19 +20,50 @@ add_para_tags <- function(x){
     cli::cli_abort("Supplied tibble doesn't contain required column `text`", 
                   call = rlang::caller_env())
   }
-  list_check <- purrr::map(x$text, 
-                           \(a){inherits(a, "list")}) |>
-    unlist()
-  if(any(list_check)){
-    list_update <- x$text[list_check]
-    x$text[list_check] <- purrr::map(list_update,
-                                     \(a){
-                                       result <- purrr::map(a, \(b){list(b)})
-                                       names(result) <- rep("para", length(result))
-                                       result
-                                     })
+  
+  # identify text that requires para tags (long text entries that aren't urls)
+  text_summary <- x |>
+    split(f = seq_along(x$text)) |> # equivalent to `group_split()`
+    purrr::map(
+      \(df){
+        df |>
+          dplyr::mutate(
+            n_chr = cli::ansi_nchar(text),
+            is_a_url = stringr::str_starts(as.character(text), "http"),
+            is_a_list = purrr::map(text, \(a){inherits(a, "list")}) |> unlist(),
+            # para tag candidates
+            needs_para_tag = dplyr::case_when(
+              (n_chr > 60 | is_a_list) & !is_a_url ~ TRUE,
+              .default = FALSE
+              )
+          )
+      }
+    ) |> 
+    dplyr::bind_rows() 
+  
+  if (any(text_summary$needs_para_tag)) {
+    # add para tag
+    x <- text_summary |>
+      dplyr::mutate(
+        text = dplyr::case_when(
+          needs_para_tag ~ purrr::map(text,
+                                      \(a){
+                                        result <- purrr::map(a, \(b){list(b)})
+                                        names(result) <- rep("para", length(result))
+                                        result
+                                        }
+                                      ), 
+          .default = text
+          )
+        ) |>
+      dplyr::select(level, label, text, attributes)
   }
   x
+  
+  # check
+  # x_updated |>
+    # dplyr::filter(needs_para_tag) |>
+    # dplyr::pull(text)
 }
 
 #' Internal function to remove tibble rows without useful information
