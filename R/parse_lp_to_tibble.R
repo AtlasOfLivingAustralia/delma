@@ -14,7 +14,9 @@ parse_lp_to_tibble <- function(x){
     dplyr::select("heading_level", "section", "text", "attributes") |>
     dplyr::rename("level" = "heading_level", 
                   "label" = "section") |>
-    clean_eml_tags()
+    clean_eml_tags() |> 
+    reformat_license()
+  
   class(result) <- c("tbl_df", "tbl", "data.frame")
   result
 }
@@ -131,4 +133,65 @@ clean_eml_tags <- function(df){
                                            .data$label == "surname" ~ "surName",
                                            .data$label == "pubdate" ~ "pubDate",
                                            .default = .data$label))
+}
+
+#' Internal function to reformat Intellectual Rights to correct EML format
+#' @param x A tibble
+#' @noRd
+#' @keywords Internal
+reformat_license <- function(x, error_call = caller_env()){
+  if(all(!x$label %in% "citeTitle")) {
+    cli::cli_abort("Must supply license information under Intellectual Rights/Cite Title.",
+                   call = caller_env())
+  }
+  
+  if(all(x$label %in% c("intellectualRights", "para", "ulink", "citeTitle"))) {
+    x_updated <- x
+  } else {
+    # extract level of `intellectualRights`
+    ref_level <- x |>
+      dplyr::filter(label == "intellectualRights") |>
+      dplyr::pull(level)
+    
+    # extract licensing info
+    text_citetitle <- x |>
+      dplyr::filter(label == "citeTitle") |>
+      dplyr::pull(text) |>
+      unlist()
+    
+    # NOTE: should we detect and error if text or url is missing?
+    license_text <- stringr::str_extract(text_citetitle, "(?<=\\[).*?(?=\\])")
+    license_url <- stringr::str_extract(text_citetitle, "(?<=\\().*?(?=\\))")
+    
+    row_para <- tibble::tibble(
+      level = ref_level + 1,
+      label = "para",
+      text = list(NA),
+      attributes = list(NA)
+    )
+    
+    row_ulink <- tibble::tibble(
+      level = ref_level + 2, 
+      label = "ulink", 
+      text = list(NA), 
+      attributes = list(url = license_url) |> # format
+        list()                                # set `named_list` class
+    )
+    
+    # add new rows, then update citeTitle text & level to match changes
+    x_updated <- x |>
+      dplyr::add_row(row_ulink, .after = which(x$label == "intellectualRights")) |> # must be added first
+      dplyr::add_row(row_para, .after = which(x$label == "intellectualRights")) |>  # must be added second
+      dplyr::mutate(
+        text = dplyr::case_when(
+          label == "citeTitle" ~ purrr::map(text,\(a){license_text}), 
+          .default = text
+        ),
+        level = dplyr::case_when(
+          label == "citeTitle" ~ level + 2, 
+          .default = level
+        )
+      )
+  }
+  return(x_updated)
 }

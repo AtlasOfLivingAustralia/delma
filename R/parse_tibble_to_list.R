@@ -4,8 +4,9 @@
 #' @noRd
 #' @keywords Internal
 parse_tibble_to_list <- function(x){
-  x <- add_para_tags(x) |>
-       remove_empty_rows()
+  x <- x |>
+    add_para_tags() |>
+    remove_empty_rows()
   result <- tibble_to_list_recurse(x, level = 1)
   add_tibble_attributes_to_list(empty = result,
                                 full = x)
@@ -56,14 +57,9 @@ add_para_tags <- function(x){
           .default = text
           )
         ) |>
-      dplyr::select(level, label, text, attributes)
+      dplyr::select("level", "label", "text", "attributes")
   }
   x
-  
-  # check
-  # x_updated |>
-    # dplyr::filter(needs_para_tag) |>
-    # dplyr::pull(text)
 }
 
 #' Internal function to remove tibble rows without useful information
@@ -183,3 +179,5 @@ get_list_addresses <- function(level){
   }
   address_list
 }
+
+

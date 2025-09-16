@@ -4,6 +4,7 @@ output: html_document
 date: 2025-02-01
 ---
 
+```{=html}
 <!--
 This is a metadata template. 
 
@@ -21,8 +22,10 @@ features to be aware of:
 See https:://delma.ala.org.au for software information or 
 https://eml.ecoinformatics.org for information on EML.
 -->
+```
 
 # EML
+
 ```{r}
 #| label: 'eml'
 #| include: false
@@ -43,6 +46,7 @@ list(
 ## Dataset
 
 ### Title
+
 ```{r}
 #| echo: false
 #| results: 'asis'
@@ -51,51 +55,64 @@ cat(rmarkdown::metadata$title)
 ```
 
 ### Creator
+
+```{=html}
 <!-- 
 This section provides the full name of the person, organization, 
 or position who created the resource. The list of creators for a resource 
 represents the people and organizations who should be cited for the resource.
 -->
+```
 
 #### Individual Name
 
 ##### Given Name
+
 Firstname
 
 ##### Surname
+
 Lastname
 
 #### Address
 
 ##### Delivery Point
+
 215 Road Street
 
 ##### City
+
 Canberra
 
 ##### Administrative area
+
 ACT
 
 ##### Postal code
+
 2601
 
 ##### Country
+
 Australia
 
 #### Electronic Mail Address
-firstname.lastname@email.com
+
+[firstname.lastname\@email.com](mailto:firstname.lastname@email.com){.email}
 
 #### User ID
+
 ```{r}
 #| label: 'userId'
 #| include: false
 # Note: Supplying ORCIDs is optional
 list(directory = "https://orcid.org")
 ```
-https://orcid.org/0000-0003-0077-4738
 
+<https://orcid.org/0000-0003-0077-4738>
 
 ### Pubdate
+
 ```{r}
 #| echo: false
 #| results: 'asis'
@@ -104,79 +121,77 @@ cat(rmarkdown::metadata$date)
 ```
 
 ### Language
+
 EN
 
 ### Abstract
-A brief overview of the resource. This should provide enough information to help 
-potential users of the data to understand if it may be of interest. Example 
-content may include what the study was designed to investigate, what taxa were 
-observed, and over what time period. 200 word limit
+
+A brief overview of the resource. This should provide enough information to help potential users of the data to understand if it may be of interest. Example content may include what the study was designed to investigate, what taxa were observed, and over what time period. 200 word limit
 
 ### Keyword Set
 
 #### Keyword
+
 Occurrence
 
 #### Keyword Thesaurus
-https://ipt.gbif.org/manual/en/ipt/latest/dwca-guide#dwc-a-components
 
+<https://ipt.gbif.org/manual/en/ipt/latest/dwca-guide#dwc-a-components>
 
-### Licensed
+### Intellectual Rights
 
-#### License name
-Creative Commons Attribution 4.0 International
+#### Cite Title
 
-#### URL
-https://creativecommons.org/licenses/by/4.0/
-
-#### Identifier
-CC-BY 4.0 (Int) 4.0
-
+[Creative Commons Attribution 4.0 International](https://creativecommons.org/licenses/by/4.0/)
 
 ### Introduction
-This section can include any methods you like, but should, at minimum, give a 
-simple description of how the data were collected. To link to a publication with 
-more complete information, add a level-2 heading called `Reference Publication` 
-and add the citation to your paper.
 
-If applicable, you can also choose to add information on data processing that 
-are specific to this version of your dataset. This may include information on 
-whether data on threatened species have been removed, or spatial data have been 
-generalised (i.e. set to a lower spatial precision than the source dataset).
+This section can include any methods you like, but should, at minimum, give a simple description of how the data were collected. To link to a publication with more complete information, add a level-2 heading called `Reference Publication` and add the citation to your paper.
 
+If applicable, you can also choose to add information on data processing that are specific to this version of your dataset. This may include information on whether data on threatened species have been removed, or spatial data have been generalised (i.e. set to a lower spatial precision than the source dataset).
 
 ### Contact
+
+```{=html}
 <!-- 
 This section provides contact information for this dataset. This is 
 the person or institution to contact with questions about the use, 
 interpretation of a data set.
 -->
+```
 
 #### Individual Name
 
 ##### Given Name
+
 Firstname
 
 ##### Surname
+
 Lastname
 
 #### Address
 
 ##### Delivery Point
+
 215 Road Street
 
 ##### City
+
 Canberra
 
 ##### Administrative area
+
 ACT
 
 ##### Postal code
+
 2601
 
 ##### Country
+
 Australia
 
 #### Electronic Mail Address
-firstname.lastname@email.com
 
+[firstname.lastname\@email.com](mailto:firstname.lastname@email.com){.email}
