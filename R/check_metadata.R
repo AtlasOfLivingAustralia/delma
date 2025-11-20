@@ -22,7 +22,9 @@
 #' source_file <- system.file("extdata", 
 #'                            "bionet_metadata.xml",
 #'                            package = "delma")
-#' check_metadata(source_file)
+#' \dontrun{
+#' check_metadata(source_file) # Note: requires internet access
+#' }
 #' @export
 check_metadata <- function(file = NULL,
                            schema = NULL,
