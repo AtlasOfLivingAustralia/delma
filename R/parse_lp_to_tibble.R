@@ -139,11 +139,13 @@ clean_eml_tags <- function(df){
 #' @param x A tibble
 #' @noRd
 #' @keywords Internal
-reformat_license <- function(x, error_call = caller_env()){
-  if(all(!x$label %in% "citeTitle")) {
-    cli::cli_abort("Must supply license information under Intellectual Rights/Cite Title.",
-                   call = caller_env())
-  }
+reformat_license <- function(x, error_call = rlang::caller_env()){
+  ## NOTE: This could be important. It mandates that a license is supplied.
+  ##       However, it's causing issues because some md files might 
+  # if(all(!x$label %in% "citeTitle")) {
+  #   cli::cli_abort("Must supply license information under Intellectual Rights/Cite Title.",
+  #                  call = error_call)
+  # }
   
   if(all(x$label %in% c("intellectualRights", "para", "ulink", "citeTitle"))) {
     x_updated <- x

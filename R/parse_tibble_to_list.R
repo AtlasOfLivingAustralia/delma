@@ -76,14 +76,24 @@ remove_empty_rows <- function(x){
 #' @noRd
 #' @keywords Internal
 is_na_list <- function(a){
+  # browser()
   purrr::map(a,
              \(b){
                if(length(b) == 1){
-                 if(is.na(b[[1]])){
-                   TRUE
-                 }else{FALSE}
-               }else{FALSE}
-             }) |>
+                 if(length(b[[1]]) == 0) { # accounts for character(0)
+                   FALSE
+                 } else {
+                   if(is.na(b[[1]])){
+                     TRUE
+                   }
+                   else{
+                     FALSE
+                   }
+                 }
+               }
+               else{FALSE}
+               }
+             ) |>
     unlist()
 }
 

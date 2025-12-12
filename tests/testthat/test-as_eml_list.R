@@ -1,9 +1,9 @@
 test_that("`as_eml_list()` works for class `tbl_lp` imported from md", {
-  x <- system.file("extdata", 
+  file <- system.file("extdata", 
                    "bionet_metadata.Rmd",
                    package = "delma") |>
-    read_lp() |>
-    as_eml_list()
+    read_lp()
+  x <- as_eml_list(file)
   inherits(x, "list") |>
     expect_true()
 })
