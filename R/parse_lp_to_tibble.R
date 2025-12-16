@@ -3,14 +3,15 @@
 #' @noRd
 #' @keywords Internal
 parse_lp_to_tibble <- function(x){
+  
   result <- x |>
     clean_header_level() |> # downfill heading level
     dplyr::mutate(attributes = as.list(rep(NA, nrow(x)))) |>
     dplyr::filter(.data$type != "yaml",
                   is.na(.data$heading),
-                  .data$heading_level > 0) |>
+                  .data$heading_level > 0) |> 
     clean_lp_text() |>
-    clean_urls() |>
+    clean_urls() |> 
     dplyr::select("heading_level", "section", "text", "attributes") |>
     dplyr::rename("level" = "heading_level", 
                   "label" = "section") |>
@@ -18,7 +19,8 @@ parse_lp_to_tibble <- function(x){
     reformat_license()
   
   class(result) <- c("tbl_df", "tbl", "data.frame")
-  result
+  return(result)
+  
 }
 
 #' Internal function to clean header levels
@@ -142,12 +144,12 @@ clean_eml_tags <- function(df){
 reformat_license <- function(x, error_call = rlang::caller_env()){
   ## NOTE: This could be important. It mandates that a license is supplied.
   ##       However, it's causing issues because some md files might 
-  # if(all(!x$label %in% "citeTitle")) {
-  #   cli::cli_abort("Must supply license information under Intellectual Rights/Cite Title.",
+  # if(all(!x$label %in% "citetitle")) {
+  #   cli::cli_abort("Must supply license information under Intellectual Rights/citetitle.",
   #                  call = error_call)
   # }
   
-  if(all(x$label %in% c("intellectualRights", "para", "ulink", "citeTitle"))) {
+  if(all(x$label %in% c("intellectualRights", "para", "ulink", "citetitle"))) {
     x_updated <- x
   } else {
     # extract level of `intellectualRights`
@@ -157,7 +159,7 @@ reformat_license <- function(x, error_call = rlang::caller_env()){
     
     # extract licensing info
     text_citetitle <- x |>
-      dplyr::filter(label == "citeTitle") |>
+      dplyr::filter(label == "citetitle") |>
       dplyr::pull(text) |>
       unlist()
     
@@ -186,14 +188,15 @@ reformat_license <- function(x, error_call = rlang::caller_env()){
       dplyr::add_row(row_para, .after = which(x$label == "intellectualRights")) |>  # must be added second
       dplyr::mutate(
         text = dplyr::case_when(
-          label == "citeTitle" ~ purrr::map(text,\(a){license_text}), 
+          label == "citetitle" ~ purrr::map(text,\(a){license_text}), 
           .default = text
         ),
         level = dplyr::case_when(
-          label == "citeTitle" ~ level + 2, 
+          label == "citetitle" ~ row_ulink$level + 1, 
           .default = level
         )
       )
+    
   }
   return(x_updated)
 }

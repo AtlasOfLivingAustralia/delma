@@ -4,9 +4,11 @@
 #' @noRd
 #' @keywords Internal
 parse_tibble_to_list <- function(x){
+  
   x <- x |>
     add_para_tags() |>
     remove_empty_rows()
+  
   result <- tibble_to_list_recurse(x, level = 1)
   add_tibble_attributes_to_list(empty = result,
                                 full = x)
@@ -76,23 +78,42 @@ remove_empty_rows <- function(x){
 #' @noRd
 #' @keywords Internal
 is_na_list <- function(a){
-  # browser()
   purrr::map(a,
              \(b){
+               
+               # if there is an item
                if(length(b) == 1){
-                 if(length(b[[1]]) == 0) { # accounts for character(0)
-                   FALSE
-                 } else {
-                   if(is.na(b[[1]])){
+                 
+                 i <- b[[1]] # take element `i` within index `b`
+                 n <- length(i)
+
+                 # empty element (accounts for character(0))
+                 if(n == 0) { FALSE }
+
+                 # duplicate element
+                 if(n > 1) {
+                   cli::cli_warn(
+                     c("Duplicate heading detected in eml.",
+                       i = "Defaulting to first item.")
+                   )
+
+                   i <- i[1] # take first item
+                 }
+
+                 # check for NA
+                 if(n == 1) {
+                   if(is.na(i)) {
                      TRUE
-                   }
-                   else{
+                   } else {
                      FALSE
                    }
+                 } else {
+                   FALSE # no n
                  }
+               } else {
+                 FALSE # no b
                }
-               else{FALSE}
-               }
+             }
              ) |>
     unlist()
 }
@@ -131,6 +152,7 @@ tibble_to_list_recurse <- function(x, level = 1){
 add_tibble_attributes_to_list <- function(empty, full){
   # get a list giving the structure of the supplied tibble
   index_list <- get_list_addresses(full$level)
+  index_list <- index_list
   
   # walk along the list and assign attributes back to `clean_result`
   for(a in seq_along(index_list)){ # using purrr::walk here fails
