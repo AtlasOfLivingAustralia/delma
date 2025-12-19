@@ -1,20 +1,27 @@
 test_that("`as_eml_xml()` works for class tbl_lp", {
-  x <- system.file("extdata", 
+  file <- system.file("extdata", 
                    "bionet_metadata.Rmd",
                    package = "delma") |>
-    read_lp() |>
-    as_eml_xml()
+    read_lp() 
+  x <- suppressWarnings(
+    file |>
+      as_eml_xml()
+  )
+  expect_warning(as_eml_xml(file))
   inherits(x,
            c("xml_document", "xml_node")) |>
     expect_true()
 })
 
 test_that("`as_eml_xml()` works for class tbl_df", {
-  x <- system.file("extdata", 
+  file <- system.file("extdata", 
                    "bionet_metadata.Rmd",
                    package = "delma") |>
-    read_md() |>
-    as_eml_xml()
+    read_md() 
+  x <- suppressWarnings(
+    as_eml_xml(file)
+  )
+  expect_warning(as_eml_xml(file))
   inherits(x, 
            c("xml_document", "xml_node")) |>
     expect_true()
