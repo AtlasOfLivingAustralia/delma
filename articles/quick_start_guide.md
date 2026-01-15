@@ -1,0 +1,173 @@
+# Quick start guide
+
+Ecological Metadata Language (EML) is a “comprehensive vocabulary and a
+readable XML markup syntax for documenting research data” ([Jones et
+al. 2019](https://doi.org/10.5063/F11834T2)). Supplying metadata in this
+format is a requirement of several data-sharing institutions, notably
+including the Global Biodiversity Information Facility
+([GBIF](https://gbif.org)) and its partner nodes. While the [EML
+package](https://cran.r-project.org/package=EML) already exists to
+support building and manipulating EML within the workspace, there is no
+comparable system for writing these documents in a more human-readable
+format, such as R Markdown or Quarto markdown. `delma` provides this
+capability.
+
+The default method for using `delma` is to:
+
+1.  Create a metadata statement template with
+    [`use_metadata_template()`](https://delma.ala.org.au/R/reference/use_metadata_template.md)
+2.  Edit metadata in your chosen IDE
+3.  Read the data into R with
+    [`read_md()`](https://delma.ala.org.au/R/reference/read_md.md)
+4.  Write the data to an EML file with
+    [`write_eml()`](https://delma.ala.org.au/R/reference/write_eml.md)
+
+EML is quite stringent in the types of data that are allowed, as well as
+their order and placement in the hierarchy. Getting these points right
+can be challenging, and we suggest using
+[`check_metadata()`](https://delma.ala.org.au/R/reference/check_metadata.md)
+in combination with the [EML schema
+documentation](https://eml.ecoinformatics.org) to get it right.
+
+## Formatting your metadata statement
+
+There are several points that are unusual about Rmarkdown documents
+formatted using `delma`, which we discuss below
+
+### Document structure
+
+Create a metadata statement template using
+[`use_metadata_template()`](https://delma.ala.org.au/R/reference/use_metadata_template.md)
+
+``` r
+use_metadata_template("my-metadata-statement.Rmd")
+```
+
+Header levels in markdown-formatted metadata statements determine the
+nested structure of the resulting xml. For example, this text in
+markdown…
+
+    # EML
+
+    ## Dataset
+
+    ### Title
+    My title
+
+…parses to this in xml.
+
+    <EML>
+      <dataset>
+        <title>My title</title>
+      </dataset>
+    <EML>
+
+### Attributes
+
+Attributes can be added to a particular EML tag by including them in a
+`list` within a code block, the `label` of which is used by `delma` to
+link tags to their attributes. To add attributes to the `userId` field,
+for example, you would add the following code under the `## userId`
+heading:
+
+```` markdown
+```{r}
+#| label: 'userId'
+#| include: false
+
+list(directory = "https://orcid.org")
+```
+````
+
+The `include: false` tag is added so that this content isn’t displayed
+when the document is knit.
+
+### Setting a unique ID
+
+Every EML document must open with the tag `eml`, and the attributes of
+that element **must** contain a unique identifier in the `packageId`
+field, as well as a link to the system within which that key is unique.
+A logical example might be a DOI:
+
+```` markdown
+```{r}
+#| label: 'eml'
+#| include: false
+
+list(packageId = "https://doi.org/10.32614/CRAN.package.galah",
+     system = "https://doi.org")
+```
+````
+
+A valid alternative might be a GitHub release:
+
+```` markdown
+```{r}
+#| label: 'eml'
+#| include: false
+
+list(packageId = "https://github.com/AtlasOfLivingAustralia/galah-R/releases/download/v2.1.0/galah_2.1.0.tar.gz",
+     system = "https://github.com")
+```
+````
+
+Note that the `eml` tag is unusual in `delma` in that it is added
+automatically if not supplied. Where this occurs, all tag levels are
+also incremented by one to account for this change.
+
+### Dynamic content
+
+`delma` will call
+[`rmarkdown::render()`](https://pkgs.rstudio.com/rmarkdown/reference/render.html)
+internally whenever
+[`read_md()`](https://delma.ala.org.au/R/reference/read_md.md) or
+`render_metadata()` is used, meaning that it is possible to add dynamic
+content to your metadata statements. The boilerplate statement that
+ships with delma uses this feature to automatically populate the `Title`
+and `Pubdate` fields from the `YAML` section, for example:
+
+```` markdown
+```{r}
+#| echo: false
+#| results: 'asis'
+
+# NOTE: This is set using the yaml above; do not edit by hand
+cat(rmarkdown::metadata$date)
+```
+````
+
+You could also implement dynamic content using inline code. For example:
+
+``` r
+This data contains `r readr::read_csv("my_data.csv") |> nrow()` rows.
+```
+
+## Reading, writing, and format conversion
+
+Internally, `delma` uses the
+[lightparser](https://cran.r-project.org/package=lightparser) package to
+convert markdown files to `tibble`s, and the
+[xml2](https://cran.r-project.org/package=xml2) package to convert
+`list`s to xml and write them to file. Between these two packages, we
+have written functions to convert between tibble and list versions of
+EML-formatted markdown.
+
+Under the hood,
+[`read_md()`](https://delma.ala.org.au/R/reference/read_md.md), which
+does a few things:
+
+- calls
+  [`rmarkdown::render()`](https://pkgs.rstudio.com/rmarkdown/reference/render.html)
+  on your chosen file, meaning any code blocks or inline code is
+  executed properly.
+- appends code blocks whose `label` matches an EML tag to the
+  `attributes` of that EML tag; this allows quite complex attribute
+  addition without affecting rendered text.
+- ‘cleans’ the imported tibble to a small number of required columns.
+
+This tibble can then be rendered to EML using
+[`write_eml()`](https://delma.ala.org.au/R/reference/write_eml.md). The
+inverse operation is accomplished by calling
+[`read_eml()`](https://delma.ala.org.au/R/reference/read_eml.md)
+followed by
+[`write_md()`](https://delma.ala.org.au/R/reference/write_md.md).
