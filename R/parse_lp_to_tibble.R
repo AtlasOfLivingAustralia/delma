@@ -154,13 +154,13 @@ reformat_license <- function(x, error_call = rlang::caller_env()){
   } else {
     # extract level of `intellectualRights`
     ref_level <- x |>
-      dplyr::filter(label == "intellectualRights") |>
-      dplyr::pull(level)
+      dplyr::filter(.data$label == "intellectualRights") |>
+      dplyr::pull("level")
     
     # extract licensing info
     text_citetitle <- x |>
-      dplyr::filter(label == "citetitle") |>
-      dplyr::pull(text) |>
+      dplyr::filter(.data$label == "citetitle") |>
+      dplyr::pull("text") |>
       unlist()
     
     # NOTE: should we detect and error if text or url is missing?
@@ -188,12 +188,12 @@ reformat_license <- function(x, error_call = rlang::caller_env()){
       dplyr::add_row(row_para, .after = which(x$label == "intellectualRights")) |>  # must be added second
       dplyr::mutate(
         text = dplyr::case_when(
-          label == "citetitle" ~ purrr::map(text,\(a){license_text}), 
-          .default = text
+          .data$label == "citetitle" ~ purrr::map(text,\(a){license_text}), 
+          .default = .data$text
         ),
         level = dplyr::case_when(
-          label == "citetitle" ~ row_ulink$level + 1, 
-          .default = level
+          .data$label == "citetitle" ~ row_ulink$level + 1, 
+          .default = .data$level
         )
       )
     

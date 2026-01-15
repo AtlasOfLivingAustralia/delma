@@ -238,5 +238,7 @@ test_that("xml documents can be losslessly converted to Rmd and back", {
 
   # clean up
   unlink(rmd_file)
+  unlink("EXAMPLE.Qmd")
+  unlink("EXAMPLE.xml")
   # unlink("testdata/TEST_meta_example.xml")
 })

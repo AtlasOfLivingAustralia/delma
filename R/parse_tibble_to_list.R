@@ -31,9 +31,9 @@ add_para_tags <- function(x){
       \(df){
         df |>
           dplyr::mutate(
-            n_chr = cli::ansi_nchar(text),
-            is_a_url = stringr::str_starts(as.character(text), "http"),
-            is_a_list = purrr::map(text, \(a){inherits(a, "list")}) |> unlist(),
+            n_chr = cli::ansi_nchar(.data$text),
+            is_a_url = stringr::str_starts(as.character(.data$text), "http"),
+            is_a_list = purrr::map(.data$text, \(a){inherits(a, "list")}) |> unlist(),
             # para tag candidates
             needs_para_tag = dplyr::case_when(
               (n_chr > 60 | is_a_list) & !is_a_url ~ TRUE,
@@ -49,14 +49,14 @@ add_para_tags <- function(x){
     x <- text_summary |>
       dplyr::mutate(
         text = dplyr::case_when(
-          needs_para_tag ~ purrr::map(text,
+          needs_para_tag ~ purrr::map(.data$text,
                                       \(a){
                                         result <- purrr::map(a, \(b){list(b)})
                                         names(result) <- rep("para", length(result))
                                         result
                                         }
                                       ), 
-          .default = text
+          .default = .data$text
           )
         ) |>
       dplyr::select("level", "label", "text", "attributes")
