@@ -3,20 +3,24 @@
 #' @noRd
 #' @keywords Internal
 parse_lp_to_tibble <- function(x){
+  
   result <- x |>
     clean_header_level() |> # downfill heading level
     dplyr::mutate(attributes = as.list(rep(NA, nrow(x)))) |>
     dplyr::filter(.data$type != "yaml",
                   is.na(.data$heading),
-                  .data$heading_level > 0) |>
+                  .data$heading_level > 0) |> 
     clean_lp_text() |>
-    clean_urls() |>
+    clean_urls() |> 
     dplyr::select("heading_level", "section", "text", "attributes") |>
     dplyr::rename("level" = "heading_level", 
                   "label" = "section") |>
-    clean_eml_tags()
+    clean_eml_tags() |> 
+    reformat_license()
+  
   class(result) <- c("tbl_df", "tbl", "data.frame")
-  result
+  return(result)
+  
 }
 
 #' Internal function to clean header levels
@@ -131,4 +135,68 @@ clean_eml_tags <- function(df){
                                            .data$label == "surname" ~ "surName",
                                            .data$label == "pubdate" ~ "pubDate",
                                            .default = .data$label))
+}
+
+#' Internal function to reformat Intellectual Rights to correct EML format
+#' @param x A tibble
+#' @noRd
+#' @keywords Internal
+reformat_license <- function(x, error_call = rlang::caller_env()){
+  ## NOTE: This could be important. It mandates that a license is supplied.
+  ##       However, it's causing issues because some md files might 
+  # if(all(!x$label %in% "citetitle")) {
+  #   cli::cli_abort("Must supply license information under Intellectual Rights/citetitle.",
+  #                  call = error_call)
+  # }
+  
+  if(all(x$label %in% c("intellectualRights", "para", "ulink", "citetitle"))) {
+    x_updated <- x
+  } else {
+    # extract level of `intellectualRights`
+    ref_level <- x |>
+      dplyr::filter(.data$label == "intellectualRights") |>
+      dplyr::pull("level")
+    
+    # extract licensing info
+    text_citetitle <- x |>
+      dplyr::filter(.data$label == "citetitle") |>
+      dplyr::pull("text") |>
+      unlist()
+    
+    # NOTE: should we detect and error if text or url is missing?
+    license_text <- stringr::str_extract(text_citetitle, "(?<=\\[).*?(?=\\])")
+    license_url <- stringr::str_extract(text_citetitle, "(?<=\\().*?(?=\\))")
+    
+    row_para <- tibble::tibble(
+      level = ref_level + 1,
+      label = "para",
+      text = list(NA),
+      attributes = list(NA)
+    )
+    
+    row_ulink <- tibble::tibble(
+      level = ref_level + 2, 
+      label = "ulink", 
+      text = list(NA), 
+      attributes = list(url = license_url) |> # format
+        list()                                # set `named_list` class
+    )
+    
+    # add new rows, then update citeTitle text & level to match changes
+    x_updated <- x |>
+      dplyr::add_row(row_ulink, .after = which(x$label == "intellectualRights")) |> # must be added first
+      dplyr::add_row(row_para, .after = which(x$label == "intellectualRights")) |>  # must be added second
+      dplyr::mutate(
+        text = dplyr::case_when(
+          .data$label == "citetitle" ~ purrr::map(text,\(a){license_text}), 
+          .default = .data$text
+        ),
+        level = dplyr::case_when(
+          .data$label == "citetitle" ~ row_ulink$level + 1, 
+          .default = .data$level
+        )
+      )
+    
+  }
+  return(x_updated)
 }

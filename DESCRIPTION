@@ -1,7 +1,7 @@
 Package: delma
 Type: Package
 Title: Convert 'R Markdown' and 'Quarto' Documents to Ecological Metadata Language
-Version: 0.1.1
+Version: 0.1.2
 Authors@R:
     c(person(given = "Martin",
              family = "Westgate",

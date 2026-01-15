@@ -4,15 +4,18 @@
 #' @noRd
 #' @keywords Internal
 parse_tibble_to_list <- function(x){
-  x <- add_para_tags(x) |>
-       remove_empty_rows()
+  
+  x <- x |>
+    add_para_tags() |>
+    remove_empty_rows()
+  
   result <- tibble_to_list_recurse(x, level = 1)
   add_tibble_attributes_to_list(empty = result,
                                 full = x)
 }
 
 #' Internal function to ensure lists in `text` column are parsed correctly.
-#' Requires modification to add `para` tag within list-entries
+#' Requires modification to add `<para>` tag within list-entries
 #' @noRd
 #' @keywords Internal
 add_para_tags <- function(x){
@@ -20,17 +23,43 @@ add_para_tags <- function(x){
     cli::cli_abort("Supplied tibble doesn't contain required column `text`", 
                   call = rlang::caller_env())
   }
-  list_check <- purrr::map(x$text, 
-                           \(a){inherits(a, "list")}) |>
-    unlist()
-  if(any(list_check)){
-    list_update <- x$text[list_check]
-    x$text[list_check] <- purrr::map(list_update,
-                                     \(a){
-                                       result <- purrr::map(a, \(b){list(b)})
-                                       names(result) <- rep("para", length(result))
-                                       result
-                                     })
+  
+  # identify text that requires para tags (long text entries that aren't urls)
+  text_summary <- x |>
+    split(f = seq_along(x$text)) |> # equivalent to `group_split()`
+    purrr::map(
+      \(df){
+        df |>
+          dplyr::mutate(
+            n_chr = cli::ansi_nchar(.data$text),
+            is_a_url = stringr::str_starts(as.character(.data$text), "http"),
+            is_a_list = purrr::map(.data$text, \(a){inherits(a, "list")}) |> unlist(),
+            # para tag candidates
+            needs_para_tag = dplyr::case_when(
+              (n_chr > 60 | is_a_list) & !is_a_url ~ TRUE,
+              .default = FALSE
+              )
+          )
+      }
+    ) |> 
+    dplyr::bind_rows() 
+  
+  if (any(text_summary$needs_para_tag)) {
+    # add para tag
+    x <- text_summary |>
+      dplyr::mutate(
+        text = dplyr::case_when(
+          needs_para_tag ~ purrr::map(.data$text,
+                                      \(a){
+                                        result <- purrr::map(a, \(b){list(b)})
+                                        names(result) <- rep("para", length(result))
+                                        result
+                                        }
+                                      ), 
+          .default = .data$text
+          )
+        ) |>
+      dplyr::select("level", "label", "text", "attributes")
   }
   x
 }
@@ -51,12 +80,41 @@ remove_empty_rows <- function(x){
 is_na_list <- function(a){
   purrr::map(a,
              \(b){
+               
+               # if there is an item
                if(length(b) == 1){
-                 if(is.na(b[[1]])){
-                   TRUE
-                 }else{FALSE}
-               }else{FALSE}
-             }) |>
+                 
+                 i <- b[[1]] # take element `i` within index `b`
+                 n <- length(i)
+
+                 # empty element (accounts for character(0))
+                 if(n == 0) { FALSE }
+
+                 # duplicate element
+                 if(n > 1) {
+                   cli::cli_warn(
+                     c("Duplicate heading detected in eml.",
+                       i = "Defaulting to first item.")
+                   )
+
+                   i <- i[1] # take first item
+                 }
+
+                 # check for NA
+                 if(n == 1) {
+                   if(is.na(i)) {
+                     TRUE
+                   } else {
+                     FALSE
+                   }
+                 } else {
+                   FALSE # no n
+                 }
+               } else {
+                 FALSE # no b
+               }
+             }
+             ) |>
     unlist()
 }
 
@@ -94,6 +152,7 @@ tibble_to_list_recurse <- function(x, level = 1){
 add_tibble_attributes_to_list <- function(empty, full){
   # get a list giving the structure of the supplied tibble
   index_list <- get_list_addresses(full$level)
+  index_list <- index_list
   
   # walk along the list and assign attributes back to `clean_result`
   for(a in seq_along(index_list)){ # using purrr::walk here fails
@@ -152,3 +211,5 @@ get_list_addresses <- function(level){
   }
   address_list
 }
+
+
