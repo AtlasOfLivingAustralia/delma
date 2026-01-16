@@ -64,3 +64,32 @@ test_that("`as_eml_list()` works for class `xml_document", {
   inherits(x, "list") |>
     expect_true()
 })
+
+test_that("`as_eml_list()` adds <para> tags for long text passages", {
+  x <- system.file("extdata", 
+                   "bionet_metadata.Rmd",
+                   package = "delma") |>
+    read_md()
+  
+  x_list <- x |> 
+    as_eml_list() |>
+    suppressWarnings() # quiet expected warning from duplicate citetitle
+
+  # 3 labels hold text with n_char > 60 (which triggers para tags)
+  # organizationName, citation, abstract
+  # it's a bit fiddly to get this exact answer, but you can see it using:
+  # x |> 
+  # tidyr::unnest(cols = "text") |>
+  # dplyr::mutate(chr_count = nchar(text)) |>
+  # dplyr::filter(chr_count > 60)
+  
+  # find headings in list and make sure each is followed by a para tag
+  abstract <- x_list |>
+    purrr::pluck(1, 1, "abstract")
+  org_name <- x_list |>
+    purrr::pluck(1, 1, "creator", "organizationName")
+  citation <- x_list |>
+    purrr::pluck(1, 2, 1, 1, "citation")
+  
+  expect_equal(names(abstract), "para")
+})
