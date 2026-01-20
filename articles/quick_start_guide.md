@@ -5,7 +5,7 @@ readable XML markup syntax for documenting research data” ([Jones et
 al. 2019](https://doi.org/10.5063/F11834T2)). Supplying metadata in this
 format is a requirement of several data-sharing institutions, notably
 including the Global Biodiversity Information Facility
-([GBIF](https://gbif.org)) and its partner nodes. While the [EML
+([GBIF](https://www.gbif.org)) and its partner nodes. While the [EML
 package](https://cran.r-project.org/package=EML) already exists to
 support building and manipulating EML within the workspace, there is no
 comparable system for writing these documents in a more human-readable
