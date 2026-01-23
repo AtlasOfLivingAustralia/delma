@@ -11,7 +11,7 @@
 ## Citation
 
 Source:
-[`inst/CITATION`](https://github.com/AtlasOfLivingAustralia/delma/blob/main/inst/CITATION)
+[`inst/CITATION`](https://github.com/AtlasOfLivingAustralia/delma/blob/v0.1.2/inst/CITATION)
 
 Westgate M, Balasubramaniam S, Kellie D (2026). *delma: Convert
 Rmarkdown and Quarto Documents to Ecological Metadata Language*. R

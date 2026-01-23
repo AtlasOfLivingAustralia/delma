@@ -2,6 +2,8 @@
 
 ## version 0.1.2
 
+CRAN release: 2026-01-20
+
 Patch release to fix some minor bugs
 
 ## delma 0.1.1
